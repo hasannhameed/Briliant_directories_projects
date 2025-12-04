@@ -115,20 +115,33 @@
 
     .parent .pricing_menu > li > ul > li {
         position: relative !important;
-        padding-left: 30px !important;
         margin-bottom: 12px !important;
         font-size: 15px !important;
         color: #334155 !important;
         border: none !important;
     }
 
-    .parent .pricing_menu > li > ul > li::before {
+    /* .parent .pricing_menu > li > ul > li::before {
         content: '✓' !important;
         position: absolute !important;
         left: 0 !important;
         color: #16a34a !important; 
         font-weight: 900 !important;
         font-size: 16px !important;
+    } */
+
+    .parent .pricing_menu > li > ul > li> span::before {
+        content: '✓' !important;
+        position: absolute !important;
+        left: 0 !important;
+        color: #16a34a !important; 
+        font-weight: 900 !important;
+        font-size: 16px !important;
+    }
+    .parent .pricing_menu > li > ul > li> span > font{
+        padding-left: 25px;
+        text-align: left;
+        float: left;
     }
 
     /* Hiding checkmarks for non-feature items */
