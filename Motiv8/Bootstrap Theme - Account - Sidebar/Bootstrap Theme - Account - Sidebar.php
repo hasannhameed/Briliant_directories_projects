@@ -1,0 +1,700 @@
+<?php
+session_start(); // Ensure the session is started
+$login_back_to_company = $_SESSION['val'];
+$user_data = getUser($_COOKIE['userid'], $w);
+$sub = getSubscription($user_data['subscription_id'], $w);
+$reviewIdQuery = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+        *
+    FROM
+        `data_categories`
+    WHERE
+        data_type = '13'
+    LIMIT
+        1");
+$reviewId = mysql_fetch_assoc($reviewIdQuery);
+$reviewState = 0;
+
+foreach ($sub['data_settings'] as $sdskey => $sdsvalue) {
+
+    if ($sdsvalue == $reviewId['data_id']) {
+        $reviewState = 1;
+    }
+}
+$notification_num = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+        *
+    FROM
+        `users_meta`,
+        `users_reviews`
+    WHERE
+        database_id = " . $user_data['subscription_id'] . "
+    AND
+        `key` = 'accept_delete_reviews' AND user_id = " . $user_data['user_id'] . "
+    AND
+        users_reviews.review_status != 3
+    ORDER BY
+        users_reviews.spoken_language DESC
+    LIMIT
+        1");
+
+if (mysql_num_rows($notification_num) != null) {
+
+    while ($number_notification = mysql_fetch_array($notification_num)) {
+        $ability_rest_sidebar = $number_notification['value'];
+        $total_notif = $number_notification['spoken_language'];
+    }
+}
+
+$userPhoto = getUserPhoto($user_data['user_id'], $user_data['listing_type'], $w);
+$userPhoto = $userPhoto['file'];
+
+?>
+<div class="col-xs-6 col-sm-3 col-md-3 nolpad member_sidebar">
+    <div class="well member_admin_sidemenu" style="padding-top:10px;">
+        <?php
+        $pic = getProfilePhoto($user_data['user_id'], 'profile', $w);
+
+        if (($user_data['first_name'] != "" || $user_data['company'] != "") && $pic != "") { ?>
+            <h4 style="text-transform: capitalize;word-wrap: break-word;" class="bold text-center">
+                <?php echo $user_data['full_name']; ?>
+            </h4>
+            <a href="/account/profile">
+                <img src="<?php echo $userPhoto ?>" style="max-height:160px;" class="img-thumbnail center-block bmargin">
+            </a>
+            <div class="clearfix"></div>
+
+        <?php }
+        /*decode any slug in filename in case is missing to avoid any error*/
+        $filenameBdString = new bdString($user_data['filename']);
+        $filenameBdString = $filenameBdString->split('/');
+
+        foreach ($filenameBdString->splittedString as $key => $string) {
+            $filenameBdString->splittedString[$key] = $string->urldecode();
+        }
+
+        $filenameBdString->glue('/');
+
+        $user_data['filename'] = $filenameBdString->modifiedValue;
+
+        if ($user_data['filename'] != "" && $subscription['searchable'] == "1") { ?>
+            <a target="_blank" href="/<?php echo $user_data['filename'] ?>" style=""
+                class="btn btn-primary btn-sm bold btn-block no-radius-bottom view-listing-link">
+                %%%view_public_listing_account%%%
+                <i class="fa fa-external-link fa-fw"></i>
+            </a>
+        <?php } ?>
+        <span
+            class="module center-block fpad member-account-information text-center bmargin <?php if ($user_data['filename'] != "" && $subscription['searchable'] == "1") { ?>no-radius-top<?php } ?>"
+            style="padding-top:5px;">
+            <span class="bold member-account-id">
+                %%%account_sidebar_member_id%%%
+                <?php echo $user_data['user_id']; ?>
+            </span>
+            <br>
+            <span class="small member-level-name">
+                %%%dashboard_level%%%:
+                <?php echo str_replace("'", "&#39;", $subscription['subscription_name']); ?>
+            </span>
+            <?php if (upgradeAvailable($user_data, $w) > 0) { ?>
+                <a href="/account/upgrade" class="btn btn-success btn-sm bold btn-block upgrade-listing-link"
+                    style="margin-top: 5px;">
+                    %%%upgrade_listing%%%
+                </a>
+            <?php } ?>
+        </span>
+        <?php 
+                //if (isset($pars['2']) && $pars['2'] == 'view' && $pars['1'] == 'add-supplier-card') {
+                    $result = mysql_query("SELECT supplier_id FROM supplier_attendingstaffs WHERE FIND_IN_SET('$user_data[user_id]', staff_ids)");
+                    if ($row = mysql_fetch_assoc($result)) {
+                        $supplier_id = $row['supplier_id'];
+                    }
+                    $token_result = mysql_query("SELECT token FROM `users_data` WHERE user_id = $supplier_id");
+                    if ($token_row = mysql_fetch_assoc($token_result)) {
+                        $login_back = $token_row['token'];
+                    }
+                    if (!empty($supplier_id) && $supplier_id != $user_data['user_id']) {
+                    ?>
+                    <a class="btn btn-sm bold btn-block btn-primary back-to-company-to"
+                        href="/login/token/<?= $login_back ?>/add-supplier-card/view" style="margin-bottom: 10px;" data-user="<?= $supplier_id ?> and <?= $user_data['user_id'] ?>">Login as Company
+                        Account</a>
+        <?php } //} ?>
+            <?php
+        $lresults = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+            *
+        FROM
+            `leads`,
+            `lead_matches`
+        WHERE
+            lead_matches.lead_id = leads.lead_id
+        AND
+            lead_matches.user_id = '" . $_COOKIE['userid'] . "'
+        AND
+            lead_matches.lead_status != '7'
+        AND
+            lead_matches.lead_status != '0'
+        AND
+            leads.status != '7'
+        AND
+            leads.status != '6'  AND lead_status = '1'");
+
+        if (mysql_num_rows($lresults) > 0) {
+            $leadtotals = mysql_num_rows($lresults);
+        }
+        if ($ability_rest_sidebar != 0) {
+            $lresults = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+                    *
+                FROM
+                    `users_reviews`
+                WHERE
+                    `user_id` = '" . $_COOKIE[userid] . "'
+                AND
+                    `review_status` = '0'");
+
+            if (mysql_num_rows($lresults) > 0) {
+                $reviewtotals = mysql_num_rows($lresults);
+            }
+            $notificationtotals = $reviewtotals + $leadtotals;
+
+        } else {
+
+            if ($total_notif == 0) {
+                $total_notif = "";
+            }
+            $notificationtotals = $total_notif + $leadtotals;
+            $reviewtotals = $total_notif;
+        }
+        $homeTabState = '';
+
+        if ($pars[1] == "home") {
+            $homeTabState = 'active';
+        }
+        ?>
+        <div class="panel-group sidemenu_panel" id="accordion" role="tablist" aria-multiselectable="true">
+        <?php
+            if ($user_data['subscription_id'] == '33' || $user_data['subscription_id'] == '30' || $user_data['subscription_id'] == '36') {
+                ?>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingevent">
+                    <h4 class="panel-title">
+                        <a class="" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#collapseSix"
+                            aria-expanded="false" aria-controls="collapseSix">
+                            My Events <i class="pull-right fa fa-caret-down"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div class="clearfix"></div>
+                <div id="collapseSix" class="panel-collapse collapse in" role="tabpanel"
+                    aria-labelledby="headingevent">
+                    <div>
+                        <?php if ($user_data['subscription_id'] == '36') { ?>
+                             <!-- Supplier Card -->
+                            <a href="/account/add-supplier-card/view" class="list-group-item">&ndash; Booked Events</a>
+                            <!-- Supplier Card -->
+                        <?php }else { ?>
+						<a href="/account/add-supplier-card/view" class="list-group-item">&ndash; Booked Events</a>
+                        <?php /* <a href="/account/event-enquire" class="list-group-item">&ndash;Event Enquiries</a> */ ?>
+                        <a href="/account/my-promo" class="list-group-item">&ndash; Event Credits</a>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+            <?php
+            }
+            if ($user_data['subscription_id'] == '33' || $user_data['subscription_id'] == '30') {
+                ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingevent">
+                        <h4 class="panel-title">
+                            <a class="" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" href="#collapseFive"
+                                aria-expanded="false" aria-controls="collapseFive">
+                                Upcoming Events <i class="pull-right fa fa-caret-down"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel"
+                        aria-labelledby="headingevent">
+                        <div>
+                            <a href="https://www.motiv8search.com/account/events-announcements/confirmed-events"
+                                class="list-group-item">&ndash; Scheduled Events</a>
+                            <a href="https://www.motiv8search.com/account/events-announcements/provisional-events"
+                                class="list-group-item">&ndash; Waitlist Events</a>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+            
+            <hr class="vmargin"> 
+
+            <div class="panel panel-default">
+                <div class="panel-heading <?php echo $homeTabState; ?>" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a href="/account/home">%%%account_dashboard_icon%%% %%%dashboard_home_title%%%</a>
+                    </h4>
+                </div>
+            </div>
+
+            <?php
+
+            if ($subscription['show_dashboard_manage_listing'] != "0") { 
+                /*
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
+                                aria-expanded="false" aria-controls="collapseThree">
+                                 %%%manage_listing_icon%%% %%%manage_label%%% <!--%Listing%-->Company Page <i 
+                                    class="pull-right fa fa-caret-down"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="clearfix"></div>
+                    <?php
+                    $listingVarState = '';
+
+                    if ($type == "listing" || $type == "promote") {
+                        $listingVarState = "in";
+                    }
+                    ?>
+                    <div id="collapseThree" class="panel-collapse collapse <?php echo $listingVarState; ?>" role="tabpanel"
+                        aria-labelledby="headingThree">
+                        <div>
+                            <?php
+                            if ($sub['show_contact_detail'] == 1) { ?>
+                                <a href="/account/contact" class="list-group-item">&ndash; %Account_listing_tab_1%</a>
+                            <?php }
+                            if ($sub['show_profile_photo'] == 1 || $sub['show_logo_upload'] == 1) { ?>
+                                <a href="/account/profile" class="list-group-item">&ndash; %Account_listing_tab_2%</a>
+                            <?php }
+                            if ($sub['show_listing_details'] == 1) { ?>
+                                <a href="/account/resume" class="list-group-item">&ndash; %Account_listing_tab_3%</a>
+                            <?php }
+                            if ($sub['show_about_tab'] == 1) { ?>
+                                <a href="/account/about" class="list-group-item">&ndash; %Account_listing_tab_4%</a>
+                            <?php }
+                            $multiListing2 = getAddOnInfo('multi_location');
+                            if ((isset($multiListing2['status']) && $multiListing2['status'] === 'success') && $sub['location_limit'] > 0 && $sub['location_limit'] != '') { ?>
+                                <a href="/account/locations" class="list-group-item">&ndash; %Account_listing_tab_5%</a>
+                            <?php }
+                            if ($w['promote_feature'] == 1) {
+
+                                if ($w['promote_feature_verify'] == 1 && $user_data['verified'] == 0) { ?>
+                                    <a href="/account/promote/verify" class="list-group-item">&ndash; %%%verify_listing%%%</a>
+                                    <?php
+                                }
+                                if ($w[promote_feature_reviews] == 1 && $reviewState == 1) { ?>
+                                    <a href="/account/promote/recommendations" class="list-group-item">&ndash;
+                                        %%%request_recommendation%%%</a>
+                                    <?php
+                                }
+                                if ($w[promote_feature_invite] == 1) { ?>
+                                    <a href="/account/promote/invite" class="list-group-item">&ndash; %%%invite_colleagues%%% </a>
+                                    <?php
+                                }
+                            } ?>
+                        </div>
+                    </div>
+                </div> */ 
+                ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                            <a href="/account/contact">%%%manage_listing_icon%%% <?php if ($user_data['subscription_id'] == '33' || $user_data['subscription_id'] == '30') {echo "Update Company "."%%%listing%%%"; }else{echo "%%%manage_label%%%";} ?>  </a>
+                        </h4>
+                    </div>
+                </div>
+            <?php }
+            $addonStatistics = getAddOnInfo("user_statistics_addon");
+            if (isset($addonStatistics['status']) && $addonStatistics['status'] === 'success' && $sub['profile_statistics'] == "1") { ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="headingOne">
+                        <h4 class="panel-title">
+                            <a href="/account/stats" class="sidebar-profile-stats-link">
+                                <?php if ($label['profile_statistics_icon'] != "") { ?>
+                                    %%%profile_statistics_icon%%%
+                                <? } else { ?>
+                                    <i class='fa fa-pie-chart'></i>
+                                <?php } ?>
+                                %%%sidebar_profile_statistics%%%
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <?php
+            }
+            if ($subscription['hide_notifications'] != "1") { ?>
+                <div class="panel panel-default notifications">
+                    <div class="panel-heading" id="headingOne">
+                        <h4 class="panel-title">
+                            <a href="/account/leads">
+                                %%%manage_referral_icon%%%
+                                <!-- %%%manage_label%%%-->Manage %%Referral%% 
+                                <?php if ($leadtotals != "") { ?>
+                                    <span class="label img-circle weight-normal font-sm bg-default pull-right">
+                                        <?php echo $leadtotals; ?>
+                                    </span>
+                                <?php } ?>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <?php
+            $addOnDirectMessages = getAddOnInfo("member_direct_messages");
+            if (isset($addOnDirectMessages['status']) && $addOnDirectMessages['status'] == "success" && $w['enable_direct_chat_messages'] == "1" && $subscription['enable_direct_messages'] == "1") {
+                //calculate how many unseen message threads does this member has
+                $nonSeenCounter = 0;
+                $threadCalcQuery = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+                                        thread_token
+                                    FROM
+                                        chat_message_threads
+                                    WHERE
+                                        thread_owner = '" . $user_data["token"] . "'
+                                        OR
+                                        thread_responders = '" . $user_data["token"] . "'");
+                while ($thread = mysql_fetch_assoc($threadCalcQuery)) {
+                    //get the last message of each thread and count the non seen
+                    $lastMessageQuery = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+                                            *
+                                        FROM
+                                            chat_message_items
+                                        WHERE
+                                            thread_token = '" . $thread["thread_token"] . "'
+                                        ORDER BY
+                                            created_at DESC
+                                        LIMIT
+                                            1");
+                    $lastMessage = mysql_fetch_assoc($lastMessageQuery);
+
+                    if ($lastMessage["message_owner"] != $user_data["token"] && $lastMessage["message_status"] == 0) {
+                        $nonSeenCounter++;
+                    }
+                }
+                ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a href="/account/chat_messages">
+                                <i class="fa fa-comments-o"></i>
+                                %%%chat_messages_page_title%%%
+                                <?php if ($nonSeenCounter > 0) { ?>
+                                    <span class="label img-circle weight-normal font-sm bg-default pull-right">
+                                        <?php echo $nonSeenCounter; ?>
+                                    </span>
+                                <?php } ?>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            <?php } ?>
+
+
+            <?php if ($reviewState == 1) { ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a href="/account/recommendations">
+                                %%%manage_recommendations_icon%%%
+                                %%%manage_label%%% %%Recommendation%%
+                                <?php if ($reviewtotals > 0) { ?>
+                                    <span class="label img-circle weight-normal font-sm bg-default pull-right">
+                                        <?php echo $reviewtotals; ?>
+                                    </span>
+                                <?php } ?>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            <?php } ?>
+            <hr class="vmargin">
+            <?php
+            $user = getUser($_COOKIE['userid'], $w);
+            $subscription = getSubscription($user['subscription_id'], $w);
+            $subscription['data_settings'] = array_filter($subscription['data_settings']);
+            if (is_array($subscription['data_settings']) && count($subscription['data_settings']) > 0) {
+                $subresults = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+                        `data_id`
+                    FROM
+                        data_categories
+                    WHERE
+                        data_id IN (" . join(',', $subscription['data_settings']) . ")
+                    ORDER BY
+						data_type = 29 DESC,
+                        profile_display_order ASC");
+
+                $subscriptionData = getSubscription($user_data['subscription_id'], $w);
+                $subscriptionLimits = json_decode($subscriptionData['data_settings_limit'], true);
+                $digitalDownloadsAddonStatus = addonController::isAddonActive('sell_feature_post');
+
+                while ($dt = mysql_fetch_assoc($subresults)) {
+                    global $ds;
+                    $ds = getDataCategory($dt['data_id'], "data_id", $w);
+
+                    $dataCategoryModelInstance = new data_categories();
+                    $dataCategoryModelInstance->getDataCategoryByPostId($ds['data_id']);
+
+                    if ($dataCategoryModelInstance->isDigitalProduct() == true && $digitalDownloadsAddonStatus === false) {
+                        unset($dataCategoryModelInstance);
+                        continue;
+                    }
+
+                    unset($dataCategoryModelInstance);
+
+                    if ($ds['data_type'] == 28) {
+                        //check if this site is using the new sub accounts module
+                        /*$checkSubAccountsQuery = mysql(brilliantDirectories::getDatabaseConfiguration('database'),"SHOW COLUMNS FROM
+                                `users_data`
+                            LIKE
+                                'parent_id'");*/
+                        //get the parent id
+                        $parentIdQuery = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+                                parent_id
+                            FROM
+                                `users_data`
+                            WHERE
+                                user_id = '" . $user_data[user_id] . "'");
+                        $parentId = mysql_fetch_assoc($parentIdQuery);
+
+                        if ($parentId['parent_id'] != 0) {
+                            $hideSubAccounts = 1;
+
+                        } else {
+                            $hideSubAccounts = 0; //show sub_accounts
+                        }
+                        $multiListingAddOnInfo = getAddOnInfo("sub_accounts", '9268c02160f09766325e6b39cd4b7b87');
+                    }
+                    if ($ds['data_type'] == 28 && $hideSubAccounts == 0 && isset($multiListingAddOnInfo["status"]) && $multiListingAddOnInfo["status"] == "success" && isset($multiListingAddOnInfo["addon_info"]) && count($multiListingAddOnInfo["addon_info"]) >= 0) {
+
+                        if ($ds['data_name'] != "") {
+
+                            $lresults = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
+                                    `post_id`
+                                FROM
+                                    `data_posts`
+                                WHERE
+                                    `user_id` = '" . $user_data[user_id] . "'
+                                AND
+                                    `post_status` = '1'
+                                AND
+                                    `data_type` = '" . $ds[data_id] . "'");
+                            $total = mysql_num_rows($lresults);
+
+                            echo widget($multiListingAddOnInfo['widget'], "", $w['website_id'], $w);
+
+                        }
+
+                    } else if ($ds['data_type'] != 28) {
+                        if ($ds['data_name'] != "") {
+
+                            if ($ds['data_type'] != 10 && $ds['data_type'] != 13 && $ds['data_type'] != 21 && $ds['data_type'] != 22 && $ds['data_type'] != 19) {
+
+                                if ($ds['data_type'] == 14 || $ds['data_type'] == 4 || $ds['data_type'] == 6 || $ds['data_type'] == 25) {
+                                    $lresults = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT 
+                                            `group_id` 
+                                        FROM 
+                                            `users_portfolio_groups` 
+                                        WHERE 
+                                            `user_id` = '" . $user_data[user_id] . "' 
+                                        AND 
+                                            `group_status` = '1'");
+                                    $total = mysql_num_rows($lresults);
+
+                                } else if ($ds['data_type'] == 1) {
+                                    $lresults = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT 
+                                            `post_id` 
+                                        FROM 
+                                            `news_posts` 
+                                        WHERE 
+                                            `user_id` = '" . $user_data[user_id] . "' 
+                                        AND 
+                                            `post_status` = '1'");
+                                    $total = mysql_num_rows($lresults);
+
+                                } else {
+                                    $lresults = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT 
+                                            `post_id` 
+                                        FROM 
+                                            `data_posts` 
+                                        WHERE 
+                                            `user_id` = '" . $user_data[user_id] . "' 
+                                        AND 
+                                            `post_status` = '1' 
+                                        AND 
+                                            `data_type` = '" . $ds[data_id] . "'");
+                                    $total = mysql_num_rows($lresults);
+                                }
+                                if ($ds['data_type'] == 29) {
+                                    $_ENV['addListingHTML'] = false;
+                                    $addonFavorites = getAddOnInfo("add_to_favorites","d193769616c816ecf71966f548b68e34");
+                                    if (isset($addonFavorites['status']) && $addonFavorites['status'] === 'success'){
+                                        if($label['my_favorites_label'] == ""){
+                                            $favoritesLabel = plural($ds['data_name']);
+                                        } else {
+                                            $favoritesLabel = $label['my_favorites_label'];
+                                        }
+                                        ?>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" id="heading<?php echo plural($ds['data_id']); ?>">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo plural($ds['data_id']); ?>" aria-expanded="false" aria-controls="collapse<?php echo plural($ds['data_id']); ?>"><i class="fa <?php echo $wa['custom_161']?>"></i> <?php echo $favoritesLabel; ?><i class="pull-right fa fa-caret-down"></i>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <?php
+                                            $dataFnVarStat = '';
+                                            if ($pars[1] == $ds['data_filename']) {
+                                                $dataFnVarStat = " in ";
+                                            }
+                                            ?>
+                                            <div id="collapse<?php echo plural($ds['data_id']); ?>" class="panel-collapse collapse<?php echo $dataFnVarStat;?>" role="tabpanel" aria-labelledby="heading<?php echo plural($ds['data_id']); ?>">
+                                                <div>
+                                                    <?php echo widget($addonFavorites['widget'],"",$w['website_id'],$w); ?>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <?php if($_ENV['addListingHTML']) {  ?>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" id="heading-listing">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-favoritefeature="<?php echo strip_tags($label['my_saved_members']);?>" data-favoritefeatureid="<?php echo $_ENV['favoriteFeatureListingResult']['featureId']; ?>" data-favoritefeaturetype="<?php echo $_ENV['favoriteFeatureListingResult']['featureType']; ?>" data-favoriteuser="<?php echo $user['user_id']; ?>"  class="favoriteFeature" href="/account/favorite-members">%%%my_saved_members%%%
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <?php
+                                        } if($subscription['enable_post_feed'] == 1 && $_ENV['addListingHTML']) {
+                                            $postFeedURL = bd_controller::list_seo_template()->get('search_results_favorites', 'seo_type');
+                                            $url = $postFeedURL->filename;
+                                            ?>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" id="heading-listing">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" class="favoriteFeature" target="_blank" href="/<?php echo $url;?>">%%%posts_by_saved_members%%%
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        <?php }
+                                        unset($_ENV['addListingHTML']);
+                                        unset($_ENV['favoriteFeatureListingResult']);
+                                        ?>
+
+                                        <hr class="vmargin">
+                                    <?php }
+                                } else { ?>
+                                        <?php
+                                        if (post_payment_controller::canViewDigitalFeature($ds['data_id'])) {
+                                            $dataCategoriesModel = new data_categories();
+                                            $dataCategoriesModel->getDataCategoryByPostId($ds['data_id']);
+                                            ?>
+                                            <?php
+                                            $dataFnVarStat = '';
+                                            if ($pars[1] == $ds['data_filename']) {
+                                                $dataFnVarStat = " in ";
+                                            }
+                                            $subscriptionCategoryLimitSidebar = $subscriptionLimits[$ds['data_id']];
+                                            $purchaseLimitAddOn = getAddOnInfo('purchase_limit');
+                                            $haveCredit = true;
+
+                                            if (isset($purchaseLimitAddOn['status']) && $purchaseLimitAddOn['status'] === "success") {
+                                                $haveCredit = post_payment_controller::canPost($ds['data_id'], $user_data['user_id'], post_payment_controller::LIMIT, $subscriptionCategoryLimitSidebar);
+                                                $dataPostLimitted = json_decode($subscriptionData['data_post_limitted']);
+
+                                                if (isset($dataPostLimitted->{$ds['data_id']}->post_limitted) && $dataPostLimitted->{$ds['data_id']}->post_limitted == 1) {
+                                                    $subscriptionCategoryLimitSidebar = -1;
+                                                }
+                                            }
+
+                                            if ($subscriptionCategoryLimitSidebar == 0) {
+                                                $subscriptionCategoryLimitSidebar = 99999;
+                                            }
+                                            if ($ds['data_type'] == 14 || $ds['data_type'] == 4 || $ds['data_type'] == 6 || $ds['data_type'] == 25) {
+                                                $membersTotalPostQuerySidebar = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT 
+                                                count(group_id) 
+                                            FROM 
+                                                `users_portfolio_groups` 
+                                            WHERE 
+                                                user_id = '" . $user_data['user_id'] . "' 
+                                            AND 
+                                                data_id = '" . $ds['data_id'] . "'");
+                                            } else {
+                                                $membersTotalPostQuerySidebar = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT 
+                                            count(post_id) 
+                                        FROM 
+                                            `data_posts` 
+                                        WHERE 
+                                            user_id = '" . $user_data['user_id'] . "' 
+                                        AND 
+                                            data_id = '" . $ds['data_id'] . "'");
+                                            }
+
+                                            $membersTotalPostsSidebar = mysql_fetch_array($membersTotalPostQuerySidebar);
+
+                                            ?>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading" id="heading-<?php echo $ds['data_id']; ?>">
+                                                    <h4 class="panel-title">
+                                                        <a href="/account/<?php echo $ds['data_filename']; ?>/view">
+                                                            <span
+                                                                class="label img-circle weight-normal font-sm bg-default pull-right post-count-<?php echo $membersTotalPostsSidebar[0]; ?>">
+                                                            <?php echo $membersTotalPostsSidebar[0]; ?>
+                                                            </span>
+                                                        <?php echo $ds['icon']; ?>
+                                                        <?php echo ($ds['data_name']); ?>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }
+            } ?>
+            <hr class="vmargin">
+
+           
+
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingFour">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour"
+                            aria-expanded="false" aria-controls="collapseFour">
+                            %%%manage_account_icon%%% %%%account_label%%% <i class="pull-right fa fa-caret-down"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div class="clearfix"></div>
+                <?php
+                $settingVarStat = "";
+
+                if ($type == "settings") {
+                    $settingVarStat = "in";
+                }
+                ?>
+                <div id="collapseFour" class="panel-collapse collapse<?php echo $settingVarStatl; ?>" role="tabpanel"
+                    aria-labelledby="headingFour">
+                    <div>
+                    <?php /*  if ($user_data['subscription_id'] != '30' && $user_data['subscription_id']!= '33') { ?>
+                        <?php if ($sub['hide_billing_links'] != 1) { ?>
+                            <a href="/account/billing" class="list-group-item">&ndash;
+                                %%%billing_details_account_sidebar%%%</a>
+                        <?php } ?>
+                        <a href="/account/changelisting" class="list-group-item">&ndash; %%%manage_account%%%</a>
+                        <?php } */ ?>
+                        <a href="/account/password" class="list-group-item change-password-sidebar">&ndash;
+                            %%%profile_edit_pw%%%</a>
+                        <a href="/about/contact" class="list-group-item">&ndash; %%%contact_us%%%</a>
+                        <a href="/logout" class="list-group-item">&ndash; %%%dashboard_logout%%%</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
