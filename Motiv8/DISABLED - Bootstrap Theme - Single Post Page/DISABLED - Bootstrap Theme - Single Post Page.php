@@ -1,10 +1,6 @@
 <?php
 //echo $pars[0];
 // Check if the feature can show content
-if(true){
-
-}
-
 $showFeatureContent = false;
 $memberCanView = false;
 $membersOnlyActivated = false;
