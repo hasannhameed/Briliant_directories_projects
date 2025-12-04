@@ -12,56 +12,75 @@ if(isset($lazyLoadSearchReults["status"]) && $lazyLoadSearchReults["status"] ===
 	} ?>
 </div>
 <script>
-document.querySelectorAll('.video__play_link').forEach(function(el){
-    let rawId = el.getAttribute('id');                      
-    let videoId = rawId.split('?')[0];                     
+const clickToLoadMoreBtn = document.querySelector('.clickToLoadMoreBtn');
 
-    let thumbnail = "https://img.youtube.com/vi/" + videoId + "/mqdefault.jpg";
+function fetchmythumnails() {
+    document.querySelectorAll(".video__play_link").forEach(function (el) {
 
+        let img = el.querySelector("img");
+        let data = el.getAttribute("data-video-url") || "";
+        let rawId = el.getAttribute("id") || "";
+        let thumbnail = "";
 
-    let img = el.querySelector('img');
-    img.src = thumbnail;
-});
-	
-	document.querySelectorAll(".video__play_link").forEach(function (el) {
-    let img = el.querySelector("img");
-    let data = el.getAttribute("data-video-url") || "";
-    let id = el.getAttribute("id") || "";
-    let thumbnail = "";
-
-  
-    if (id && id !== "Array") {
-        const cleanId = id.split("?")[0];
-        thumbnail = `https://img.youtube.com/vi/${cleanId}/mqdefault.jpg`;
-    }
-
-  
-    if (!thumbnail && data.includes("youtube.com")) {
-        let ytIdMatch = data.match(/v=([^"&]+)/);
-        if (ytIdMatch) {
-            thumbnail = `https://img.youtube.com/vi/${ytIdMatch[1]}/mqdefault.jpg`;
+        if (rawId && rawId !== "Array") {
+            let cleanId = rawId.split("?")[0];
+            thumbnail = `https://img.youtube.com/vi/${cleanId}/mqdefault.jpg`;
         }
-    }
 
-  
-    if (!thumbnail && data.includes("vimeo.com")) {
-        let vimeoMatch = data.match(/vimeo\.com\/video\/(\d+)/);
-
-        if (vimeoMatch) {
-            let vId = vimeoMatch[1];
-
-            // Vimeo thumbnail URL (max-quality)
-            thumbnail = `https://vumbnail.com/${vId}.jpg`;
+        if (!thumbnail && data.includes("youtube.com")) {
+            let ytMatch = data.match(/v=([^"&]+)/);
+            if (ytMatch) {
+                thumbnail = `https://img.youtube.com/vi/${ytMatch[1]}/mqdefault.jpg`;
+            }
         }
-    }
+
+        if (!thumbnail && data.includes("vimeo.com")) {
+            let vmMatch = data.match(/vimeo\.com\/video\/(\d+)/);
+            if (vmMatch) {
+                let vId = vmMatch[1];
+                thumbnail = `https://vumbnail.com/${vId}.jpg`;
+            }
+        }
+
+        if (!thumbnail) {
+            thumbnail = "/images/default-video-thumbnail.jpg";
+        }
+
+        img.src = thumbnail;
+    });
+}
+
+
+let intervalCounter = 0;
+let intervalId = null;
+
+function intervelfetch() {
 
    
-    if (!thumbnail) {
-        thumbnail = "/images/default-video-thumbnail.jpg";
+    if (intervalId !== null) {
+        clearInterval(intervalId);
     }
 
-    img.src = thumbnail;
-});
+    intervalCounter = 0;
 
+    intervalId = setInterval(() => {
+        intervalCounter++;
+        console.log("Running fetch:", intervalCounter);
+
+        fetchmythumnails();
+
+        if (intervalCounter >= 300) { 
+            console.log("Stopped interval after 300 runs");
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    }, 150);
+}
+
+fetchmythumnails();
+intervelfetch();
+
+
+clickToLoadMoreBtn?.addEventListener("click", intervelfetch);
 
 </script>
