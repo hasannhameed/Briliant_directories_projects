@@ -1,5 +1,6 @@
 <?php 
 $subscription = getSubscription($user['subscription_id'],$w);
+echo"";
 ?>
 
 <div class="search_result row-fluid member-level-<?php echo $user['subscription_id']; ?>">
@@ -43,11 +44,11 @@ $subscription = getSubscription($user['subscription_id'],$w);
                         parse_str( parse_url( $url, PHP_URL_QUERY ), $video_array_of_vars ); 
                         $cart = $video_array_of_vars['v'];
                     }   
-                    echo $img = "<a class='video__play_link' title='$post[post_title]' id='$cart' href='/$post[post_filename]'><img title='$post[post_title]' src='//img.youtube.com/vi/$cart/mqdefault.jpg' class='search_result_image img-rounded center-block'></a>";
+                    echo $img = "<a class='video__play_link' data-video-url='$post[post_video]' title='$post[post_title]' id='$cart' href='/$post[post_filename]'><img title='$post[post_title]' src='//img.youtube.com/vi/$cart/mqdefault.jpg' class='search_result_image img-rounded center-block'></a>";
                 }
                 if(strpos($url, "youtu.be")){
                     $cart =  substr($url , 16);
-                    echo $img = "<a class='video__play_link' title='$post[post_title]' id='$cart' href='/$post[post_filename]'><img alt='$post[post_title]' src='//img.youtube.com/vi/$cart/mqdefault.jpg' class='search_result_image img-rounded center-block'></a>";
+                    echo $img = "<a class='video__play_link' data-video-url='$post[post_video]' title='$post[post_title]' id='$cart' href='/$post[post_filename]'><img alt='$post[post_title]' src='//img.youtube.com/vi/$cart/mqdefault.jpg' class='search_result_image img-rounded center-block'></a>";
 
                 }
                 if(strpos($url, "vimeo")){  //vimeo
@@ -61,7 +62,7 @@ $subscription = getSubscription($user['subscription_id'],$w);
                     $curlData = curl_exec($curl);
                     curl_close($curl);
                     $hash = current(json_decode($curlData, true));
-                    echo $img = "<a class='video__play_link'  title='$post[post_title]' id='$cart' href='/$post[post_filename]'><img alt='$post[post_title]' class='search_result_image img-rounded center-block' src='" . $hash['thumbnail_medium'] . "'/></a>";
+                    echo $img = "<a class='video__play_link'  data-video-url='$post[post_video]' title='$post[post_title]' id='$cart' href='/$post[post_filename]'><img alt='$post[post_title]' class='search_result_image img-rounded center-block' src='" . $hash['thumbnail_medium'] . "'/></a>";
                 }
                 ?>
             </div>
