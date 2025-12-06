@@ -794,7 +794,7 @@ class BDMembersQuery extends queryBuilder
             if (is_array($mainLevelId) && ( $this->isInclusiveSearch() || (isset($_GET['dynamic']) && isset($_GET['dynamic']) == 1) ) ) {
                 $extraMultiCategoryWhere    = ($this->multiCategory === true)? " OR ls.master_id IN (" . implode(",", $mainLevelId) . ") ":"";
                 $whereParameter             = " (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") ".$extraMultiCategoryWhere." OR (st.service_limit = 'all')) ";
-
+                //$whereParameter             = " (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") ".$extraMultiCategoryWhere." OR (st.service_limit = 'all')) GROUP BY user_id HAVING COUNT(DISTINCT rs.rel_service_id) = " . count($mainLevelId);
                 if($this->target === 'search' && empty($this->searchQuery) && !is_null($this->topLevelId) ){
                     $whereParameter = "( ". $whereParameter ." OR (rs.rel_service_id IN (" . implode(",", $mainLevelId ) . ") OR (st.service_limit = 'all' AND (list_service_profession_id = ud.profession_id OR ud.profession_id IN (" . implode(",", $this->topLevelId) . ")))) ) ";
                 }else if(!isset($_GET['dynamic'])){
@@ -802,6 +802,8 @@ class BDMembersQuery extends queryBuilder
                 }
 
                 $relServiceSTblSelect       = " rss.service_id IN (" . implode(",", $mainLevelId) . ") ";
+                $selectedCount = count($mainLevelId);
+                $whereParameter = " HAVING COUNT(DISTINCT rs.rel_service_id) = {$selectedCount} ";
             } else {
 
                 if(is_array($mainLevelId)){
