@@ -2,6 +2,7 @@
 <style>
     .breadcrumb{
         width: 1330px;
+        max-width: 95vw;
         margin: 0 auto;
     }
 </style>

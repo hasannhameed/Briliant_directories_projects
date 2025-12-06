@@ -54,6 +54,7 @@ ease-in-out 0ms;
 
 .content_w_sidebar{
     width: 1420px;
+    max-width: 95vw;
     margin: 0 auto;
 }
 @media (min-width: 992px) {

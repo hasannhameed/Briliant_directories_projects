@@ -4,6 +4,99 @@ $schema_base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'ht
 $schema_collection_url = $schema_base_url . strtok($_SERVER['REQUEST_URI'], '?');
 ?>
 <style>
+    /* ======================
+       GLOBAL CONTAINER
+    ====================== */
+    .grid_element_custom {
+        background-color: transparent; /* Let individual cards handle bg */
+    }
+    .grid-container {
+        margin-bottom: 30px;
+    }
+
+    /* ======================
+       THE CARD (Modern Wrapper)
+    ====================== */
+    .member_results .row-fluid {
+        background: #ffffff;
+        border: 1px solid #f1f5f9; /* Very subtle border */
+        border-radius: 16px; /* Smooth rounded corners */
+        padding: 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Soft shadow */
+        margin-bottom: 20px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    /* Hover Effect for Card */
+    .member_results .row-fluid:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        border-color: #e2e8f0;
+    }
+
+    /* ======================
+       IMAGE SECTION (Left Side)
+    ====================== */
+    .member_results .img_section {
+        width: 140px;
+        height: 140px;
+        flex-shrink: 0; /* Prevent shrinking */
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: #f8fafc;
+    }
+
+    .member_results .img_section img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* ======================
+       CONTENT SECTION (Right Side)
+    ====================== */
+    /* Wrapper for text content */
+    .member_results .mid_section {
+        flex: 1; /* Take remaining width */
+        min-width: 0; /* Fix flexbox overflow issue */
+    }
+
+    /* Header Row (Name + Rating) */
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+    }
+
+    .member_results .member-search-full-name {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: #0f172a; /* Dark Navy */
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .member_results .member-search-reviews {
+        font-size: 14px !important;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 600;
+        white-space: nowrap;
+        background: #fffbeb; /* Light yellow background */
+        padding: 4px 8px;
+        border-radius: 6px;
+    }
+    
+</style>
+<style>
 
 
 	.grid_element_custom{
@@ -43,14 +136,15 @@ $schema_collection_url = $schema_base_url . strtok($_SERVER['REQUEST_URI'], '?')
 /* ======================
    IMAGE COLUMN
 ====================== */
-.search_result .grid_element>.col-sm-2 {
-    float: right;
-    position: static;
-    right: 0;
-    width: auto;
-   float: left;
-}
 
+.member_results .img_section {
+    width: 115px;
+    height: 140px;
+    overflow: hidden;
+    border-radius: 10px;
+    text-align: center;
+    float: left;
+}
 .member_results .img_section img {
     width: 140px;
     height: 140px;

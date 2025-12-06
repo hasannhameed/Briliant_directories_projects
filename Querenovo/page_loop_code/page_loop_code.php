@@ -1,4 +1,4 @@
-<div class="row-fluid member_results norpads level_<?php echo $user_data['subscription_id'];?> search_result <?php echo ($user_data['verified'] == "1") ? 'verified_member_result' : ''; ?> clearfix" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+<div class="row-fluid col-sm-12 member_results norpads level_<?php echo $user_data['subscription_id'];?> search_result <?php echo ($user_data['verified'] == "1") ? 'verified_member_result' : ''; ?> clearfix" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
 	<meta itemprop="name" content="<?php echo htmlspecialchars($user_data['full_name'], ENT_QUOTES, 'UTF-8'); ?>">
 	<link itemprop="url" href="<?php echo $schema_collection_url; ?>">
 	<meta itemprop="position" content="<?php echo ++$GLOBALS['search_result_position']; ?>">

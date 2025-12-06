@@ -110,8 +110,7 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: rgba(255, 255, 255, 0.25) !important;
-    backdrop-filter: blur(4px);
+
     z-index: 10 !important;
 }
 
@@ -146,7 +145,7 @@
 /* Blue Icon on Hover */
 .slickVideos div[class*="col-"]:hover .play {
     
-    background: rgba(59, 130, 246, 0.1) !important;
+    /* background: rgba(59, 130, 246, 0.1) !important; */
 }
 .slickVideos div[class*="col-"]:hover .play::after {
     /* background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'%3E%3Cpath d='M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm10 7a2 2 0 1 0-4 0 2 2 0 0 0 4 0zm0 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0z'/%3E%3C/svg%3E") !important; */
@@ -457,3 +456,91 @@ if ($showFeature == true) { ?>
     $featureSliderClass = '.slickVideos';
     addonController::showWidget('post_carousel_slider','1a19675a36d28232077972bbdb6bb7fe');
 } ?>
+<style>
+    /* 1. Make the Modal Dialog wide and tall */
+    #videoModal .modal-dialog {
+        width: 50%;
+        height: 95vh; 
+        
+    }
+#videoFrame{
+    width: 100%;
+    padding: 20px;
+}
+    /* 2. Make the content wrapper fill that height */
+    #videoModal .modal-content {
+        height: 100%; 
+        border-radius: 8px; 
+        overflow: hidden; 
+    }
+
+    /* 3. Make the body fill the content */
+    #videoModal .modal-body {
+        height: 100%;
+        padding: 0;
+        overflow: hidden; /* Hide scrollbar */
+    }
+
+    /* 4. Force Iframe to fill the entire space */
+    #videoFrame {
+      
+        height: 100%;
+        border: none;
+        display: block;
+    }
+
+    /* 5. Custom Close Button Styling */
+    .custom-close-btn {
+        position: absolute; 
+        right: 15px; 
+        top: 15px; 
+        z-index: 9999; 
+        color: #333; 
+        background: rgba(255,255,255,0.8); 
+        border-radius: 50%;
+       
+        height: 40px;
+        opacity: 1;
+        font-size: 30px;
+        line-height: 35px; 
+        text-align: center;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .custom-close-btn:hover {
+        background: #fff;
+        color: #000;
+    }
+</style>
+<!-- Video Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel">
+  <div class="modal-dialog" role="document"> <div class="modal-content">
+      <div class="modal-body">
+        
+        <button type="button" class="close custom-close-btn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+
+    $('.slickVideos .view-more, .slickVideos .homepage-link-element').on('click', function(e) {
+        e.preventDefault();
+        var videoUrl = $(this).attr('href');
+        $('#videoFrame').attr('src', videoUrl);
+        $('#videoModal').modal('show');
+    });
+
+    $('#videoModal').on('hidden.bs.modal', function () {
+        $('#videoFrame').attr('src', '');
+    });
+
+});
+</script>
