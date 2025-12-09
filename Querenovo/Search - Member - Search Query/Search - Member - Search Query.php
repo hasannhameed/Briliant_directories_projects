@@ -296,6 +296,8 @@ class BDMembersQuery extends queryBuilder
         }
     }
 
+    
+
     public function runState()
     {
         global $isPrettyUrl;
@@ -775,7 +777,7 @@ class BDMembersQuery extends queryBuilder
 
     public function runSubLevelCategory($returnQuery){
         global $w;
-
+      
         $whereParameter = "";
 
         if ( ( (!empty($this->subLevelId) ) || !empty($this->subSubLevelId) ) && $this->serviceId <= 0 ) {
@@ -794,16 +796,14 @@ class BDMembersQuery extends queryBuilder
             if (is_array($mainLevelId) && ( $this->isInclusiveSearch() || (isset($_GET['dynamic']) && isset($_GET['dynamic']) == 1) ) ) {
                 $extraMultiCategoryWhere    = ($this->multiCategory === true)? " OR ls.master_id IN (" . implode(",", $mainLevelId) . ") ":"";
                 $whereParameter             = " (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") ".$extraMultiCategoryWhere." OR (st.service_limit = 'all')) ";
-                //$whereParameter             = " (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") ".$extraMultiCategoryWhere." OR (st.service_limit = 'all')) GROUP BY user_id HAVING COUNT(DISTINCT rs.rel_service_id) = " . count($mainLevelId);
-                if($this->target === 'search' && empty($this->searchQuery) && !is_null($this->topLevelId) ){
-                    $whereParameter = "( ". $whereParameter ." OR (rs.rel_service_id IN (" . implode(",", $mainLevelId ) . ") OR (st.service_limit = 'all' AND (list_service_profession_id = ud.profession_id OR ud.profession_id IN (" . implode(",", $this->topLevelId) . ")))) ) ";
-                }else if(!isset($_GET['dynamic'])){
-                    $whereParameter = "( ". $whereParameter ." OR (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") OR (st.service_limit = 'all' AND list_service_profession_id = ud.profession_id)) )";
-                }
 
+                if($this->target === 'search' && empty($this->searchQuery) && !is_null($this->topLevelId) ){
+                    $whereParameter = "( ". $whereParameter ." OR (rs.rel_service_id IN (" . implode(",", $mainLevelId ) . ") OR (st.service_limit = 'all' AND (list_service_profession_id = ud.profession_id OR ud.profession_id IN (" . implode(",", $this->topLevelId) . ")))) ) " ;
+                }else if(!isset($_GET['dynamic'])){
+                    $whereParameter = "( ". $whereParameter ." OR (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") OR (st.service_limit = 'all' AND list_service_profession_id = ud.profession_id)) )";    
+                }
+                
                 $relServiceSTblSelect       = " rss.service_id IN (" . implode(",", $mainLevelId) . ") ";
-                $selectedCount = count($mainLevelId);
-                $whereParameter = " HAVING COUNT(DISTINCT rs.rel_service_id) = {$selectedCount} ";
             } else {
 
                 if(is_array($mainLevelId)){
@@ -899,13 +899,19 @@ class BDMembersQuery extends queryBuilder
                 ";
             }
 
+            // if(true){
+            //     $dataArray['department_code'] = "994";
+            // }
+
             if ($this->target == 'search' && $this->subWasSent === true) {
                 global $w, $profs;
 
                 if (is_array($mainLevelId)) {
+                    
                     $serviceIdSelect        = $mainLevelId[0];
                     $profs['service_name']  = getServiceById($mainLevelId[0], $w);
                     $profs['sub_category_name'] =  $profs['service_name'];
+
                     if (count($this->subSubLevelId) > 0 && $this->target === 'search' && count($this->dataArray['tid']) > 0) {
                         $profs['sub_category_name'] = getServiceById($this->dataArray['tid'], $w);
                         $profs['sub_sub_category_name'] = $profs['service_name'];

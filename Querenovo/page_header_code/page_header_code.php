@@ -375,6 +375,18 @@ display: none;
     padding-left: 0px;
     padding-bottom: 5px;
 }
+
+.sidebar-container{
+    width: 20%;
+    float: right;
+}
+.custom-sidebar-search-filters{
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
 @media (min-width: 768px) {
     .info_section .col-sm-10 {
         width:87.5555% !important;
@@ -457,11 +469,12 @@ display: none;
         float: right;
         margin-top: -20px;
     }
+    
 
 }
 
 </style>
 <?php 
-print_r($_ENV['basesqlquery']);
+// print_r($_ENV['basesqlquery']);
 ?>
 <div class="grid-container">
