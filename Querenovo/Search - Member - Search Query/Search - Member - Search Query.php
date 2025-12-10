@@ -3,7 +3,10 @@
 /**
  * This widget follows BD code standards
  * Widget Name: Search - Member - Search Query
+ * 
  */
+
+
 class queryBuilder
 {
     protected $whereParameters = NULL;
@@ -2066,10 +2069,10 @@ class BDMembersQuery extends queryBuilder
         }
 
 
-        if($_GET['department_code']!=""){
-            $department_code = trim($_GET['department_code']);
-            $value[] = "(ud.department_code = $department_code )";
-        }
+        // if($_GET['department_code']!=""){
+        //     $department_code = trim($_GET['department_code']);
+        //     $value[] = "(ud.department_code = $department_code )";
+        // }
 
         $this->clearQueryString('whereParameters');
         $this->setQueryParameter('whereParameters', $value);

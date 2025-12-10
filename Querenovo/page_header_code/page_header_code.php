@@ -475,6 +475,6 @@ display: none;
 
 </style>
 <?php 
-// print_r($_ENV['basesqlquery']);
+print_r($_ENV['basesqlquery']);
 ?>
 <div class="grid-container">
