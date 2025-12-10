@@ -69,6 +69,7 @@ if (!empty($_GET['type_de_contenu'])) {
 // --------------------
 // 2. Get categories
 // --------------------
+
 $q = mysql_query("SELECT profession_id FROM `list_professions` WHERE profession_id = 3");
 $row = mysql_fetch_assoc($q);
 $profession_id = (int) $row['profession_id'];
@@ -120,6 +121,48 @@ $top = mysql_query("
                         <span class="checkbox-name-filter-category">With video</span>
                     </label>
                 </div>
+            </div>
+        </div>
+
+        <div class="module custom-sidebar-search-filters-inner" data-pid="sub_marques">
+
+            <label class="category-view-switch-button">
+                <span class="custom-group-cat-title">Marques proposées</span>
+                <i class="fa fa-minus" aria-hidden="true"></i>
+            </label>
+
+            <div class="sub-cat-checkbox-container sub-sub">
+                <?php
+                // NEW MARQUES LIST
+                $marques = [
+                    "Aldes",
+                    "Atlantic",
+                    "Daikin",
+                    "Isover",
+                    "K-line",
+                    "Mitsubishi Electric",
+                    "Rockwool",
+                    "Saint-Gobain",
+                    "Thermor",
+                    "Velux"
+                ];
+
+                foreach ($marques as $index => $name) {
+                    $id = "marque_" . $index;
+                    $checked = in_array($name, $selectedSIDs) ? "checked" : "";
+                ?>
+                <label>
+                    <input type="checkbox"
+                        name="ttid[]"
+                        value="<?php echo htmlspecialchars($name); ?>"
+                        class="single-checkbox-filter sub"
+                        <?php echo $checked; ?>>
+
+                    <span class="checkbox-name-filter-category">
+                        <?php echo htmlspecialchars($name); ?>
+                    </span>
+                </label>
+                <?php } ?>
             </div>
         </div>
 

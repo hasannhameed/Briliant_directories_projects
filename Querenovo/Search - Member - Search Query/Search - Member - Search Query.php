@@ -2069,10 +2069,50 @@ class BDMembersQuery extends queryBuilder
         }
 
 
-        // if($_GET['department_code']!=""){
-        //     $department_code = trim($_GET['department_code']);
-        //     $value[] = "(ud.department_code = $department_code )";
-        // }
+        if($_GET['department_code']!=""){
+            $department_code = trim($_GET['department_code']);
+            $value[] = "(ud.department_code = $department_code )";
+        }
+
+        // TYPE DE CONTENU
+        if (!empty($_GET['type_de_contenu'])) {
+            $vals = is_array($_GET['type_de_contenu']) ? $_GET['type_de_contenu'] : [$_GET['type_de_contenu']];
+            $clean = [];
+            foreach ($vals as $v) {
+                $clean[] = "'" . mysql_real_escape_string($v) . "'";
+            }
+            $value[] = "(ud.type_de_contenu IN (" . implode(",", $clean) . "))";
+        }
+
+        // RGE STATUS
+        if (!empty($_GET['rge_status'])) {
+            $vals = is_array($_GET['rge_status']) ? $_GET['rge_status'] : [$_GET['rge_status']];
+            $clean = [];
+            foreach ($vals as $v) {
+                $clean[] = "'" . mysql_real_escape_string($v) . "'";
+            }
+            $value[] = "(ud.rge_status IN (" . implode(",", $clean) . "))";
+        }
+
+        // TYPE D'ENTREPRISE
+        if (!empty($_GET['type_dentreprise'])) {
+            $vals = is_array($_GET['type_dentreprise']) ? $_GET['type_dentreprise'] : [$_GET['type_dentreprise']];
+            $clean = [];
+            foreach ($vals as $v) {
+                $clean[] = "'" . mysql_real_escape_string($v) . "'";
+            }
+            $value[] = "(ud.type_dentreprise IN (" . implode(",", $clean) . "))";
+        }
+        // TYPE D'ENTREPRISE
+        if (!empty($_GET['labels_and_certifications'])) {
+            $vals = is_array($_GET['labels_and_certifications']) ? $_GET['labels_and_certifications'] : [$_GET['labels_and_certifications']];
+            $clean = [];
+            foreach ($vals as $v) {
+                $clean[] = "'" . mysql_real_escape_string($v) . "'";
+            }
+            $value[] = "(ud.labels_and_certifications IN (" . implode(",", $clean) . "))";
+        }
+
 
         $this->clearQueryString('whereParameters');
         $this->setQueryParameter('whereParameters', $value);
