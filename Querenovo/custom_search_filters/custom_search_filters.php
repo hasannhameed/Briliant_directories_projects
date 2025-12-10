@@ -128,40 +128,45 @@ $top = mysql_query("
 
             <label class="category-view-switch-button">
                 <span class="custom-group-cat-title">Marques proposées</span>
-                <i class="fa fa-minus" aria-hidden="true"></i>
             </label>
 
             <div class="sub-cat-checkbox-container sub-sub">
                 <?php
-                // NEW MARQUES LIST
+
                 $marques = [
-                    "Aldes",
-                    "Atlantic",
-                    "Daikin",
-                    "Isover",
-                    "K-line",
-                    "Mitsubishi Electric",
-                    "Rockwool",
-                    "Saint-Gobain",
-                    "Thermor",
-                    "Velux"
+                    "70001" => "Aldes",
+                    "70002" => "Atlantic",
+                    "70003" => "Daikin",
+                    "70004" => "Isover",
+                    "70005" => "K-line",
+                    "70006" => "Mitsubishi Electric",
+                    "70007" => "Rockwool",
+                    "70008" => "Saint-Gobain",
+                    "70009" => "Thermor",
+                    "70010" => "Velux"
                 ];
 
-                foreach ($marques as $index => $name) {
-                    $id = "marque_" . $index;
-                    $checked = in_array($name, $selectedSIDs) ? "checked" : "";
-                ?>
-                <label>
-                    <input type="checkbox"
-                        name="ttid[]"
-                        value="<?php echo htmlspecialchars($name); ?>"
-                        class="single-checkbox-filter sub"
-                        <?php echo $checked; ?>>
+                // read selected from URL
+                $selectedBrandIds = isset($_GET['brands_list']) && is_array($_GET['brands_list'])
+                    ? $_GET['brands_list']
+                    : [];
 
-                    <span class="checkbox-name-filter-category">
-                        <?php echo htmlspecialchars($name); ?>
-                    </span>
+                foreach ($marques as $id => $name) {
+                    $checked = in_array($id, $selectedBrandIds) ? "checked" : "";
+                ?>
+                
+                <label>
+                    <input
+                        type="checkbox"
+                        name="brands_list[]" 
+                        value="<?php echo $id; ?>"  
+                        data-name="<?php echo htmlspecialchars($name); ?>" 
+                        class="brand-check"
+                        <?php echo $checked; ?>
+                    >
+                    <span class="checkbox-name-filter-category"><?php echo htmlspecialchars($name); ?></span>
                 </label>
+
                 <?php } ?>
             </div>
         </div>

@@ -2103,6 +2103,7 @@ class BDMembersQuery extends queryBuilder
             }
             $value[] = "(ud.type_dentreprise IN (" . implode(",", $clean) . "))";
         }
+
         // TYPE D'ENTREPRISE
         if (!empty($_GET['labels_and_certifications'])) {
             $vals = is_array($_GET['labels_and_certifications']) ? $_GET['labels_and_certifications'] : [$_GET['labels_and_certifications']];
@@ -2112,6 +2113,30 @@ class BDMembersQuery extends queryBuilder
             }
             $value[] = "(ud.labels_and_certifications IN (" . implode(",", $clean) . "))";
         }
+
+        // BRANDS LIST (JSON-style array in ud.brands_list)
+        if (!empty($_GET['brands_list'])) {
+
+            // Normalize input into array
+            $vals = is_array($_GET['brands_list']) ? $_GET['brands_list'] : [$_GET['brands_list']];
+            $clean = [];
+
+            foreach ($vals as $v) {
+                if (is_numeric($v)) {
+                    // Match "70001" inside the JSON-like string
+                    $id = (int)$v;
+                    $clean[] = "ud.brands_list LIKE '%" . $id . "%'";
+                }
+            }
+
+            if (!empty($clean)) {
+                // Match members that have ANY of the selected brands
+                $value[] = "(" . implode(" OR ", $clean) . ")";
+            }
+        }
+
+
+
 
 
         $this->clearQueryString('whereParameters');

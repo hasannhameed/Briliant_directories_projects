@@ -1,3 +1,6 @@
+
+
+
 <?php $addOnAnnouncement = getAddOnInfo('announcement_bar', 'ac85b610729d1fe23f88aae7ea12b9c0');
 if (isset($addOnAnnouncement['status']) && $addOnAnnouncement['status'] === 'success') {
     echo widget($addOnAnnouncement['widget'], "", $w['website_id'], $w);
