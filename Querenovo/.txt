@@ -1,0 +1,7 @@
+Querenovo
+
+1) Updatting the search filters in jobs page (including backend)
+2) Updating the default Email Template
+3) Company details page testing and fixing bugs
+4) Adding Content to the email Templates
+5) Updating login and signup page

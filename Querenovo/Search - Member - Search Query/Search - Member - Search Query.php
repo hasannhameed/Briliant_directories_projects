@@ -2117,20 +2117,20 @@ class BDMembersQuery extends queryBuilder
         // BRANDS LIST (JSON-style array in ud.brands_list)
         if (!empty($_GET['brands_list'])) {
 
-            // Normalize input into array
+      
             $vals = is_array($_GET['brands_list']) ? $_GET['brands_list'] : [$_GET['brands_list']];
             $clean = [];
 
             foreach ($vals as $v) {
                 if (is_numeric($v)) {
-                    // Match "70001" inside the JSON-like string
+                
                     $id = (int)$v;
                     $clean[] = "ud.brands_list LIKE '%" . $id . "%'";
                 }
             }
 
             if (!empty($clean)) {
-                // Match members that have ANY of the selected brands
+              
                 $value[] = "(" . implode(" OR ", $clean) . ")";
             }
         }

@@ -10,3 +10,11 @@
     text-transform: none !important;
     transition: background-color 0.2s !important;
 }
+input.form-control.category_keyword_search {
+    width: 35%;
+    position: absolute;
+    right: 2px;
+    top: 0px;
+    font-size: 12px;
+    height: 32px;
+}
