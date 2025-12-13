@@ -12,11 +12,11 @@ if (isset($mapViewAddOn['status']) && $mapViewAddOn['status'] == 'success'){
 if ((isset($gridViewAddOn['status']) && $gridViewAddOn['status'] == 'success') || (isset($mapViewAddOn['status']) && $mapViewAddOn['status'] == 'success')) { 
 	echo widget($addOnWidget,"",$w['website_id'],$w);
 } 
-
 //print_r($_ENV['sqlquery']);
-
 ?>
-<?php  if($pars[0]=='job') { ?>
+
+<?php  if($pars[0]=='jobs') { ?>
+
 <style>
 	.job_category_parent{
 		display:flex;
@@ -106,9 +106,8 @@ if ((isset($gridViewAddOn['status']) && $gridViewAddOn['status'] == 'success') |
 		border: 1px solid #00000026;
 		border-radius: 5px;
 	}
-
-
-
 </style>
+
 <?php } ?>
+
 <div class="grid-container">

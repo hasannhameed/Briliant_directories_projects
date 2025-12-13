@@ -1,0 +1,2 @@
+1) testing the email templates and updating.
+2) company and brand profile pages testing and bug fixing.
