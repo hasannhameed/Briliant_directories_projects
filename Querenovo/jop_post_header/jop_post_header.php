@@ -13,7 +13,7 @@ if ((isset($gridViewAddOn['status']) && $gridViewAddOn['status'] == 'success') |
 	echo widget($addOnWidget,"",$w['website_id'],$w);
 } 
 
-print_r($_ENV['sqlquery']);
+//print_r($_ENV['sqlquery']);
 
 ?>
 

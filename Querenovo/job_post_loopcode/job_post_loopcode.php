@@ -89,16 +89,20 @@
                 <div class='col-sm-12 nopad'>
                     <a class="h3 bold bmargin center-block pull-left" title="<?php echo $post['post_title']; ?>" href="/<?php echo $post['post_filename']; ?>"><?php echo $post['post_title']; ?></a>
                 </div>
-                <div class='custom_category_badge col-sm-12 text-left nopad bmargin'>
-                    <span class='<? echo $post['post_category'] != '' ?  'custom_badge':''; ?>'><?php echo $post['post_category']; ?></span>
-                    <span class='custom_badge' style="display: none;">Job offer</span>
+                <div class="custom_category_badge col-sm-12 text-left nopad bmargin">
+                    <?php if (!empty($post['post_category'])): ?>
+                        <span class="custom_badge"><?php echo $post['post_category']; ?></span>
+                    <?php endif; ?>
 
-                    <?php if ($post['post_job'] != "" && false) { ?> 
-                        <span class="custom_badge">
-                            <?php echo $post['post_job']; ?>
-                        </span>
-                    <?php } ?>
+                    <?php if (!empty($post['type_de_contrat'])): ?>
+                        <span class="custom_badge" style='background-color:#f5f5f5' ><?php echo $post['type_de_contrat']; ?></span>
+                    <?php endif; ?>
+
+                    <?php if (!empty($post['extra_field'])): ?>
+                        <span class="custom_badge"><?php echo $post['extra_field']; ?></span>
+                    <?php endif; ?>
                 </div>
+
                 
                 <div class="clearfix"></div>
 

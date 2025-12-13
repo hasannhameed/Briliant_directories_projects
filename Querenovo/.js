@@ -1,22 +1,27 @@
+
 var myCode = `
 
-function planTrip() {
+function learnJavaScript() {
     setTimeout(() => {
-        console.log("Trip to Ladakh planned");
-    }, 500);
+        console.log("JavaScript Learned");
+        learnReact(); // React only after JS
+    }, 2000);
 }
 
-function buyBike() {
+function learnReact() {
     setTimeout(() => {
-        console.log("Bought Royal Enfield Himalayan");
-        planTrip(); 
-    }, 1000); 
+        console.log("React Learned");
+    }, 1000);
 }
 
+learnJavaScript();
+
+// Do not touch the code below:
 module.exports = {
-    buyBike,
-    planTrip
+  learnJavaScript,
+  learnReact,
 };
+
 
 `;
 

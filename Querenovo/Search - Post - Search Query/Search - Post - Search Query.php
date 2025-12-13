@@ -38,11 +38,12 @@ if( (!isset($recurringEventAddOnInfo['status']) || $recurringEventAddOnInfo['sta
     $sqlSelectParameters[]  = "IF(dp.post_expire_date='',dp.post_start_date,dp.post_expire_date) as post_expire_date_having";
 }
 
+
 $sqlSelectParameters[]  = "CASE WHEN length(dp.post_expire_date) = 8 THEN CONCAT(dp.post_expire_date, '000000') ELSE dp.post_expire_date END AS expire_date";
 $sqlSelectParameters[]  = "CASE WHEN length(dp.post_start_date) = 8 THEN CONCAT(dp.post_start_date, '000000') ELSE dp.post_start_date END AS start_date";
 
 
-$sqlSelectParameters[]  = "";
+// $sqlSelectParameters[]  = "";
 
 //Default tables for a select
 $sqlTablesParameters = array(
@@ -58,6 +59,68 @@ $sqlWhereParameters = array(
     "ud.active = '2'",
     "st.data_settings LIKE '%".$dc['data_id']."%'"
 );
+
+if (!empty($_GET['type_de_contrat'])) {
+    $vals = $_GET['type_de_contrat'];
+    $conditions = [];
+
+    foreach ($vals as $v) {
+        $v = mysql_real_escape_string($v);
+        $conditions[] = "dp.type_de_contrat LIKE '%" . $v . "%'";
+    }
+
+    if (!empty($conditions)) {
+        $sqlWhereParameters[] = "(" . implode(" OR ", $conditions) . ")";
+        
+    }
+}
+
+if (!empty($_GET['urgent'])) {
+    $vals = array_map('intval', $_GET['urgent']);
+    $sqlWhereParameters[] = "dp.urgent IN (" . implode(",", $vals) . ")";
+}
+
+if (!empty($_GET['department_code'])) {
+
+    $vals = is_array($_GET['department_code'])
+        ? array_map('intval', $_GET['department_code'])
+        : [(int)$_GET['department_code']];
+
+    if (!empty($vals)) {
+        $sqlWhereParameters[] = "dp.department_code IN (" . implode(",", $vals) . ")";
+    }
+}
+
+
+
+if (!empty($_GET['type_dentreprise'])) {
+    $vals = $_GET['type_dentreprise'];
+    $conditions = [];
+
+    foreach ($vals as $v) {
+        $v = mysql_real_escape_string($v);
+        $conditions[] = "dp.type_dentreprise LIKE '%" . $v . "%'";
+    }
+
+    if (!empty($conditions)) {
+        $sqlWhereParameters[] = "(" . implode(" OR ", $conditions) . ")";
+    }
+}
+
+if (!empty($_GET['mode_de_travail'])) {
+    $vals = $_GET['mode_de_travail'];
+    $conditions = [];
+
+    foreach ($vals as $v) {
+        $v = mysql_real_escape_string($v);
+        $conditions[] = "dp.mode_de_travail LIKE '%" . $v . "%'";
+    }
+
+    if (!empty($conditions)) {
+        $sqlWhereParameters[] = "(" . implode(" OR ", $conditions) . ")";
+    }
+}
+
 //Default Group By parameters
 $sqlGroupByParameters = array();
 

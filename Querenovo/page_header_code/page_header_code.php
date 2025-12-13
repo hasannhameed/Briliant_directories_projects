@@ -387,6 +387,10 @@ display: none;
     padding: 22px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
+.custom_badge:empty {
+    display: none !important;
+}
+
 @media (min-width: 768px) {
     .info_section .col-sm-10 {
         width:87.5555% !important;

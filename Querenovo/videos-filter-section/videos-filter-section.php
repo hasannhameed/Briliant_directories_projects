@@ -30,10 +30,14 @@
                                 <input type="text" class="form-control" placeholder="Rechercher dans les annonces..." value="">
                             </div>
 
-                            <button class="btn btn-default custom-filter-btn">
+                            <button class="btn btn-default custom-filter-btn " style='color:#fff'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-filter filter-icon-margin"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                                 Filtres
                             </button>
+                            <button class="btn btn-sm btn-default dropdown-toggle custom-select custom-reset-btn" style="display:none;">
+                                Reset
+                            </button>
+
                         </div>
 
                     </div>
@@ -43,8 +47,6 @@
     </section>
     <style>
        
-
-   
     .filter-bar-sticky {
         background-color: #fff;
         border-bottom: 1px solid #eee;
@@ -56,7 +58,9 @@
         z-index: 30;
         box-shadow: 0 1px 3px rgba(0,0,0,.05); 
     }
-
+    .custom-reset-btn{
+            WIDTH: FIT-CONTENT;
+    }
    
     .filter-inner-wrapper {
         display: flex;
@@ -186,12 +190,31 @@
         
     }
     </style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const params = new URLSearchParams(window.location.search);
+    const resetBtn = document.querySelector(".custom-reset-btn");
+
+    if (!resetBtn) return;
+
+   
+    if ([...params.keys()].length > 0) {
+        resetBtn.style.display = "inline-block";
+    } else {
+        resetBtn.style.display = "none";
+    }
+    resetBtn.addEventListener("click", function () {
+        window.location.href = window.location.pathname;
+    })
+});
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded',function(){
         const state = localStorage.getItem('state'); 
 
-        const btn            = document.querySelector('.custom-filter-btn');
+        const btnbtn            = document.querySelector('.custom-filter-btn');
         const website_search = document.querySelector('.website-search');
         const first          = document.querySelector('.job-parent');
         const firstParent    = first.parentElement;
@@ -199,24 +222,24 @@
 
         
         if(state === 'active'){
-            btn.classList.add('custom_active');
+            btnbtn.classList.add('custom_active');
             parent.classList.remove('hide');
             parent.classList.add('show');
             firstParent.classList.add('col-sm-9-ultimate');
         }
 
         
-        btn.addEventListener('click', function(e){
-            if(btn.classList.contains('custom_active')){
+        btnbtn.addEventListener('click', function(e){
+            if(btnbtn.classList.contains('custom_active')){
                 
                 parent.classList.add('hide');
                 parent.classList.remove('show');
-                btn.classList.remove('custom_active');
+                btnbtn.classList.remove('custom_active');
                 firstParent.classList.remove('col-sm-9-ultimate');
                 localStorage.setItem('state', 'notactive');
             } else {
                 
-                btn.classList.add('custom_active');
+                btnbtn.classList.add('custom_active');
                 parent.classList.remove('hide');
                 parent.classList.add('show');
                 firstParent.classList.add('col-sm-9-ultimate');
