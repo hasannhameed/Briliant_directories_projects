@@ -124,21 +124,13 @@
 
         <div class="custom-sidebar-search-filters-inner" data-pid="sub_marques">
 
-
-            <?php 
-                
-            ?>
-
-
              <!-- DEPARTMENT -->
             <?php
-
                 $dep_query = mysql_query("SELECT dep_id, dep_name FROM departments ORDER BY dep_name ASC");
                 $departments = [];
                 while ($r = mysql_fetch_assoc($dep_query)) {
                     $departments[] = $r;
                 }
-
                 $department_id = $_GET['department_code'][0] ?? '';
                 $dep_name = '';
                 if ($department_id !== '') {
@@ -149,10 +141,10 @@
 
                     echo $dep_name;
                 }   
-                
-
             ?>
-
+            <label class="category-view-switch-button">
+                <span class="custom-group-cat-title"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">departements</font></font></span>
+            </label>
             <div class="dep-pro-wrapper sub-cat-checkbox-container sub-sub">
                 <input
                     type="text"

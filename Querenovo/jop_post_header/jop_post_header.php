@@ -16,7 +16,7 @@ if ((isset($gridViewAddOn['status']) && $gridViewAddOn['status'] == 'success') |
 //print_r($_ENV['sqlquery']);
 
 ?>
-
+<?php  if($pars[0]=='job') { ?>
 <style>
 	.job_category_parent{
 		display:flex;
@@ -110,5 +110,5 @@ if ((isset($gridViewAddOn['status']) && $gridViewAddOn['status'] == 'success') |
 
 
 </style>
-
+<?php } ?>
 <div class="grid-container">
