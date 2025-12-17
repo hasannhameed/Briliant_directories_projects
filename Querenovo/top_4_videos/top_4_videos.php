@@ -22,6 +22,8 @@ $videos_query = mysql_query("SELECT * FROM `data_posts` WHERE data_id = 13  ORDE
                 <?php if(!empty($video['post_image'])) { ?>
                     <img src="<?php echo $video['post_image']; ?>" style="width:100%; height:100%; object-fit:cover;">
                 <?php } ?>
+                <div class="video-overlay"></div>
+                <div class="video-play-btn"></div>
                 <div class="video-duration"> <span class='triangle'>▷</span></div>
             </div>
 
@@ -57,9 +59,80 @@ $videos_query = mysql_query("SELECT * FROM `data_posts` WHERE data_id = 13  ORDE
 </section>
 
 <style>
-.triangle{
-    
+/* Remove old triangle / duration icon */
+.video-duration,
+.video-duration .triangle {
+    display: none !important;
 }
+
+.video-thumbnail-placeholder {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark overlay */
+.video-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 2;
+}
+
+/* Red circular button */
+.video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    background: #e53935;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0;
+    transition: all 0.35s ease;
+    z-index: 3;
+}
+
+/* White play triangle */
+.video-play-btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-35%, -50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid #fff;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+}
+
+/* Hover states */
+.video-card:hover .video-overlay {
+    opacity: 1;
+}
+
+.video-card:hover .video-play-btn {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Image zoom */
+.video-thumbnail-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.video-card:hover img {
+    transform: scale(1.05);
+}
+
+
+/*---*/
 .video-grid-section {
     padding: 40px 20px;
     background-color: #f8f8f8; 

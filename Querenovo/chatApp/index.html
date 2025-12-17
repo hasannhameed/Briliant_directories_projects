@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Realtime Chat</title>
+
+    <!-- Optional: Bootstrap 3 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+        #chatApp {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+        }
+        #chatBox {
+            height: 320px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+        .chat-msg {
+            margin-bottom: 6px;
+        }
+        .chat-user {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="chatApp">
+    <h3 class="text-center">🔥 Live Chat</h3>
+
+    <div id="chatBox"></div>
+
+    <div class="form-inline">
+        <input type="text" id="messageInput" class="form-control" style="width:80%;" placeholder="Type your message">
+        <button id="sendBtn" class="btn btn-primary">Send</button>
+    </div>
+</div>
+
+<!-- ========================= -->
+<!-- ALL LOGIC IN ONE MODULE -->
+<!-- ========================= -->
+<script type="module">
+    // ===============================
+    // Firebase Imports
+    // ===============================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // ===============================
+    // Firebase Config (YOUR CONFIG)
+    // ===============================
+    const firebaseConfig = {
+        apiKey: "AIzaSyBWqBJtXoqXpL5aUqyU3mlEjJG73ue2q74",
+        authDomain: "testing-7de0c.firebaseapp.com",
+        databaseURL: "https://testing-7de0c-default-rtdb.firebaseio.com",
+        projectId: "testing-7de0c",
+        storageBucket: "testing-7de0c.firebasestorage.app",
+        messagingSenderId: "1046814210931",
+        appId: "1:1046814210931:web:6aed5de51c51d930f4a306"
+    };
+
+    // ===============================
+    // Init Firebase
+    // ===============================
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // ===============================
+    // Ask Name Once (localStorage)
+    // ===============================
+    let username = localStorage.getItem("chat_username");
+
+    if (!username) {
+        username = prompt("Enter your name:");
+        if (!username) {
+            username = "Guest-" + Math.floor(Math.random() * 1000);
+        }
+        localStorage.setItem("chat_username", username);
+    }
+
+    // ===============================
+    // DOM Elements
+    // ===============================
+    const chatBox = document.getElementById("chatBox");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    // ===============================
+    // Firebase Reference
+    // ===============================
+    const messagesRef = ref(db, "chat_messages");
+
+    // ===============================
+    // Send Message
+    // ===============================
+    sendBtn.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") sendMessage();
+    });
+
+    function sendMessage() {
+        const text = messageInput.value.trim();
+        if (!text) return;
+
+        push(messagesRef, {
+            user: username,
+            message: text,
+            time: Date.now()
+        });
+
+        messageInput.value = "";
+    }
+
+    // ===============================
+    // Receive Messages (Realtime)
+    // ===============================
+
+    onChildAdded(messagesRef, function (snapshot) {
+        const data = snapshot.val();
+
+        const div = document.createElement("div");
+        div.className = "chat-msg";
+        div.innerHTML = `
+            <span class="chat-user">${escapeHtml(data.user)}:</span>
+            <span>${escapeHtml(data.message)}</span>
+        `;
+
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+
+    // ===============================
+    // Basic XSS Protection
+    // ===============================
+    
+    function escapeHtml(text) {
+        return text.replace(/[&<>"']/g, function (m) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[m];
+        });
+    }
+</script>
+
+</body>
+</html>

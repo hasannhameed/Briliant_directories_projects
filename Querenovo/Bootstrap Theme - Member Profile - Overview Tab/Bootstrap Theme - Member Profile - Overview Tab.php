@@ -30,8 +30,7 @@
          width: 100%;
     }
 
-    .profile-tabs-nav > li {
-        flex: 1;               
+    .profile-tabs-nav > li {          
         text-align: center;    
     }
 
@@ -96,16 +95,13 @@
 
 .profile-tabs-nav li.active a small {
     background-color: #007bff; 
-    
 }
 
 .profile-tabs-nav {
-
     border-bottom: none !important; 
 }
 
 .profile-tabs-nav li {
-    
     margin-right: 10px;
     margin-bottom: 5px; 
 }
@@ -127,7 +123,6 @@
 
 
 .profile-tabs-nav li.active a {
-
     border-radius: 20px;
     padding: 8px 15px;
     font-weight: 500;
@@ -148,7 +143,6 @@
 
 
 .profile-tabs-nav li.active a small {
- 
     background-color: rgba(255, 255, 255, 0.3); 
      border-radius: 20px;
 }
