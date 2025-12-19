@@ -1,5 +1,4 @@
-<style>
-    <style>
+<!-- <style>
     /* -----------------------------------------------------------
        1. CONTAINER & GLOBAL RESET
        Creates the white card centered on the screen
@@ -52,17 +51,6 @@
         background-repeat: no-repeat !important;
         background-position: top center !important;
         background-size: 60px !important;
-    }
-
-    /* Subtitle "Sign in to continue" */
-    .member-login-container form::after {
-        content: 'Sign in to continue';
-        display: block !important;
-        text-align: center !important;
-        color: #64748b !important;
-        font-size: 14px !important;
-        margin-bottom: 30px !important;
-        font-weight: 500 !important;
     }
 
     /* -----------------------------------------------------------
@@ -258,8 +246,7 @@
         right: 10px !important;
         color: #94a3b8 !important;
     }
-</style>
-</style>
+</style> -->
 
 <?php
 /*

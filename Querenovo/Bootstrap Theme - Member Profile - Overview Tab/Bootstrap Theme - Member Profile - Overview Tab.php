@@ -1,3 +1,4 @@
+
 <style>
     .tab-content{
             padding: 0px;
@@ -10,7 +11,7 @@
         border-radius: 20px;
         box-shadow: -1px 1px 8px rgb(0 0 0 / 8%);
         margin-bottom: 20px !important;
-    }
+    }   
     .tab-pane .search_result+.clearfix{
         background-color: #ffffff;
         padding: 10px 20px;

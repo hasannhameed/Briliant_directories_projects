@@ -1,28 +1,45 @@
 
 var myCode = `
-
-function learnJavaScript() {
-    setTimeout(() => {
-        console.log("JavaScript Learned");
-        learnReact(); // React only after JS
-    }, 2000);
+function increment(value) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const newValue = value + 1;
+            resolve(newValue);
+        }, 1200); 
+    });
 }
 
-function learnReact() {
-    setTimeout(() => {
-        console.log("React Learned");
-    }, 1000);
+function double(value) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const newValue = value * 2;
+            resolve(newValue);
+        }, 500);
+    });
 }
 
-learnJavaScript();
+function square(value) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const newValue = value * value;
+            resolve(newValue);
+        }, 1000); 
+    });
+}
 
-// Do not touch the code below:
-module.exports = {
-  learnJavaScript,
-  learnReact,
-};
-
-
+// Starting value
+const startValue = 2;
+increment(startValue)
+.then((value)=>{
+    return double(value);
+})
+.then((vlaue)=>{
+    return  square(vlaue);
+}).then((value)=>{
+    console.log(value);
+})
+// Execute functions in sequence using promises
+ 
 `;
 
 
@@ -43,3 +60,12 @@ function injectCode() {
 
 
 injectCode();
+
+
+
+
+
+
+
+
+
