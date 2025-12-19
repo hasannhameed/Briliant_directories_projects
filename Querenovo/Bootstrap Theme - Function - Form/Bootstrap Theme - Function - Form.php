@@ -1,4 +1,4 @@
-<!-- <style>
+<style>
     /* -----------------------------------------------------------
        1. CONTAINER & GLOBAL RESET
        Creates the white card centered on the screen
@@ -246,7 +246,7 @@
         right: 10px !important;
         color: #94a3b8 !important;
     }
-</style> -->
+</style>
 
 <?php
 /*
