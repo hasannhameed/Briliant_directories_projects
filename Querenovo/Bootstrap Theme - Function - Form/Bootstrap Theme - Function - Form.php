@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     /* -----------------------------------------------------------
        1. CONTAINER & GLOBAL RESET
        Creates the white card centered on the screen
@@ -226,14 +226,14 @@
     }
 
     /* Replace Button Text */
-    .login-cta-buttons .btn-danger::after {
+    /* .login-cta-buttons .btn-danger::after {
         content: 'Need an account? Sign up';
         font-size: 13px !important;
-        color: #0f172a !important; /* Dark color for "Sign up" */
+        color: #0f172a !important;
         font-weight: 600 !important;
         text-decoration: none !important;
     }
-    
+     */
     .login-cta-buttons .btn-danger:hover::after {
         text-decoration: underline !important;
     }
@@ -246,7 +246,7 @@
         right: 10px !important;
         color: #94a3b8 !important;
     }
-</style>
+</style> -->
 
 <?php
 /*

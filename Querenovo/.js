@@ -1,45 +1,55 @@
 
 var myCode = `
-function increment(value) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const newValue = value + 1;
-            resolve(newValue);
-        }, 1200); 
-    });
+
+
+function checkCar() {
+ return new Promise((resolve, reject) => {
+  setTimeout(() => {
+   const carReady = Math.random() > 0.5;
+   if (carReady) {
+    resolve("Car is ready");
+   } else {
+    reject("Error: Car needs maintenance");
+   }
+  }, 2000);
+ });
+
 }
 
-function double(value) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const newValue = value * 2;
-            resolve(newValue);
-        }, 500);
-    });
+
+function packForPicnic() {
+ return new Promise((resolve, reject) => {
+  setTimeout(() => {
+   const itemsPacked = Math.random() > 0.5;
+   if (itemsPacked) {
+    resolve("Packed everything for picnic");
+   } else {
+    reject("Error: Not have some essentials");
+   }
+  }, 1000);
+ });
 }
 
-function square(value) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const newValue = value * value;
-            resolve(newValue);
-        }, 1000); 
-    });
+
+async function picnicReady() {
+  // Write your code here
+  try{
+    let result1 = await checkCar();
+    console.log(result1);
+    let result12 = await packForPicnic();
+    console.log(result2);
+  }catch(error){
+
+  }
 }
 
-// Starting value
-const startValue = 2;
-increment(startValue)
-.then((value)=>{
-    return double(value);
-})
-.then((vlaue)=>{
-    return  square(vlaue);
-}).then((value)=>{
-    console.log(value);
-})
-// Execute functions in sequence using promises
- 
+picnicReady();
+
+// Do not touch the code below:
+module.exports = { picnicReady };
+
+
+
 `;
 
 
@@ -62,10 +72,6 @@ function injectCode() {
 injectCode();
 
 
+should log "Packed everything for picnic" when the items are packed (4999 ms)
 
-
-
-
-
-
-
+Error: expect(jest.fn()).toHaveBeenCalledWith(...expected) Expected: "Packed everything for picnic" Received: "Car is ready" Number of calls: 1
