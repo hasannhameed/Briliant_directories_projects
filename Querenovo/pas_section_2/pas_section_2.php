@@ -636,7 +636,78 @@ $categories = [
 
                 <div class="marquee-wrapper">
                     <div class="marquee-track">
+
                         <div class="row ta-card-grid">
+                            <?php
+                                $service_id = (int)$category['service_id'];
+
+                                $sql_string = mysql_query(
+                                    "SELECT 
+                                        up.file,
+                                        up.type,
+                                        ud.user_id,
+                                        ud.profession_id,
+                                        ud.company,
+                                        ud.first_name,
+                                        ud.last_name,
+                                        ls.filename,
+                                        ls.service_id
+                                    FROM users_data AS ud
+                                    JOIN list_services AS ls
+                                        ON ud.profession_id = ls.profession_id
+                                    JOIN users_photo AS up
+                                        ON ud.user_id = up.user_id
+                                        
+                                    WHERE ls.service_id = $service_id
+                                    LIMIT 20;
+                                    "
+                                );
+                                if (!$sql_string) {
+                                    
+                                    echo  mysql_error();
+                                    echo "SELECT 
+                                        up.file,
+                                        up.type,
+                                        ud.user_id,
+                                        ud.profession_id,
+                                        ud.company,
+                                        ud.first_name,
+                                        ud.last_name,
+                                        ls.filename,
+                                        ls.service_id
+                                    FROM users_data AS ud
+                                    JOIN list_services AS ls
+                                        ON ud.profession_id = ls.profession_id
+                                    JOIN users_photo AS up
+                                        ON ud.user_id = up.user_id
+                                    WHERE up.type != photo AND ls.service_id = $service_id
+                                    LIMIT 20";
+                                    
+                                    
+                                }
+                                while ($listingData = mysql_fetch_assoc($sql_string)) {
+                                ?>
+                                <div class="col-xs-12 col-sm-3 col-md-3 card">
+                                    <div class="ta-card ta-listing-card">
+                                        <img src="https://www.quirenov.fr/logos/profile/<?php echo $listingData['file']; ?>" alt="<?php echo $listingData['company'];?>">
+                                        <div class="ta-card-content">
+                                            <span class="ta-sponsored-tag"><?php echo $listingData['service_id']?'':''; ?></span>
+                                            <h4><a href="#"><?php echo $listingData['company']; ?></a></h4>
+                                            <div class="rating-bubbles">
+                                                <div class='text-center rating-bubbles-inner'>
+                                                    <span class='star'> ★★★★★ </span>
+                                                    <span class="review-count">205 avis</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <a href='<?php  echo $listingData['filename']; ?>'class="btn ta-btn-green">Voir le profil</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php   } ?>
+                        </div>
+
+                        <!-- <div class="row ta-card-grid">
                             <?php foreach($categories[$count]['listings'] as $listingData) { ?>
                                 <div class="col-xs-12 col-sm-3 col-md-3 card">
                                     <div class="ta-card ta-listing-card">
@@ -656,28 +727,7 @@ $categories = [
                                     </div>
                                 </div>
                             <?php   } ?>
-                        </div>
-                        <div class="row ta-card-grid">
-                            <?php foreach($categories[$count]['listings'] as $listingData) { ?>
-                                <div class="col-xs-12 col-sm-3 col-md-3 card">
-                                    <div class="ta-card ta-listing-card">
-                                        <img src="<?php echo $listingData['image_url']; ?>" alt="<?php echo $listingData['alt_text'];?>">
-                                        <div class="ta-card-content">
-                                            <span class="ta-sponsored-tag"><?php echo $listingData['is_sponsored']?'':''; ?></span>
-                                            <h4><a href="#"><?php echo $listingData['title']; ?></a></h4>
-                                            <div class="rating-bubbles">
-                                                <div class='text-center rating-bubbles-inner'>
-                                                    <span class='star'> ★★★★★ </span>
-                                                    <span class="review-count">205 avis</span>
-                                                </div>
-                                            </div>
-                                            
-                                            <button class="btn ta-btn-green">Voir le profil</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php   } ?>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -879,7 +929,6 @@ $categories = [
     margin-left: -10px; 
     margin-right: -10px;
     display: flex; 
-    flex-wrap: wrap; 
 }
 .ta-card-grid > [class*="col-"] {
     padding-left: 10px; 
