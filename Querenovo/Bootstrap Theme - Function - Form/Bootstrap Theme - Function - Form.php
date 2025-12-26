@@ -920,5 +920,147 @@ if ($_SERVER['form_vars']['view'] == "full" || $_SERVER['form_vars']['view'] == 
             $label['widget_javascript'] .= $javascript;
         }
     }//END else -- if ($_SERVER[form_vars][view] == "full" || $_SERVER[form_vars][view] == "preview" || $_SERVER[form_vars][view] == "email")
-
 ?>
+<style type="text/css">
+    /* -----------------------------------------------------------
+       1. MODAL CONTAINER & HEADER
+    ----------------------------------------------------------- */
+    #contactModal .modal-content {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        background: #ffffff;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    #contactModal h3 {
+        font-weight: 800;
+        color: #0f172a;
+        font-size: 26px;
+        margin-top: 0;
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    #contactModal hr { display: none; }
+
+    #contactModal .close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #94a3b8;
+        opacity: 0.6;
+        z-index: 10;
+    }
+    #contactModal .close:hover { opacity: 1; color: #0f172a; }
+
+    /* -----------------------------------------------------------
+       2. DESKTOP GRID LAYOUT (Side by Side)
+    ----------------------------------------------------------- */
+    #bootstrap_get_match_333 {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two equal columns */
+        gap: 15px;
+    }
+
+    #bootstrap_get_match_333 .form-group {
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    /* Items that span full width on Desktop */
+    #bootstrap_get_match_333 .form-group:has(textarea),
+    #bootstrap_get_match_333 .form-group:has(#pac-input),
+    #bootstrap_get_match_333 .nomargin,
+    #bootstrap_get_match_333 .security_question_label,
+    #bootstrap_get_match_333 .form-actions {
+        grid-column: span 2;
+    }
+
+    /* -----------------------------------------------------------
+       3. INPUT STYLING
+    ----------------------------------------------------------- */
+    #bootstrap_get_match_333 label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+        text-transform: none;
+    }
+
+    #bootstrap_get_match_333 .form-control {
+        display: block;
+        width: 100%;
+        height: 48px;
+        padding: 10px 15px;
+        font-size: 14px;
+        color: #334155;
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        box-shadow: none;
+    }
+
+    #bootstrap_get_match_333 .form-control:focus {
+        border-color: #0f172a;
+        outline: 0;
+        background: #fff;
+    }
+
+    #bootstrap_get_match_333 textarea.form-control {
+        height: 120px;
+        resize: vertical;
+    }
+
+    /* -----------------------------------------------------------
+       4. SUBMIT BUTTON
+    ----------------------------------------------------------- */
+    #bootstrap_get_match_333 .form-actions input[type="submit"] {
+        background-color: #E30613 !important;
+        border: 1px solid #E30613 !important;
+        color: #ffffff !important;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 12px;
+        border-radius: 6px;
+        width: 100% !important;
+        text-transform: none;
+        margin-top: 10px;
+    }
+
+    #bootstrap_get_match_333 .form-actions input[type="submit"]:hover {
+        background-color: #b91c1c !important;
+    }
+
+    /* Hide map visual */
+    #map-canvas-contact-sidebar { display: none !important; }
+
+    /* -----------------------------------------------------------
+       5. MOBILE RESPONSIVENESS (Top to Bottom Fix)
+       We switch display from 'grid' to 'block' to force stacking
+    ----------------------------------------------------------- */
+    @media (max-width: 768px) {
+        #bootstrap_get_match_333 {
+            display: block !important; /* Disables the grid completely */
+        }
+
+        #bootstrap_get_match_333 .form-group,
+        #bootstrap_get_match_333 .form-actions,
+        #bootstrap_get_match_333 .nomargin {
+            width: 100% !important;
+            margin-bottom: 15px !important; /* Adds space between the stacked inputs */
+            display: block !important;
+        }
+
+        /* Reset the specific 'span 2' items so they don't behave oddly */
+        #bootstrap_get_match_333 .form-group:has(textarea),
+        #bootstrap_get_match_333 .form-group:has(#pac-input) {
+            grid-column: auto !important;
+        }
+    }
+</style>

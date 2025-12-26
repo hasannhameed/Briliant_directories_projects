@@ -13,7 +13,9 @@ $schema_collection_url = $schema_base_url . strtok($_SERVER['REQUEST_URI'], '?')
     .grid-container {
         margin-bottom: 30px;
     }
-
+    svg{
+        color: red;
+    }
     /* ======================
        THE CARD (Modern Wrapper)
     ====================== */
@@ -200,9 +202,15 @@ $schema_collection_url = $schema_base_url . strtok($_SERVER['REQUEST_URI'], '?')
 }
 
 .member_results .fa {
-    color: #555 !important;
+    color: red !important;
 }
-
+.footer_menu > .col-md-2 span{
+        display: flex !important;
+}
+.footer_menu > .col-md-2 span svg{
+          margin-right: 7px;
+              width: 20px;
+}
 /* ======================
    LOCATION LINE
 ====================== */
@@ -325,6 +333,9 @@ $schema_collection_url = $schema_base_url . strtok($_SERVER['REQUEST_URI'], '?')
 }
 .mid_section .clearfix{
 display: none;
+}
+.rmargin.inline-block.bi-check-circle{
+    color: red;
 }
 .member-search-verified {
     display: inline-flex;

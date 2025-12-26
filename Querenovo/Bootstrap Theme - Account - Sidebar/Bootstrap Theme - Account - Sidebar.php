@@ -1,4 +1,7 @@
 <?php
+if($pars[0] !='account'){ 
+    return;
+}
 $user_data = getUser($_COOKIE['userid'],$w);
 $sub = getSubscription($user_data['subscription_id'],$w);
 

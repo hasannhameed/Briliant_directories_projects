@@ -1,6 +1,3 @@
-
-
-
 <section class="py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4" bis_skin_checked="1">
         <div class="text-center mb-8 sim-card" bis_skin_checked="1">
@@ -10,7 +7,6 @@
         <iframe src="https://mesaidesreno.beta.gouv.fr/" title="Simulateur d'aides à la rénovation" style="width: 100%; max-width: 600px; height: 700px; margin: 0px auto; display: block; border: 0.2rem solid rgb(13, 27, 62); border-radius: 1rem;" bis_size="{&quot;x&quot;:652,&quot;y&quot;:718,&quot;w&quot;:600,&quot;h&quot;:700,&quot;abs_x&quot;:652,&quot;abs_y&quot;:718}" bis_id="fr_t8oqu797hyfk3rhwezpgrr" bis_depth="0" bis_chainid="1"></iframe>
     </div>
 </section>
-
 
 <section class="aid-program-container">
     <div class="aid-tabs-nav col-sm-12 nopad">
@@ -919,6 +915,9 @@
         grid-template-columns: 1fr; /* Stack columns vertically */
         gap: 20px;
     }
+    .modal-content{
+        width: 100%;
+    }
 }
 </style>
 <style>
@@ -963,7 +962,7 @@
     padding: 8px 15px;
     border-radius: 8px 8px 0 0;
     align-self: flex-start; /* Keeps the tag anchored to the left corner */
-    
+    width: 100%;
     display: inline-block;
 }
 

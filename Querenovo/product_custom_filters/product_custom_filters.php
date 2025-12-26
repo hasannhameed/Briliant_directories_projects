@@ -130,6 +130,30 @@
     .sub-cat-checkbox-container :has(.custom-btn2) button{
         width:15%;
     }
+    @media (max-width: 600px) {
+        .sub-cat-checkbox-container {
+            display: block;
+            margin-bottom: 30px;
+        }
+        .sub-cat-checkbox-container label{
+            width: 100%;
+        }
+        .sub-cat-checkbox-container input{
+            width: 50%;
+        }
+        .sub-cat-checkbox-container :has(.custom-btn2) button {
+            width: 50%;
+        }
+        .grid-container{
+            margin-top: 50px;
+        }
+        .custom-combobox {
+            position: relative !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            font-family: inherit !important;
+        }
+    }
 <?php } ?>
 </style>
 

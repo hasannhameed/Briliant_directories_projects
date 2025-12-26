@@ -1,2 +1,6 @@
-1) testing the email templates and updating.
-2) company and brand profile pages testing and bug fixing.
+1) Tested the entire project to identify frontend bugs.
+2) Tested both backend pages after implementing changes.
+3) Tested both frontend pages after implementing changes.
+4) Designed the login page.
+5) Ideas to make the Aid and Funding page dynamic and designed the backend structure.
+6) Converted the Department page from static to dynamic and updated the search filters.

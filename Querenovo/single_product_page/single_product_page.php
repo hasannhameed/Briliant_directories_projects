@@ -172,7 +172,7 @@ echo widget("Bootstrap Theme - Display - Posted By Snippet");
     position: relative;
     z-index: 99;
     width: 31px;
-    right: -32em;
+    right: -37%;
 }
 #gallery-1 {
 	position: absolute;
@@ -470,6 +470,7 @@ echo widget("Bootstrap Theme - Display - Posted By Snippet");
     color: #282828;
     font-size: 28px;
 }
+
 @media (max-width: 768px) {
     #gallery-1 {
         position: relative;
@@ -485,7 +486,11 @@ echo widget("Bootstrap Theme - Display - Posted By Snippet");
         position: relative;
         z-index: 99;
         width: 31px;
-        right: -25em;
+        right: -91%;
+    }
+    .rsThumbsHor {
+        width: 38% !important;
+        height: 100%;
     }
 }
 @media (min-width: 768px) {
@@ -499,6 +504,22 @@ echo widget("Bootstrap Theme - Display - Posted By Snippet");
         height: 100%;
     }
 }
+/* @media (max-width: 435px) {
+    .custonclick {
+        position: relative;
+        z-index: 99;
+        width: 31px;
+        right: -30em;
+    }
+}
+@media (max-width: 300px) {
+    .custonclick {
+        position: relative;
+        z-index: 99;
+        width: 31px;
+        right: -19em;
+    }
+} */
 </style>
 
 <div class="modal" id="galleryFullscreenModal" tabindex="-1" role="dialog">

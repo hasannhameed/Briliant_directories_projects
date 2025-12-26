@@ -2,7 +2,7 @@
 
 $subBtn_sql    =    'SELECT * FROM `list_services` where profession_id = 4 AND master_id != 0';
 $subcat_sql2   =    'SELECT * FROM `list_services` where profession_id = 4 AND master_id != 0 LIMIT 9';
-$brands_sql3   =    'SELECT * FROM `users_data` where profession_id = 3 LIMIT 20'; 
+$brands_sql3   =    'SELECT * FROM `users_data` where profession_id = 4 LIMIT 20'; 
 $data          =    mysql_query($subBtn_sql);
 $data2         =    mysql_query($subcat_sql2);
 $brands_data   =    mysql_query($brands_sql3);
@@ -83,7 +83,7 @@ $brands_data   =    mysql_query($brands_sql3);
                                         ud.company,
                                         ud.first_name,
                                         ud.last_name,
-                                        ls.filename,
+                                        ud.filename,
                                         ls.service_id
                                     FROM users_data AS ud
                                     JOIN list_services AS ls
@@ -95,9 +95,7 @@ $brands_data   =    mysql_query($brands_sql3);
                                     "
                                 );
                                 if (!$sql_string) {
-                                    
-                                    echo  mysql_error();
-                                    echo "SELECT 
+                                    $fallback_sql = "SELECT 
                                         up.file,
                                         up.type,
                                         ud.user_id,
@@ -105,21 +103,21 @@ $brands_data   =    mysql_query($brands_sql3);
                                         ud.company,
                                         ud.first_name,
                                         ud.last_name,
-                                        ls.filename,
+                                        ud.filename,
                                         ls.service_id
                                     FROM users_data AS ud
                                     JOIN list_services AS ls
                                         ON ud.profession_id = ls.profession_id
                                     JOIN users_photo AS up
                                         ON ud.user_id = up.user_id
-                                    WHERE up.type != photo AND ls.service_id = $service_id
+                                    WHERE up.type != 'photo' AND ls.service_id = $service_id
                                     LIMIT 20";
                                     
-                                    
+                                    $sql_string = mysql_query($fallback_sql);
                                 }
                                 while ($listingData = mysql_fetch_assoc($sql_string)) {
                                 ?>
-                                <div class="col-xs-12 col-sm-3 col-md-3 card">
+                                <div class="col-xs-12 col-sm-3 col-md-3 card" id='<?php echo $listingData['user_id']; ?>'>
                                     <div class="ta-card ta-listing-card">
                                         <img src="https://www.quirenov.fr/logos/profile/<?php echo $listingData['file']; ?>" alt="<?php echo $listingData['company'];?>">
                                         <div class="ta-card-content">
@@ -169,7 +167,7 @@ $brands_data   =    mysql_query($brands_sql3);
     align-items: center;
    
 }
-	..active2:hover{
+	.active2:hover{
 		color:white !important;
 	}
 .marquee {
@@ -193,6 +191,20 @@ $brands_data   =    mysql_query($brands_sql3);
     width: 150px;
     height: 100px;
     
+}
+
+.brand-item-inner:hover{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    border: 1px dashed black;
+    text-align: center;
+    border: 2px dashed #00000029;
+    border-radius: 5px;
 }
 
 .brand-item-inner{
@@ -317,6 +329,7 @@ $brands_data   =    mysql_query($brands_sql3);
     justify-content: flex-start;
     padding: 30px 0px;
     border-bottom: 1px solid #00000042;
+    overflow: scroll;
 }
 .ta-chip-btn {
     background-color: #fff;
@@ -362,7 +375,7 @@ $brands_data   =    mysql_query($brands_sql3);
     border: 3px solid #e9321a;
 }
 
-.ta-card:hover a{
+.ta-card:hover {
     color: #e9321a;
 }
 
@@ -634,6 +647,20 @@ $brands_data   =    mysql_query($brands_sql3);
     }
     .ta-scroll-btn {
         display: none; 
+    }
+    .header-div{
+        flex-direction: row;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        overflow: scroll;
+    }
+    .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: scrollCards 45s linear infinite;
+        animation-play-state: paused; /* stop by default */
+        overflow: scroll;
     }
 }
 

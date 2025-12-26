@@ -10,7 +10,7 @@
 		<div class="clearfix"></div>
 		<div class="clearfix"></div>
         <form class="fpad notpad website-search" name="frm1" action="/<?php echo $w['default_search_url'];?>">
-
+            <input type="hidden" name='sid' value='3'>
             <div class='col-sm-12 nopad custom-input'>
                 <div class="form-group nomargin hidden-xs hidden-sm col-md-4 nopad" bis_skin_checked="1">
                     <label>

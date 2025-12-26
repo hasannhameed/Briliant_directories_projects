@@ -1,8 +1,6 @@
 </div>
 </div>
-<style>
-    
-</style>
+
 <div>
 
 <?php

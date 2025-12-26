@@ -30,11 +30,11 @@
                     <span class="text-white mb-4 span">Retrouvez toutes les marques, par type de spécialité</span>
 
                     <div class="d-flex btn-parent justify-content-center flex-wrap gap-3">
-                        <a href="#" class="btn hero-btn">Isolation</a>
-                        <a href="#" class="btn hero-btn">Chauffage</a>
-                        <a href="#" class="btn hero-btn">Ventilation</a>
-                        <a href="#" class="btn hero-btn">Menuiserie</a>
-                        <a href="#" class="btn hero-btn">Énergies</a>
+                        <a href="#" class="btn hero-btn">Brands</a>
+                        <a href="#" class="btn hero-btn">Manufacturers</a>
+                        <a href="#" class="btn hero-btn">Formation</a>
+                        <a href="#" class="btn hero-btn">Software</a>
+                        <a href="#" class="btn hero-btn">Funding</a>
                     </div>
                 </div>
             </div>

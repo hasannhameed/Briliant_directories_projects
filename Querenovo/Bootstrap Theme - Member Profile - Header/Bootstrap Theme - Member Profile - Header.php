@@ -1,5 +1,10 @@
 <style>
 .member-profile-header {
+    background-color: #152850;
+    color: white;
+    padding: 20px 10px;
+}
+.member-profile-header {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
@@ -46,10 +51,14 @@ ease-in-out 0ms;
 .fill-yellow-400 {
     fill: #facc15;
 }
+
 @media only screen and (max-width: 767px) {
 	.profile-header-write-review {
 		margin-top: 10px !important;
 	}
+    .user_name{
+        font-size: 24px;
+    }
 }
 
 .content_w_sidebar{
@@ -119,7 +128,7 @@ if($sub['coverPhoto'] == 1){
     <div class="xs-text-center col-xs-12 col-sm-9 the-header-member-main-info">
         <div class="row the-header-member-name">
             <div class="col-sm-10 norpad xs-hpad header-member-name xs-center-block notranslate">
-                <h1 class="bold inline-block">
+                <h1 class="bold inline-block user_name">
                     <?php echo $user['full_name']; ?>
                 </h1>
 			</div>

@@ -120,11 +120,18 @@
                     <b class="line-height-xl">%%%search_results_category_label%%%</b> <?php echo $user_data['profession_name']?>
                 </p>
             <?php } ?>
-            <?php if ($w['sub_category_in_results'] == "1"){
-			$memberSubCategories = getMemberSubCategory($user_data['user_id'],"all","settings",intval($w['profile_services_display_limit']),"text");
-			if ($memberSubCategories != "") { ?>
+           <?php 
+			if ($w['sub_category_in_results'] == "1") {
+				$memberSubCategories = getMemberSubCategory($user_data['user_id'], "all", "settings", intval($w['profile_services_display_limit']), "text");
+				
+				// FIX: Remove trailing commas and spaces from the end of the string
+				$memberSubCategories = rtrim($memberSubCategories, ", ");
+
+				if ($memberSubCategories != "") { ?>
 					<p class="small sub_category_in_results">
-						<p class='content_adjust1'><b class="line-height-xl">%%Service%%:</b> <?php echo $memberSubCategories;?></p>
+						<p class='content_adjust1'>
+							<b class="line-height-xl">%%Service%%:</b> <?php echo $memberSubCategories; ?>
+						</p>
 					</p>
 			<?php } } ?>
 

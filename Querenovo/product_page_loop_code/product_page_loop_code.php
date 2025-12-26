@@ -205,8 +205,6 @@ if ($p['lat'] != '' && $p['lon'] != ''){
         <meta itemprop="name" content="<?php echo htmlspecialchars($p['group_name'], ENT_QUOTES, 'UTF-8'); ?>">
         <div class="grid_element">
 
-         
-            
             <div class="col-xs-4 col-sm-2 norpad favorite_button">
                 <?php
                 $addonFavorites = getAddOnInfo("add_to_favorites","a8ad175dd81204563b3a9fc3ebcd5354");
@@ -223,7 +221,6 @@ if ($p['lat'] != '' && $p['lon'] != ''){
             <?php
             if ($p['group_picture'] != "" || $p['default_picture'] != "") { ?>
                 <div class="img_section col-sm-4 nopad sm-bmargin">
-                    
                     
                     <div class="alert-secondary btn-block text-center">
                         <?php echo widget("Bootstrap Theme - Search Results - Display Image Slider","",$w['website_id'],$w);?>

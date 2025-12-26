@@ -11,6 +11,13 @@
         border: none;
         padding: 0px;
     }
+    @media screen and (max-width: 991px) {
+        .sidebar-container {
+            width: 100%;
+            float: right;
+        }
+    }
+
 </style>
 
 <?php
@@ -85,7 +92,7 @@ $top = mysql_query("
 
 <div class="module custom-sidebar-search-filters">
     <form method="GET" id="bd-cat-filter-form">
-
+        <input type="hidden" name='sid' value='3'>
         <!-- CONTENT TYPE -->
         <div class="module custom-sidebar-search-filters-inner">
 

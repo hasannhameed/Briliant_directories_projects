@@ -50,7 +50,7 @@
        
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 768px) { 
         .brand-banner {
            
             flex-direction: row;

@@ -1168,7 +1168,13 @@ $schema_collection_url = $schema_base_url . strtok($_SERVER['REQUEST_URI'], '?')
     background-color: white;
     border: 1px solid transparent;
 }
+.member-search-verified-icon {
+    font-size: 14px;
+    margin-right: 5px;
+    color: red;
+}
 .bi::before, [class*=" bi-"]::before, [class^=bi-]::before {
+    color: red;
     display: inline-block;
     font-family: bootstrap-icons !important;
     font-style: normal;
