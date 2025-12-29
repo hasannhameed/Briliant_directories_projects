@@ -1,11 +1,9 @@
 <?php
 
-//HAVING COUNT(DISTINCT rs.rel_service_id) = " . count($mainLevelId); 
 /**
  * This widget follows BD code standards
  * Widget Name: Search - Member - Search Query
  */
-
 class queryBuilder
 {
     protected $whereParameters = NULL;
@@ -86,32 +84,6 @@ class queryBuilder
             $this->tableQueryString .= implode(" ", $this->tablesParameters);
         }
     }
-
-   public function country() {
-        if (!empty($_GET['country_in']) && is_array($_GET['country_in'])) {
-            $countryArray = $_GET['country_in'];
-            foreach ($countryArray as $key => $value) {
-                $countryArray[$key] = addslashes(trim($value));
-            }
-            $string_version = "'" . implode("','", $countryArray) . "'";
-            $this->addQueryParameter('whereParameters', "ud.country_ln IN ($string_version)");
-        }
-    }
-
-
-    public function industry() {
-        if (!empty($_GET['industry']) && is_array($_GET['industry'])) {
-            $industryArray = $_GET['industry']; 
-            foreach ($industryArray as $key => $value) {
-                $industryArray[$key] = addslashes(trim($value));
-            }
-            $string_version = "'" . implode("','", $industryArray) . "'";
-            $this->addQueryParameter('whereParameters', "ud.industry IN ($string_version)");
-        }
-    }
-
-
-
 
     public function buildWhereQuery()
     {
@@ -312,6 +284,8 @@ class BDMembersQuery extends queryBuilder
 
     }
 
+    
+
     public function runCountry()
     {
         if ($this->countryCode != "") {
@@ -500,6 +474,8 @@ class BDMembersQuery extends queryBuilder
             }
 
         }
+
+        
 
         if($isSub === true && $subCategoryID !== false){//if we are searching a sub ID we store our container into the sub ids list
             $subCategoriesIds       = $subCategoryID;
@@ -818,11 +794,10 @@ class BDMembersQuery extends queryBuilder
             } else {
                 $mainLevelId = $this->subLevelId;
             }
-            
+
             if (is_array($mainLevelId) && ( $this->isInclusiveSearch() || (isset($_GET['dynamic']) && isset($_GET['dynamic']) == 1) ) ) {
                 $extraMultiCategoryWhere    = ($this->multiCategory === true)? " OR ls.master_id IN (" . implode(",", $mainLevelId) . ") ":"";
-                //$whereParameter             = " (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") ".$extraMultiCategoryWhere." OR (st.service_limit = 'all')) ";
-                $whereParameter = " (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") " . $extraMultiCategoryWhere . " OR (st.service_limit = 'all')) GROUP BY user_id HAVING COUNT(DISTINCT rs.rel_service_id) = " . count($mainLevelId);
+                $whereParameter             = " (rs.rel_service_id IN (" . implode(",", $mainLevelId) . ") ".$extraMultiCategoryWhere." OR (st.service_limit = 'all')) ";
 
                 if($this->target === 'search' && empty($this->searchQuery) && !is_null($this->topLevelId) ){
                     $whereParameter = "( ". $whereParameter ." OR (rs.rel_service_id IN (" . implode(",", $mainLevelId ) . ") OR (st.service_limit = 'all' AND (list_service_profession_id = ud.profession_id OR ud.profession_id IN (" . implode(",", $this->topLevelId) . ")))) ) ";
@@ -944,7 +919,8 @@ class BDMembersQuery extends queryBuilder
 
                 $getServiceFilenameQuery = mysql(brilliantDirectories::getDatabaseConfiguration('database'), "SELECT
                         filename,
-                        name
+                        name,
+                        master_id
                     FROM
                         `list_services`
                     WHERE
@@ -959,6 +935,13 @@ class BDMembersQuery extends queryBuilder
                     $profs['service_name'] = implode(', ', array_filter($serviceNames));
                 } else {
                     $profs['service_name'] = $getServiceFilename['name'];
+                }
+
+                $w['sub_category_name'] = $profs['service_name'];
+
+                if($getServiceFilename['master_id'] > 0){
+                    $w['sub_sub_category_name'] = $profs['sub_sub_category_name']   = $profs['service_name'];
+                    $w['sub_category_name']     = $profs['sub_category_name']       = getServiceById($getServiceFilename['master_id'], $w);
                 }
 
                 $profs['service_filename'] = $getServiceFilename['filename'];
@@ -1046,10 +1029,10 @@ class BDMembersQuery extends queryBuilder
             $profs['service_filename'] = $service['filename'];
             $profs['service_name'] = $service['name'];
 
-            $profs['sub_category_name'] =  $service['name'];
-            if($service['master_id']){
-                $profs['sub_category_name'] = getServiceById($service['master_id'], $w);
-                $profs['sub_sub_category_name'] = $service['name'];
+            $w['sub_category_name'] = $profs['sub_category_name'] =  $service['name'];
+            if($service['master_id'] > 0){
+                $w['sub_category_name']     = $profs['sub_category_name'] = getServiceById($service['master_id'], $w);
+                $w['sub_sub_category_name'] = $profs['sub_sub_category_name'] = $service['name'];
             }
             $profs['new_filename'][4] = "%service_name~na%";
 
@@ -1090,7 +1073,6 @@ class BDMembersQuery extends queryBuilder
 
             if ($membershipAdvOpt > 0) {
 
-				
                 $membersOnlySearchVisibilityAddOn = getAddOnInfo('members_only','a12e81906e726b11a95ed205c0c1ed36');
 
 
@@ -1103,8 +1085,8 @@ class BDMembersQuery extends queryBuilder
                     }
 
 
-                } 
-				else {
+                } else {
+
                     $sqlWhereParameter = " (st.search_membership_permissions LIKE '%visitor%' OR st.search_membership_permissions = '' OR st.search_membership_permissions = ',' ) ";
                     $this->addQueryParameter('whereParameters', $sqlWhereParameter);
                 }
@@ -1274,7 +1256,7 @@ class BDMembersQuery extends queryBuilder
             if ($this->countryShortName != "") {
                 $directNameOrService['country_sn'][]    = " sa2.country_sn = '" . $this->countryShortName . "' ";
                 $directNameOrService['country_sn'][]    = " sa2.location_type = 'Country' ";
-                
+
                 //strict search check to allow only members in main location
                 if($w['strict_search_results'] == 1){
                     //we only have bounds for COUNTRY so we add both into the AND and OR
@@ -1290,7 +1272,7 @@ class BDMembersQuery extends queryBuilder
                 $directNameOrService['adm_lvl_1_sn'][]  = " sa2.country_sn = '" . $this->countryShortName . "' ";
                 $directNameOrService['adm_lvl_1_sn'][]  = " sa2.state_sn = '" . $this->adminLevel1ShortName . "' ";
                 $directNameOrService['adm_lvl_1_sn'][]  = " sa2.location_type = 'State' ";
-                
+
                 //strict search check to allow only members in main location
                 if ($w['strict_search_results'] == 1) {
                     $directNameAndService['state_code']     = " sa2.state_sn = '" . $this->adminLevel1ShortName . "' ";
@@ -1307,7 +1289,7 @@ class BDMembersQuery extends queryBuilder
                  * IMPORTANT
                  *TODO:
                  *add strict search for county
-                */
+                 */
                 $directNameOrService['county_sn'][] = " sa2.country_sn = '" . $this->countryShortName . "' ";
                 $directNameOrService['county_sn'][] = " sa2.state_sn = '" . $this->adminLevel1ShortName . "' ";
                 $directNameOrService['county_sn'][] = " sa2.county_sn = '" . $this->countyShortName . "' ";
@@ -1327,7 +1309,7 @@ class BDMembersQuery extends queryBuilder
                     $directNameAndUser['country_code']          = " ud.country_code = '" . $this->countryShortName . "' ";
                     $directNameAndUser['state_code']            = ' ud.state_code = "' . $this->adminLevel1ShortName . '" ';
                     $directNameAndUser['city']                  = ' ud.city = "' . $this->currentCity . '" ';
-                    
+
                     $directNameAndService['country_code']       = " sa2.country_sn = '" . $this->countryShortName . "' ";
                     $directNameAndService['state_code']         = " sa2.state_sn = '" . $this->adminLevel1ShortName . "' ";
                     $directNameAndService['city']               = " sa2.city = '" . $this->currentCity . "' ";
@@ -1364,7 +1346,7 @@ class BDMembersQuery extends queryBuilder
                 foreach ($directNameOrService as $dnokey => $dnovalue) {
                     $stagingOrElements[] = " ( " . implode(" AND ", $dnovalue) . " ) ";
                 }
-                
+
                 $directNameOrSqlService = " OR ( " . implode(" OR ", $stagingOrElements) . " ) ";
             }
 
@@ -1372,7 +1354,7 @@ class BDMembersQuery extends queryBuilder
             if (count($directNameAndService) > 0) {
                 $directNameAndSqlService = " AND " . implode(" AND ", $directNameAndService);
             }
-            
+
             //create the sql code that will check on the main user info against the location names
             if (count($directNameAndUser) > 0) {
                 $directNameAndSqlUser = " AND " . implode(" AND ", $directNameAndUser);
@@ -1408,6 +1390,7 @@ class BDMembersQuery extends queryBuilder
                     $sqlBaseForDistance = "COALESCE((" . $metricUnit . " * acos( cos( radians(" . $this->lat . ") ) * cos( radians( ud.lat ) ) * cos( radians( ud.lon ) - radians(" . $this->lng . ") ) + sin( radians(" . $this->lat . ") ) * sin(radians(ud.lat)) ) ),0)";
                     $this->addQueryParameter('selectParameters', $sqlBaseForDistance . " AS distance");
                     $this->addQueryParameter('selectParameters', "user_service_areas.service_area_user_id AS service_area");
+                    $this->addQueryParameter('selectParameters', "user_service_areas.service_area_id AS service_area_id");
                     $this->addQueryParameter('selectParameters', "user_service_areas.service_distance AS service_distance");
                     $this->addQueryParameter('selectParameters', "LEAST(".$sqlBaseForDistance.", COALESCE(CASE WHEN user_service_areas.service_distance < 1 THEN 1 ELSE user_service_areas.service_distance END,5000)) AS order_distance");
 
@@ -1417,10 +1400,12 @@ class BDMembersQuery extends queryBuilder
                         SELECT
                             service_area_user_id,
                             service_area_address,
+							service_area_id,
                             service_distance
                         FROM (
                             SELECT
                             sa2.user_id AS service_area_user_id,
+							sa2.area_id AS service_area_id,
                             sa2.address AS service_area_address,
                                 (" . $metricUnit . " * acos( cos( radians(" . $this->lat . ") ) * cos( radians( sa2.lat ) ) * cos( radians( sa2.lon ) - radians(" . $this->lng . ") ) + sin( radians(" . $this->lat . ") ) * sin(radians(sa2.lat)) ) ) AS service_distance,
                             ROW_NUMBER() OVER (PARTITION BY sa2.user_id ORDER BY (" . $metricUnit . " * acos( cos( radians(" . $this->lat . ") ) * cos( radians( sa2.lat ) ) * cos( radians( sa2.lon ) - radians(" . $this->lng . ") ) + sin( radians(" . $this->lat . ") ) * sin(radians(sa2.lat))
@@ -1577,6 +1562,15 @@ class BDMembersQuery extends queryBuilder
          $this->addQueryParameter('selectParameters', $havingReviewQuery);*/
 
     }
+
+    public function runAvailability() {
+        if (!empty($_GET['available_now']) && $_GET['available_now'] == 1) {
+            $fromMetaQuery = " LEFT JOIN users_meta AS uma ON ud.user_id = uma.database_id AND uma.database = 'users_data' AND uma.`key` = 'available_now' ";
+            $this->addQueryParameter('tablesParameters', $fromMetaQuery);
+            $this->addQueryParameter('whereParameters', ' uma.value = 1 ');
+        }
+    }
+
     protected function run()
     {
         global $w;
@@ -1595,13 +1589,6 @@ class BDMembersQuery extends queryBuilder
 
 
         $this->runOverallRating();
-        //custon
-        $this->country();
-        $this->industry();
-        // $this->industry();
-        // $this->technicalskills();
-        //custon
-
         $this->runProfession();
         $this->runService();
         $this->runCountry();
@@ -1609,6 +1596,7 @@ class BDMembersQuery extends queryBuilder
         $this->runState();
         $this->runZipCode();
         $this->runCity();
+        $this->runAvailability();
 
 
 
@@ -1617,7 +1605,7 @@ class BDMembersQuery extends queryBuilder
 
         $this->runRadius();
 
-        //$this->runMemberPermissions();
+        $this->runMemberPermissions();
         $this->runLocation();
 
 
@@ -1693,6 +1681,7 @@ class BDMembersQuery extends queryBuilder
             $sqlSelectParameters[] = 'user_service_areas.lat';
             $sqlSelectParameters[] = 'user_service_areas.lng';
             $sqlSelectParameters[] = 'user_service_areas.service_area_address';
+            $sqlSelectParameters[] = 'user_service_areas.service_area_id';
             $sqlSelectParameters[] = 'ud.lon as user_lng';
             $sqlSelectParameters[] = 'ud.lat as user_lat';
         }
@@ -1702,7 +1691,7 @@ class BDMembersQuery extends queryBuilder
 
     protected function setBoundsSql($directNameAndSqlService, $directNameOrSqlService, $andOrCheck, $directNameAndSqlUser)
     {
-        
+
         if($this->isStateSearch === false && $this->isCountrySearch === false){
             $boundsServiceAreaSqlWhere = "
             (
@@ -1768,7 +1757,8 @@ class BDMembersQuery extends queryBuilder
         $boundsSql = "LEFT JOIN (
                 SELECT
                     sa2.address AS service_area_address,
-                    sa2.user_id AS service_area_user_id
+                    sa2.user_id AS service_area_user_id,
+					sa2.area_id AS service_area_id
                 FROM
                     `service_areas` AS sa2
                        INNER JOIN `users_data` AS ud2 ON sa2.user_id = ud2.user_id
@@ -1803,7 +1793,8 @@ class BDMembersQuery extends queryBuilder
                         sa2.swlng,
                         sa2.lat,
                         sa2.lon as lng,
-                        sa2.address AS service_area_address
+                        sa2.address AS service_area_address,
+						sa2.area_id AS service_area_id
                     FROM
                         `service_areas` AS sa2
                            INNER JOIN `users_data` AS ud2 ON sa2.user_id = ud2.user_id
@@ -1877,6 +1868,7 @@ class BDMembersQuery extends queryBuilder
         if($this->isStateSearch === true || $this->isCountrySearch === true){
             $this->setSelectFields(true);
             $this->addQueryParameter('selectParameters', "service_area_address");
+            $this->addQueryParameter('selectParameters', "service_area_id");
         }
 
     }
@@ -2077,6 +2069,69 @@ class BDMembersQuery extends queryBuilder
                         )  = 1";
         }
 
+
+        // =======================================================
+        //  UPDATED SEARCH FILTERS (AND-Based Search)
+        // =======================================================
+
+        // 1. OPEN TO (e.g. Friends AND Dates)
+        if (isset($_GET['open_to']) && !empty($_GET['open_to'])) {
+            if (is_array($_GET['open_to'])) {
+                $parts = array();
+                foreach ($_GET['open_to'] as $item) {
+                    $safe_item = mysql_real_escape_string($item);
+                    $parts[] = "ud.open_to LIKE '%$safe_item%'";
+                }
+                // CHANGED TO AND: Must match ALL selected options
+                $value[] = "(" . implode(" AND ", $parts) . ")";
+            } else {
+                $safe_item = mysql_real_escape_string($_GET['open_to']);
+                $value[] = "ud.open_to LIKE '%$safe_item%'";
+            }
+        }
+
+        // 2. LIKE TO MEET (e.g. for_a_walk AND for_drinks)
+        if (isset($_GET['like_to_meet']) && !empty($_GET['like_to_meet'])) {
+            if (is_array($_GET['like_to_meet'])) {
+                $parts = array();
+                foreach ($_GET['like_to_meet'] as $item) {
+                    $safe_item = mysql_real_escape_string($item);
+                    $parts[] = "ud.like_to_meet LIKE '%$safe_item%'";
+                }
+                // CHANGED TO AND
+                $value[] = "(" . implode(" AND ", $parts) . ")";
+            } else {
+                $safe_item = mysql_real_escape_string($_GET['like_to_meet']);
+                $value[] = "ud.like_to_meet LIKE '%$safe_item%'";
+            }
+        }
+
+        // 3. INTERESTS (e.g. dance AND music)
+        if (isset($_GET['interests']) && !empty($_GET['interests'])) {
+            if (is_array($_GET['interests'])) {
+                $parts = array();
+                foreach ($_GET['interests'] as $item) {
+                    $safe_item = mysql_real_escape_string($item);
+                    $parts[] = "ud.interests LIKE '%$safe_item%'";
+                }
+                // CHANGED TO AND
+                $value[] = "(" . implode(" AND ", $parts) . ")";
+            } else {
+                $safe_item = mysql_real_escape_string($_GET['interests']);
+                $value[] = "ud.interests LIKE '%$safe_item%'";
+            }
+        }
+
+        // 4. SEARCH DESCRIPTION (Text - Keeps single match logic)
+        if (isset($_GET['search_description']) && !empty($_GET['search_description'])) {
+            $safe_desc = mysql_real_escape_string($_GET['search_description']);
+            $value[] = "ud.search_description LIKE '%$safe_desc%'";
+        }
+
+        // =======================================================
+
+        
+
         $this->clearQueryString('whereParameters');
         $this->setQueryParameter('whereParameters', $value);
     }
@@ -2123,7 +2178,6 @@ class BDMembersQuery extends queryBuilder
         $this->setCountryCode();
         $this->setParentId();
         $this->setCountryShortName();
-       // $this->setCustomShortName();
         $this->setStateSearch();
         $this->setStateSearchLN();
         $this->setAdminLevel1ShortName();
@@ -2212,7 +2266,7 @@ class BDMembersQuery extends queryBuilder
 
             $this->$property = mysql_real_escape_string($value);
         }else if(!is_null($value) && !empty($value) && in_array($property,$this->coordinatesArray) ){
-            
+
             if (!is_numeric($value)) {
                 $value = 0;
             }
@@ -2330,57 +2384,6 @@ class BDMembersQuery extends queryBuilder
     {
         $this->setProperty('countryShortName', $this->dataArray['country_sn'], $value);
     }
-
-    //custom
-
-    // public function ccountry(){
-    //     if ($_GET['country_ln'] != '') {
-    //         $country = $_GET['country_ln'];
-    //          $this->addQueryParameter('whereParameters', " ud.country_ln = ' $country' ");
-    //     }
-    // }
-
-    //for checkbox
-    // public function country(){
-    //     if ($_GET['country_ln'] != '') {
-    //         $country = $_GET['country_ln'];
-    //         $string_version = rtrim(implode(',', $country), ',');
-    //         $this->addQueryParameter('whereParameters', " ud.country_ln IN ('$string_version') ");
-    //     }
-    // }
-
-    //country
-
-   
-
-    // //Industry
-    // public function industry() {
-    //     if (!empty($_GET['industry'])) {
-    //         $countryArray = explode(',', $_GET['industry']);
-    //         foreach ($countryArray as $key => $value) {
-    //             $countryArray[$key] = addslashes(trim($value));
-    //         }
-    //         $string_version = "'" . implode("','", $countryArray) . "'";
-    //         $this->addQueryParameter('whereParameters', "ud.industry IN ($string_version)");
-    //     }
-    // }
-
-    // //Technical Skills
-    // public function technicalskills() {
-    //     if (!empty($_GET['skills'])) {
-    //         $countryArray = explode(',', $_GET['skills']);
-    //         foreach ($countryArray as $key => $value) {
-    //             $countryArray[$key] = addslashes(trim($value));
-    //         }
-    //         $string_version = "'" . implode("','", $countryArray) . "'";
-    //         $this->addQueryParameter('whereParameters', "ud.skills IN ($string_version)");
-    //     }
-    // }
-
-
- 
-    //custom
-
     protected function setStateSearch($value = '')
     {
         $this->setProperty('stateSearch', stripslashes($this->dataArray['stateSearch']), $value);
@@ -2523,8 +2526,6 @@ class BDMembersQuery extends queryBuilder
     }
 }
 
-
-
 $BDMembersQuery         = new BDMembersQuery();
 $_ENV['custom_object']  = $BDMembersQuery;
 $_ENV['custom_query']   = $BDMembersQuery->getQuery();
@@ -2546,6 +2547,7 @@ if($BDMembersQuery->isServiceAreaSearch){
     service_distance,
     order_distance,
     service_area_address,
+    service_area_id,
     search_priority,
     RowNum
 FROM
@@ -2560,6 +2562,7 @@ FROM
         service_distance,
         order_distance,
         service_area_address,
+		service_area_id,
         search_priority,
         ROW_NUMBER() OVER(
         PARTITION BY user_id
@@ -2582,4 +2585,3 @@ FROM
 }
 
 ?>
-

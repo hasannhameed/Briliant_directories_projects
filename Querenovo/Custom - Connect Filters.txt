@@ -1,0 +1,78 @@
+1. The "File System" Auditor (Beginner)
+Concept: A script that scans a specific folder on your computer and generates a report (JSON file) of everything inside it.
+
+What you learn: How Node interacts with your computer's hard drive. You will learn the fs (File System) and path modules.
+
+The Task:
+
+Read a directory (e.g., your "Downloads" folder).
+
+Loop through files.
+
+Identify large files (e.g., over 50MB).
+
+Write their names and sizes into a report.json file.
+
+Key Modules: fs, path.
+
+2. The Web Scraper (Intermediate)
+Concept: A bot that visits a website, extracts specific data, and saves it. This is great for automating data collection.
+
+What you learn: Asynchronous programming (async/await) is crucial here because fetching a webpage takes time. You also learn how to parse HTML on the server.
+
+The Task:
+
+Go to a news website or an e-commerce site.
+
+Grab the top 5 headlines or product prices.
+
+Save them to a CSV file.
+
+Key Libraries: axios (to fetch the page), cheerio (to select HTML elements like jQuery) or Puppeteer (for complex sites).
+
+3. Real-Time Chat App (Intermediate/Advanced)
+Concept: A chat room where messages appear instantly on other users' screens without refreshing the page. This is the "Hello World" of real-time Node.js.
+
+What you learn: WebSockets. Traditional web requests are "ask and receive." WebSockets are "open channel." You will learn how to broadcast data to multiple connected clients.
+
+The Task:
+
+Create a simple HTML page with a text box.
+
+When User A types "Hello", send it to the server.
+
+Server immediately pushes "Hello" to User B, C, and D.
+
+Key Libraries: Socket.io (makes WebSockets easy).
+
+4. Video Streaming Server (Advanced)
+Concept: Instead of sending a whole video file (which uses a lot of RAM), you send it in tiny chunks. This is how Netflix/YouTube works.
+
+What you learn: Streams. Streams are one of the most powerful features in Node.js for handling large data efficiently.
+
+The Task:
+
+Put a large video file (e.g., 1GB) on your server.
+
+Create an endpoint (e.g., /video).
+
+Use fs.createReadStream to pipe the video to the browser chunk by chunk.
+
+Notice how your server RAM usage stays low even with a huge file.
+
+Key Concepts: Streams, Pipes, HTTP Headers (Range requests).
+
+5. The "SQL to JSON" Converter (Utility)
+Concept: Since you work with SQL databases (like the Brilliant Directories dump you showed earlier), build a tool that converts SQL exports into JSON.
+
+What you learn: String manipulation and Regular Expressions (Regex).
+
+The Task:
+
+Read a .sql file (like the dump you pasted).
+
+Use Regex to find the INSERT INTO lines.
+
+Extract the data values.
+
+Save them as a clean .json file.

@@ -6,6 +6,7 @@ $brands_sql3   =    'SELECT * FROM `users_data` where profession_id = 4 LIMIT 20
 $data          =    mysql_query($subBtn_sql);
 $data2         =    mysql_query($subcat_sql2);
 $brands_data   =    mysql_query($brands_sql3);
+
 ?>
 
 
@@ -615,12 +616,12 @@ $brands_data   =    mysql_query($brands_sql3);
 
 
 @media (max-width: 767px) { 
+
     .ta-section-header .pull-right {
-       
         display: block;
         margin-top: 15px; */
-       
     }
+
     .ta-chip-btn {
         
         
@@ -720,6 +721,7 @@ $brands_data   =    mysql_query($brands_sql3);
         transform: translateX(-50%);
     }
 }
+
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", () => {

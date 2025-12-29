@@ -1,0 +1,10 @@
+<?php 
+
+if ($_SERVER['REMOTE_ADDR'] == '49.205.169.64') {
+    
+    print_r($_ENV['sqlquery']);
+   
+}
+
+
+?>
