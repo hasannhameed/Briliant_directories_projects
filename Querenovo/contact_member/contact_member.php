@@ -92,13 +92,35 @@
         <? } ?>
 
     </div>
-
+    <?php if($user['department_code'] != ''){ ?>
     <div class='col-sm-12 custom_dep_member'>
         <div class="col-sm-12 tmargin profile-header-send-message" bis_skin_checked="1">
-                <a class="" title="Contact Blabs" href="/blabs/connect"><h4><b><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">France Renov Conseil Ain</font></font><b></b></b></h4></a><b><b>
+                <a class="" title="Contact Blabs" href="/blabs/connect">
+                    <h4>
+                        <b>
+                            <font dir="auto" style="vertical-align: inherit;">
+                                <font dir="auto" style="vertical-align: inherit;">
+                                    France Renov Conseil 
+                                    <?php  
+                                        $dep_query0 = mysql_query("SELECT dep_name FROM `departments` WHERE dep_id =".$user['department_code']);
+                                        $dep_fetch0 = mysql_fetch_assoc($dep_query0);
+                                        if($dep_fetch0['dep_name'] != ''){ 
+                                            echo $dep_fetch0['dep_name'];
+                                        }
+                                    ?>
+                                </font>
+                            </font>
+                            <b>
+
+                            </b>
+                        </b>
+                    </h4>
+                </a>
+                <b>
+                    <b>
             </b></b>
         </div>
-        <div class="col-sm-12 tmargin profile-header-send-message btn-holder" bis_skin_checked="1">
+        <div class="col-sm-12 tmargin profile-header-send-message btn-holder" id='<?php echo $user['user_id']; ?>'bis_skin_checked="1">
                 <?php  
                 $dep_query = mysql_query("SELECT department_code FROM users_data WHERE user_id =".$user['user_id']);
                 $dep_fetch = mysql_fetch_assoc($dep_query);
@@ -109,4 +131,5 @@
                 <?php } ?>
         </div>
     </div>
+    <?php } ?>
  </div>

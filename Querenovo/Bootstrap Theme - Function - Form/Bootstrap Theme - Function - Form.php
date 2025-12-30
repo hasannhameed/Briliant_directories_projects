@@ -1,4 +1,6 @@
-<!-- <style>
+<?php if($pars[0] != 'products'){ ?>
+
+<style>
     /* -----------------------------------------------------------
        1. CONTAINER & GLOBAL RESET
        Creates the white card centered on the screen
@@ -246,8 +248,8 @@
         right: 10px !important;
         color: #94a3b8 !important;
     }
-</style> -->
-
+</style>
+<?php } ?>
 <?php
 /*
 
@@ -921,6 +923,7 @@ if ($_SERVER['form_vars']['view'] == "full" || $_SERVER['form_vars']['view'] == 
         }
     }//END else -- if ($_SERVER[form_vars][view] == "full" || $_SERVER[form_vars][view] == "preview" || $_SERVER[form_vars][view] == "email")
 ?>
+<?php if($pars[0]=='products'){ ?>
 <style type="text/css">
     /* -----------------------------------------------------------
        1. MODAL CONTAINER & HEADER
@@ -1064,3 +1067,4 @@ if ($_SERVER['form_vars']['view'] == "full" || $_SERVER['form_vars']['view'] == 
         }
     }
 </style>
+<?php } ?>
