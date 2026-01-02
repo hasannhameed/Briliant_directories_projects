@@ -1,13 +1,12 @@
 <?php
+
 // -------------------------------------------------------
 //  1. Database Connection & Setup
 // -------------------------------------------------------
 // $db = brilliantDirectories::getDatabaseConfiguration("database");
 
 if($_GET['page_context'] == "search_result_page"){
-
   $page_context = 'search_result_page';
-  
 }else if($_GET['page_context'] == 'detail_page'){
 
   $page_context = 'Details Page - Post Details';
@@ -197,359 +196,338 @@ if (isset($_POST['save_schema']) || isset($_POST['save_advanced']) || isset($_PO
                 alert('Saved Successfully!'); window.location = window.location.href;
             }
         </script>";
-        echo $query;
+        //echo $query;
     } else {
         echo "<script>alert('Error Saving: " . mysql_error() . "');</script>";
     }
 }
 ?>
 
+
+
 <style>
-/* ------------------ Layout & Styling ------------------ */
-.schema-settings {
-    width: 98%;
-    margin: 20px auto 50px;
-    background: #fff;
-    border: 1px solid #cbd7e3;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    border-radius: 4px;
-}
-.schema-settings h3 {
-    background: #253342;
-    color: #fff;
-    margin: 0;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: 600;
-}
+    /* --- Modern SaaS SEO Manager Styling --- */
+    :root {
+        --primary: #4f46e5;
+        --primary-soft: #eef2ff;
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-300: #cbd5e1;
+        --slate-700: #334155;
+        --slate-900: #0f172a;
+        --emerald: #10b981;
+    }
 
-/* Tab Navigation Styles */
-.tab-navigation {
-    display: flex;
-    background: #f5f6fa;
-    border-bottom: 2px solid #e2e8f0;
-    padding: 0;
-    margin: 15px 0 0 0;
-    gap: 8px;
-    padding: 8px 8px 0 8px;
-}
+    .schema-settings {
+        width: 100%;
+        max-width: 1200px;
+        margin: 30px auto;
+        background: #fff;
+        border: 1px solid var(--slate-200);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        overflow: hidden;
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
 
-.tab-btn {
-    background: #e8ecf1;
-    border: 1px solid #d1d5db;
-    border-bottom: none;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    border-radius: 0;
-}
+    /* --- Heading --- */
+    .schema-settings h3 {
+        background: white;
+        color: var(--slate-900);
+        margin: 0;
+        padding: 24px 30px;
+        font-size: 1.25rem;
+        font-weight: 800;
+        border-bottom: 1px solid var(--slate-100);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-.tab-btn:hover {
-    color: #334155!important;
-    background: #fff!important;
-}
+    /* --- Modern Tab Navigation --- */
+    .tab-navigation {
+        display: flex;
+        background: var(--slate-50);
+        padding: 8px 30px;
+        gap: 12px;
+        border-bottom: 1px solid var(--slate-200);
+    }
+    .sidebar-section{
+          margin-top: 20px;
+          display: flex;
+          flex-direction: column;
+    }
 
-.tab-btn.active {
-    color: black;
-    background: #fff;
-    border-top: 3px solid #2563eb;
-    border-left: 1px solid #d1d5db;
-    border-right: 1px solid #d1d5db;
-    border-bottom: none;
-    padding-top: 10px;
-}
-.tab-content {
-    display: none;
-}
-.tab-content.active {
-    display: block;
-}
+    .tab-btn {
+        background: transparent;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--slate-700);
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-.schema-settings table.regtext {
-    width: 100%;
-    border-collapse: collapse;
-}
-.schema-settings td {
-    vertical-align: top;
-    padding: 15px;
-    border-bottom: 1px solid #ebeff3;
-}
+    .tab-btn:hover {
+        background: var(--slate-200);
+        color: var(--slate-900);
+    }
 
-.section-heading {
-    background: #253342;
-    color: #fff;
-    font-weight: 600;
-    padding: 10px 15px;
-    font-size: 14px;
-    margin: -15px -15px 15px -15px;
-}
+    .tab-btn.active {
+        background: white;
+        color: var(--primary);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
 
-.seo-meta-header {
-    background: #f5f6fa;
-    color: #253342;
-    font-weight: 700;
-    padding: 10px 15px;
-    font-size: 16px;
-    border-bottom: 1px solid #ebeff3;
-}
-.schema-settings input[type="text"],
-.schema-settings textarea {
-    width: 98%;
-    border: 1px ;
-    border-radius: 4px;
-    padding: 8px 10px;
-    background: #fff;
-    font-size: 13px;
-    transition: all 0.2s ease;
-    resize: vertical; 
-}
-.schema-settings input:focus,
-.schema-settings textarea:focus {
-    border: 2px;
-    box-shadow: none;
-    outline: none;
-    padding: 7px 9px;
-}
+    /* --- Form Content --- */
+    .tab-content { padding: 30px; display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
 
-.meta-title-box {
-    position: relative;
-}
-.char-count {
-    font-size: 11px;
-    color: #888;
-    margin-top: 4px;
-    text-align: right;
-}
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-.schema-settings button[type="submit"] {
-    background: #038a72;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-		width: 100%;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-.schema-settings button:hover {
-    background-color: #038a72;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
-              0 0 0 .25rem #335a7a40;
-}
+    .schema-settings table.regtext { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
+    .schema-settings td { vertical-align: top; padding: 0 10px; border: none; }
 
-.change-btn {
-    background: #6366f1;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background 0.3s ease;
-}
-.change-btn:hover {
-    background: #4f46e5;
-}
+    /* Section Headings (Meta vs Social) */
+    .section-heading {
+        background: var(--slate-100);
+        color: var(--slate-700);
+        font-weight: 700;
+        padding: 8px 15px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
 
-.photo-upload-area {
-    border: 2px dashed #d1d5db;
-    padding: 40px 20px;
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-		
-    background: #ebeff3;
-    transition: all 0.3s ease;
-}
+    /* --- Inputs & Textareas --- */
+    .control-label {
+        color: var(--slate-700);
+        font-weight: 600;
+        font-size: 13px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .meta-title-box {
+        background: var(--slate-50);
+        border: 1px solid var(--slate-200);
+        border-radius: 10px;
+        padding: 12px;
+        transition: all 0.2s;
+    }
+
+    .meta-title-box:focus-within {
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 4px var(--primary-soft);
+    }
+
+    .meta-title-box textarea {
+        width: 100%;
+        border: none !important;
+        background: transparent !important;
+        font-size: 14px;
+        color: var(--slate-900);
+        line-height: 1.6;
+        min-height: 60px;
+    }
+
+    .char-count { font-size: 11px; color: var(--slate-300); font-weight: 500; margin-top: 8px; }
+
+    /* --- Advanced Tab (Code Editors) --- */
+    .page-section {
+        background: #fff;
+        border: 1px solid var(--slate-200);
+        border-radius: 12px;
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .page-section h3 {
+        background: var(--slate-900);
+        color: #fff;
+        font-size: 14px;
+        padding: 12px 20px;
+    }
+
+    .page-warning {
+        background: #fffbeb;
+        border-left: 4px solid #f59e0b;
+        margin: 15px;
+        padding: 12px;
+        font-size: 13px;
+        border-radius: 4px;
+        color: #92400e;
+    }
+
+    .page-textarea {
+        font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+        width: calc(100% - 30px);
+        margin: 0 15px 15px;
+        border-radius: 8px;
+        padding: 15px;
+        font-size: 13px;
+        min-height: 150px;
+    }
+
+    /* --- Buttons --- */
+    .schema-settings button[type="submit"] {
+        background: var(--emerald);
+        color: #fff;
+        border: none;
+        padding: 14px 24px;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: 0.2s;
+        cursor: pointer;
+        width: auto;
+        min-width: 200px;
+    }
+
+    .schema-settings button[type="submit"]:hover {
+        background: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+    }
+
+    /* --- Image Upload --- */
+    .photo-upload-area {
+        background: var(--slate-50);
+        border: 2px dashed var(--slate-200);
+        border-radius: 12px;
+        padding: 40px;
+        transition: 0.3s;
+    }
+
+    .photo-upload-area:hover {
+        border-color: var(--primary);
+        background: var(--primary-soft);
+    }
+
+    /* --- Sidebar Enhancements --- */
+    .sidebar-box {
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid var(--slate-200);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        padding: 25px;
+    }
+
+    .sidebar-tabs { display: flex; background: var(--slate-50); border-bottom: 1px solid var(--slate-200); }
+    
+    .sidebar-tab {
+        flex: 1; padding: 12px; font-size: 13px; font-weight: 700; border: none; background: transparent; cursor: pointer; color: var(--slate-700);
+    }
+
+    .sidebar-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); background: #fff; }
+
+    .info-card {
+        background: var(--slate-50);
+        border: 1px solid var(--slate-200);
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    .label {
+      display: inline;
+      padding: .2em .6em .3em;
+      font-size: 75%;
+      font-weight: bold;
+      line-height: 1;
+      color: black;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: .25em;
+  }
 
 
-.photo-upload-area:hover {
-    border-color: #3b82f6;
-    background: #f0f9ff;
-}
-.photo-upload-SEOplaceholder {
-    pointer-events: none;
-}
-.photo-upload-heading {
-    font-size: 18px;
-    font-weight: 600;
-    color: #6b7280;
-    margin-bottom: 15px;
-}
-.photo-upload-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
-}
-.photo-upload-icon svg {
-    width: 100%;
-    height: 100%;
-}
-.photo-upload-button {
-    background: #0891b2;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    pointer-events: none;
-}
-.photo-upload-text {
-    font-size: 13px;
-    color: #6b7280;
-    margin-top: 10px;
-}
-.photo-upload-subtext {
-    font-size: 12px;
-    color: #9ca3af;
-}
+    /* Ensure hidden tabs don't take up space */
+  .sidebar-content.hide {
+      display: none !important;
+  }
 
-.search-snippet-preview-box {
-    border: 1px solid #cbd7e3;
-    border-radius: 4px;
-    padding: 15px;
-    background-color: #f7f7f7;
-    margin-top: 15px;
-}
-.search-snippet-preview-box h4 {
-    margin: 0 0 10px 0;
-    font-size: 14px;
-    color: #253342;
-}
-.search-snippet-title {
-    color: #1a0dab;
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 2px;
-}
-.search-snippet-url {
-    color: #006621;
-    font-size: 13px;
-    margin-bottom: 4px;
-}
-.search-snippet-description {
-    color: #545454;
-    font-size: 13px;
-    line-height: 1.4;
-}
+  /* Ensure active tabs are visible */
+  .sidebar-content.active {
+      display: block !important;
+      animation: fadeInSidebar 0.3s ease;
+  }
 
-/* ===== Advanced Tab - Page-Level Boxes ===== */
-.page-section {
-    background: #f5f8fb;
-    border: 1px solid #d1dbe5;
-    border-radius: 6px;
-    margin: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    padding-bottom: 15px;
-}
-.page-section h3 {
-    background: #1f4e6b;
-    color: #fff;
-    padding: 12px 18px;
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-}
-.page-warning {
-    background: #fff8e5;
-    border-left: 4px solid #f0ad4e;
-    color: #555;
-    font-size: 14px;
-    padding: 10px 15px;
-    margin: 15px;
-    border-radius: 4px;
-}
-.page-warning b {
-    color: #c77d15;
-}
-/* Advanced Page Textarea */
-.page-textarea {
-    background: #fff;
-    border: 1px solid #d9e1ea;
-    border-radius: 4px;
-    width: 97%;
-    margin: 0 15px 20px 15px;
-    padding: 10px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    min-height: 180px;
-    resize: vertical;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-    transition: all 0.2s ease;
-}
+  /* Smooth fade-in effect */
+  @keyframes fadeInSidebar {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
 
-.page-textarea:focus {
-    border: 2px solid #3b82f6;
-    box-shadow: none;
-    outline: none;
-    padding: 9px;
-}
-.advanced-save-btn {
-    text-align: center;
-    padding: 20px;
-    margin: 0 20px;
-};
+  /* Styling for the tab buttons to show which is active */
+  .sidebar-tab.active {
+      background: #fff !important;
+      color: #4f46e5 !important; /* Primary Indigo */
+      border-bottom: 2px solid #4f46e5 !important;
+      font-weight: 700;
+  }
+  
+  .top-toolbar{
+      display: flex;
+      justify-content: space-between;
+  }
+    
+
 </style>
 
-	<div class="container"> <!-- Back Button Section -->
-  <div class="top-toolbar">
-  <div class="left-side">
-    <a  class="back-btn" href='https://ww2.managemydirectory.com/admin/go.php?widget=seo_tool'>
-        <i class="fa fa-reply"></i> Back
-    </a>
-  </div>
-    <div class="right-side">
-        <?php 
-        // 1. Get the Data ID from the URL
-        $post_data_id = intval($_GET['data_id']);
+  <div class="col-md-9">
 
-        // 2. Query the DB to get the filename (URL Slug) for this post type
-        $sql_link = mysql_query("SELECT data_filename FROM data_categories WHERE data_id = '$post_data_id' LIMIT 1");
-        $link_row = mysql_fetch_assoc($sql_link);
-        
-        // 3. Define your Domain
-        $website_domain = "https://fiftyinc.com";
-        
-        // 4. Build the final URL (e.g., https://site.com/events)
-        $live_url = $website_domain . "/" . $link_row['data_filename'];
-        ?>
-        <?php  
-         if( $_GET['page_context'] != 'detail_page' ) {
-        ?>
+    <div class="container"> 
 
-        <a href="<?php echo $live_url; ?>" target="_blank" class="save-btn-top" style="background-color: #253342; border: 1px solid #fff; margin-right: 10px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-            <i class="fa fa-external-link"></i> View Live Page
-        </a>
+      <div class="top-toolbar">
 
-        <?php } ?>
-
-            <!-- <form method="post" enctype="multipart/form-data" style="display:inline;">
-                <input type="hidden" name="post_data_id" value="<?php echo intval($row['data_id']); ?>">
-                <button type="submit" name="save_schema" class="save-btn-top">
-                    <i class="fa fa-save"></i> Save
-                </button>
-            </form> -->
+        <div class="left-side">
+          <a  class="back-btn btn btn-primary" href='https://ww2.managemydirectory.com/admin/go.php?widget=seo_tool'>
+              <i class="fa fa-reply"></i> Back
+          </a>
         </div>
+
+        <div class="right-side">
+            <?php 
+            // 1. Get the Data ID from the URL
+            $post_data_id = intval($_GET['data_id']);
+
+            // 2. Query the DB to get the filename (URL Slug) for this post type
+            $sql_link = mysql_query("SELECT data_filename FROM data_categories WHERE data_id = '$post_data_id' LIMIT 1");
+            $link_row = mysql_fetch_assoc($sql_link);
+            
+            // 3. Define your Domain
+            $website_domain = "https://fiftyinc.com";
+            
+            // 4. Build the final URL (e.g., https://site.com/events)
+            $live_url = $website_domain . "/" . $link_row['data_filename'];
+            ?>
+            <?php  
+            if( $_GET['page_context'] != 'detail_page' ) {
+            ?>
+
+            <a href="<?php echo $live_url; ?>" target="_blank" class="save-btn-top btn btn-warning" style="background-color: #253342; border: 1px solid #fff; margin-right: 10px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa fa-external-link"></i> View Live Page
+            </a>
+
+            <?php } ?>
+
+                <!-- <form method="post" enctype="multipart/form-data" style="display:inline;">
+                    <input type="hidden" name="post_data_id" value="<?php echo intval($row['data_id']); ?>">
+                    <button type="submit" name="save_schema" class="save-btn-top">
+                        <i class="fa fa-save"></i> Save
+                    </button>
+                </form> -->
+        </div>
+      </div>
     </div>
-		</div>
-	
-	
-   <div class="col-md-9">
+
+
       <div class="schema-settings">
       <h3>
   <i class="fa fa-gear"></i>
@@ -662,7 +640,7 @@ if ($row['data_type'] == 20) {
                 <img id="ogImagePreview" src="<?php echo htmlspecialchars($display_image); ?>" style="<?php echo empty($seo_row['og_image']) ? 'display:none;' : ''; ?>">
 
                 <input type="file" name="og_image" accept="image/*" id="ogImageInput"
-                       style="opacity:0; position:absolute; top:0; left:0; width:100%; height:100%; cursor:pointer;">
+                       style="opacity:0; top:0; left:0; width:100%; height:100%; cursor:pointer;">
               </div>
               <div id="changeImageContainer"
                    style="margin-top:10px; text-align:center; <?php echo empty($seo_row['og_image']) ? 'display:none;' : ''; ?>">
@@ -825,7 +803,7 @@ if ($row['data_type'] == 20) {
     </div>
 
     <!-- PAGE OPTIONS TAB -->
-    <div id="pageOptions" class="sidebar-content">
+    <div id="pageOptions" class="sidebar-content hide">
       <form method="post">
         <div class="sidebar-section">
           <h5>Display Settings</h5>
@@ -841,7 +819,7 @@ if ($row['data_type'] == 20) {
 
           <h5 class="mt-3">Breadcrumbs <span>(optional)</span></h5>
           <div class="textarea-wrapper">
-            <textarea name="bread_crumbs" rows="3" SEOplaceholder="%Data_filename% > %%%Post_title%%%"><?php echo htmlspecialchars($seo_row['bread_crumbs']); ?></textarea>
+            <textarea name="bread_crumbs" rows="3" style="width:100%" SEOplaceholder="%Data_filename% > %%%Post_title%%%"><?php echo htmlspecialchars($seo_row['bread_crumbs']); ?></textarea>
             <span class="edit-icon">✎</span>
           </div>
 
@@ -940,559 +918,6 @@ function updateCharCount(textareaId, countId) {
 
 
 <!-- css -->
-
-<style>
-    /* Style for dynamic character counter */
-    .char-counter {
-        font-size: 11px;
-        color: #888;
-        margin-top: 5px;
-        text-align: right;
-    }
-    .char-count {
-        font-weight: bold;
-        color: #253342;
-    }
-
-
-
-    .meta-title-box {
-    background: #f7f9fb;
-    border: 1px solid #d8e2ef;
-    border-radius: 6px;
-    padding: 10px 10px 6px 17px;
-    position: relative;
-    transition: all 0.3s ease;
-    }
-
-    .meta-title-box:focus-within {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
-    }
-
-    .meta-title-box textarea {
-    width: 100%;
-    border: none;
-    background: transparent;
-    resize: none;
-    font-size: 14px;
-    color: #333;
-    line-height: 1.5;
-    outline: none;
-    }
-
-    .meta-title-box textarea::placeholder {
-    color: #9aa0a6;
-    }
-
-    .meta-title-box .char-count {
-    font-size: 12px;
-    color: #666;
-    margin-top: 6px;
-    text-align: left;
-    }
-
-    .section-heading {
-        background-color: #253342;  /* same dark blue as form header */
-        color: #fff;
-        font-weight: 600;
-        padding: 8px 12px;
-        margin: 20px 0 10px 0;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    .seo-tab-buttons {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 15px 0 5px 10px;
-    }
-
-    .seo-tab {
-        font-weight: 600;
-        background: #dde5ec;
-        box-shadow: 0 0px 2px rgba(100, 136, 177, .4);
-        color: #636f7c;
-        font-size: 15px;
-        padding: 3px 20px 0;
-        height: 36px;
-        border: none;
-        border-top: 3px solid transparent;
-        border-radius: 4px 4px 0 0;
-        cursor: pointer;
-        transition: all 0.25s ease;
-    }
-
-    .seo-tab:hover {
-        background: #fff;
-        border-top: 3px solid #007bff;
-        color: #000;
-    }
-
-    .seo-tab.active {
-        background: #fff;
-        border-top: 3px solid #007bff;
-        color: #000;
-    }
-
-    /* Tab Navigation Styles */
-            .tab-navigation {
-                display: flex;
-                background: #f5f6fa;
-                border-bottom: 1px solid #cbd7e3;
-                padding: 0;
-                margin: 0;
-            }
-            
-            .tab-btn {
-                background: transparent;
-                border: none;
-                padding: 12px 24px;
-                font-size: 14px;
-                font-weight: 500;
-                color: #64748b;
-                cursor: pointer;
-                border-bottom: 3px solid transparent;
-                transition: all 0.3s ease;
-                position: relative;
-            }
-            
-            .tab-btn:hover {
-                color: #334155;
-                background: #e2e8f0;
-            }
-            
-            .tab-btn.active {
-                color: #2563eb;
-                border-bottom-color: #2563eb;
-                background: #fff;
-            }
-
-    .container {
-        width: 100%;
-        max-width: 1200px; /* optional, adjust as needed */
-        margin: 0;
-        padding-left: 20px;
-    }
-
-    /* ---------- ADVANCED SECTION DESIGN ---------- */
-    .page-section {
-    background: #f5f8fb;
-    border: 1px solid #d1dbe5;
-    border-radius: 6px;
-    margin-bottom: 25px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .page-section h3 {
-    background: #1f4e6b;
-    color: #fff;
-    padding: 12px 18px;
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    }
-
-    .page-warning {
-    background: #fff !important;
-    border-left: 4px solid #f0ad4e;
-        display: inline-block;
-    color: #555;
-    font-size: 14px;
-    padding: 10px 15px;
-    margin: 15px;
-    border-radius: 4px;
-    }
-
-    .page-warning b {
-    color: black !important;
-    }
-
-    .page-textarea {
-    background: #fff;
-    border: 1px solid #d9e1ea;
-    border-radius: 4px;
-    width: calc(100% - 30px);
-    margin: 0 15px 20px 15px;
-    padding: 10px;
-    font-family: monospace;
-    font-size: 14px;
-    min-height: 180px;
-    resize: vertical;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-
-
-
-    .top-toolbar {
-        width: 98%;
-        margin: 20px auto 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .back-btn {
-        background: #eff6ff;
-        color: #253342;
-        border: 1px solid #cbd7e3;
-        padding: 6px 14px;
-        border-radius: 4px;
-        font-size: 14px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .back-btn:hover {
-        background: #dbeafe;
-        box-shadow: 0 0 6px rgba(0,0,0,0.1);
-    }
-
-    /* Right-Side Save Button */
-    .save-btn-top {
-        background: #038a72;
-        color: #fff;
-        border: none;
-        padding: 8px 18px;
-        border-radius: 4px;
-        font-size: 14px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background 0.3s ease, transform 0.2s ease;
-    }
-    .save-btn-top:hover {
-      color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
-                    0 0 0 .25rem #335a7a40;
-    }
-    .save-btn-top:focus {
-      color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
-                    0 0 0 .25rem #335a7a40;
-    }
-
-    /* === Sidebar Styling === */
-    .sidebar-box {
-    background:#f7f4f4 !important;
-        
-    border: 1px solid #cbd7e3;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    margin-top: 20px;
-    }
-
-    .sidebar-box .tab-navigation {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    background: #f5f6fa;
-    border-bottom: 2px solid #e2e8f0;
-    }
-
-    .sidebar-box .tab-btn {
-    flex: 1;
-    text-align: center;
-    background: #e8ecf1;
-    border: 1px solid #d1d5db;
-    border-bottom: none;
-    padding: 10px 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    }
-
-    .sidebar-box .tab-btn.active {
-    background: #fff;
-    color: black;
-    border-top: 3px solid #2563eb;
-    border-left: 1px solid #d1d5db;
-    border-right: 1px solid #d1d5db;
-    }
-
-    .sidebar-content {
-    padding: 15px;
-    }
-
-    .sidebar-section p {
-    font-size: 12px;
-    color: #444;
-    margin-bottom: 8px;
-    }
-
-    .last-updated {
-    font-size: 12px;
-    color: #888;
-    border-top: 1px solid #eee;
-    padding-top: 8px;
-    margin-top: 10px;
-    }
-
-
-
-    /* Sidebar Container */
-    .sidebar-box {
-    background: #fff;
-    border: 1px solid #d0dae3;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-    font-family: "Poppins", sans-serif;
-    }
-
-    /* Tabs */
-    .sidebar-tabs {
-    display: flex;
-    border-bottom: 1px solid #cfd8e3;
-    }
-
-    .sidebar-tab {
-    flex: 1;
-    background: #e5ecf4;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 10px 0;
-    text-align: center;
-    font-weight: 600;
-    color: #475569;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    }
-
-    .sidebar-tab.active {
-    background: #f5f1f1;
-    color: #0f172a;
-    border-top: 2px solid #60a5fa;
-    }
-
-    .sidebar-tab:hover {
-    background: #f8fafc;
-    }
-
-    /* Content Areas */
-    .sidebar-content {
-    display: none;
-    padding: 15px;
-    }
-
-    .sidebar-content.active {
-    display: block;
-    }
-
-    .sidebar-section h5 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    }
-
-    .sidebar-section label {
-    font-size: 13px;
-    color: #374151;
-    display: block;
-    margin-bottom: 6px;
-    cursor: pointer;
-    }
-
-    .sidebar-section input[type="checkbox"] {
-    margin-right: 6px;
-    }
-
-    .sidebar-section textarea {
-    width: 100%;
-    border: 1px solid #cbd5e1;
-    border-radius: 5px;
-    padding: 8px;
-    font-size: 13px;
-    resize: vertical;
-    background: #f9fafb;
-    }
-
-    .sidebar-section textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    background: #fff;
-    }
-
-    .sidebar-section span {
-    font-size: 12px;
-    color: #64748b;
-    }
-
-    .last-updated {
-    font-size: 12px;
-    color: #94a3b8;
-    margin-top: 10px;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 8px;
-    }
-
-    /* Optional spacing helper */
-    .mt-3 {
-    margin-top: 15px;
-    }
-
-
-
-    .tabs {
-        display: flex;
-        background: #e8e8e8;
-        }
-
-        .tab {
-        flex: 1;
-        padding: 12px 20px;
-        text-align: center;
-        font-size: 14px;
-        color: #666;
-        background: #e8e8e8;
-        border: none;
-        cursor: pointer;
-        font-weight: 500;
-        }
-
-        .tab.active {
-        background: white;
-        color: #333;
-        border-bottom: 3px solid #4A90E2;
-        }
-
-        .sidebar-content {
-        display: none;
-        padding: 20px;
-        background: #fafafa;
-        }
-
-        .sidebar-content.active {
-        display: block;
-        }
-
-        .sidebar-section h5 {
-        font-size: 14px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 12px;
-        }
-
-        .sidebar-section h5.mt-3 {
-        margin-top: 24px;
-        }
-
-        .sidebar-section h5 span {
-        color: #999;
-        font-weight: 400;
-        font-size: 13px;
-        }
-
-        .sidebar-section label {
-        display: block;
-        font-size: 13px;
-        font-weight: normal;
-        color: #555;
-        margin-bottom: 8px;
-        cursor: pointer;
-        line-height: 1.4;
-        }
-
-        .sidebar-section input[type="checkbox"] {
-        margin-right: 8px;
-        cursor: pointer;
-        width: 15px;
-        height: 15px;
-        vertical-align: middle;
-        }
-
-        .textarea-wrapper {
-        position: relative;
-        margin-top: 8px;
-        }
-
-        .sidebar-section textarea {
-        width: 100%;
-        padding: 10px;
-        font-size: 13px;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        resize: vertical;
-        font-family: 'Courier New', monospace;
-        color: #666;
-        line-height: 1.5;
-        }
-
-        .sidebar-section textarea:focus {
-        outline: none;
-        border-color: #4A90E2;
-        }
-
-        .edit-icon {
-        position: absolute;
-        right: 8px;
-        bottom: 8px;
-        color: #999;
-        font-size: 14px;
-        pointer-events: none;
-        }
-
-        .info-card {
-        background: #ffffff;
-        border: 1px solid #e0e0e0;
-        border-radius: 9px;
-        padding: 4px 3px 4px 3px;
-        margin-bottom: 12px;
-        font-size: 13px;
-        color: #333;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-        }
-
-        .info-card p {
-        margin: 0;
-        line-height: 1.5;
-        }
-
-        .info-card .label {
-        font-weight: 600;
-        color: #333;
-        }
-
-        .last-updated {
-        margin-top: 8px;
-        font-size: 12px;
-        color: #999;
-        padding-left: 2px;
-        }
-
-        .regtext td {
-        width: 50% !important;
-    }
-
-    #ogImagePreview {
-    border: 1px solid rgb(221, 221, 221);
-    border-radius: 4px;
-    margin: 0 auto; /* Center the image horizontally */
-    max-width: 100%; /* Make sure it doesn't exceed parent width */
-    }
-
-    .control-label {
-        color: #636f7c;
-        font-weight: 700;
-        display: inline-block;
-        font-size: 14px;
-        text-align: left;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-</style>
 <!--  End -->
 
 
@@ -1586,3 +1011,33 @@ document.querySelectorAll('.sidebar-tab').forEach(btn => {
 
 <!-- end -->
 
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+   
+    const tabButtons = document.querySelectorAll('.sidebar-tab');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          
+            const targetId = this.getAttribute('data-tab');
+
+        
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+          
+            document.querySelectorAll('.sidebar-content').forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hide');
+            });
+
+      
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.remove('hide');
+                targetContent.classList.add('active');
+            }
+        });
+    });
+});
+</script>

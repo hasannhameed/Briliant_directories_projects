@@ -15,6 +15,7 @@ while ($row = mysql_fetch_assoc($post_query)) { $data_categories[] = $row; }
 $page_query = mysql_query("SELECT * FROM `list_seo` WHERE seo_type = 'content' ORDER BY section ASC");
 $seo_pages = array();
 while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
+
 ?>
 
 <style>
@@ -221,6 +222,7 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
                     <th width="120">Actions</th>
                     <th>Post Type Name</th>
                     <th>Classification</th>
+                    <th>Last Sync</th>
                 </tr>
             </thead>
             <tbody>
@@ -241,6 +243,23 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
                     </td>
                     <td><span class="page-name"><?php echo htmlspecialchars($row['data_name']); ?></span></td>
                     <td><span class="badge badge-blue"><i class="fa fa-tag" style="margin-right:4px"></i> <?php echo $suffix; ?></span></td>
+                    <td>
+                        <span style="color:var(--slate-600); font-size: 12px;">
+                            <?php 
+                                $query_str = "SELECT revision_timestamp FROM list_seo WHERE database_id = '" . mysql_real_escape_string($row['data_id']) . "' LIMIT 1";
+                                
+                                $result = mysql_query($query_str);
+                                
+                                if ($result && mysql_num_rows($result) > 0) {
+                                    $seo_row = mysql_fetch_assoc($result);
+                                    $timestamp = $seo_row['revision_timestamp'];
+                                    echo date('M d, Y', strtotime($timestamp)); 
+                                } else {
+                                    echo "Never Updated";
+                                }
+                            ?>
+                        </span>
+                    </td>
                 </tr>
                 <?php endfor; endforeach; ?>
             </tbody>
@@ -256,7 +275,6 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
                 <tr>
                     <th width="120">Actions</th>
                     <th>Identity</th>
-                    <th>Section</th>
                     <th>Last Sync</th>
                 </tr>
             </thead>
@@ -270,7 +288,7 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
                             <button type="button" class="action-btn">Manage <i class="fa fa-chevron-down" style="font-size:10px"></i></button>
                             <div class="dropdown-content">
                                 <a href="<?php echo $edit_url; ?>"><i class="fa fa-pencil-square-o"></i> Edit Metadata</a>
-                                <a href="/<?php echo $page['filename']; ?>" target="_blank"><i class="fa fa-external-link"></i> Live Preview</a>
+                                <a href="https://fiftyinc.com/<?php echo $page['filename']; ?>" target="_blank"><i class="fa fa-external-link"></i> Live Preview</a>
                             </div>
                         </div>
                     </td>
@@ -278,7 +296,7 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
                         <span class="page-name"><?php echo $page['nickname'] ? $page['nickname'] : "Unnamed Page"; ?></span>
                         <span class="page-url">/<?php echo $page['filename']; ?></span>
                     </td>
-                    <td><span class="badge badge-green"><?php echo strtoupper($page['section']); ?></span></td>
+                    <!-- <td><span class="badge badge-green"><?php echo strtoupper($page['section']); ?></span></td> -->
                     <td><span style="color:var(--slate-600); font-size: 12px;"><?php echo date('M d, Y', strtotime($page['revision_timestamp'])); ?></span></td>
                 </tr>
                 <?php endforeach; ?>
