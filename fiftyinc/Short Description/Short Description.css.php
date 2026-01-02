@@ -1,0 +1,1 @@
+.wrong {	color: #F00;	font-weight: bold;}
