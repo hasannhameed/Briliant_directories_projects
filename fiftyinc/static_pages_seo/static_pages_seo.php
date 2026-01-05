@@ -151,71 +151,74 @@
 
                 // // FETCH EXISTING ROW (FOR EMPTY FIELD FALLBACK)
                 // // ----------------------------------------------------
-                // $existing_row = mysql_fetch_assoc(mysql_query("
-                //     SELECT * FROM list_seo 
-                //     WHERE seo_id = $seo_id 
-                //     LIMIT 1
-                // "));
+                $existing_row = mysql_fetch_assoc(mysql_query("
+                    SELECT * FROM list_seo 
+                    WHERE seo_id = $seo_id 
+                    LIMIT 1
+                "));
+
+                
 
                 // // ----------------------------------------------------
                 // // FALLBACK LOGIC — USE DB VALUE IF EMPTY
                 // // ----------------------------------------------------
 
                 // // BASIC SEO
-                // $title = ($title === NULL || $title === '')
-                //     ? $existing_row['title']
-                //     : $title;
 
-                // $meta_desc = ($meta_desc === NULL || $meta_desc === '')
-                //     ? $existing_row['meta_desc']
-                //     : $meta_desc;
+                $title = ($title === NULL || $title === '')
+                    ? $existing_row['title']
+                    : $title;
 
-                // $meta_keywords = ($meta_keywords === NULL || $meta_keywords === '')
-                //     ? $existing_row['meta_keywords']
-                //     : $meta_keywords;
+                $meta_desc = ($meta_desc === NULL || $meta_desc === '')
+                    ? $existing_row['meta_desc']
+                    : $meta_desc;
 
-                // // OPEN GRAPH
-                // $fb_title = ($fb_title === NULL || $fb_title === '')
-                //     ? $existing_row['facebook_title']
-                //     : $fb_title;
+                $meta_keywords = ($meta_keywords === NULL || $meta_keywords === '')
+                    ? $existing_row['meta_keywords']
+                    : $meta_keywords;
 
-                // $fb_desc = ($fb_desc === NULL || $fb_desc === '')
-                //     ? $existing_row['facebook_desc']
-                //     : $fb_desc;
+                // // // OPEN GRAPH
+                $fb_title = ($fb_title === NULL || $fb_title === '')
+                    ? $existing_row['facebook_title']
+                    : $fb_title;
 
-                // // ADVANCED CONTENT
-                // $content_css = ($content_css === NULL || $content_css === '')
-                //     ? $existing_row['content_css']
-                //     : $content_css;
+                $fb_desc = ($fb_desc === NULL || $fb_desc === '')
+                    ? $existing_row['facebook_desc']
+                    : $fb_desc;
 
-                // $content_head = ($content_head === NULL || $content_head === '')
-                //     ? $existing_row['content_head']
-                //     : $content_head;
+                // // // ADVANCED CONTENT
+                $content_css = ($content_css === NULL || $content_css === '')
+                    ? $existing_row['content_css']
+                    : $content_css;
 
-                // $content_footer = ($content_footer === NULL || $content_footer === '')
-                //     ? $existing_row['content_footer']
-                //     : $content_footer;
+                $content_head = ($content_head === NULL || $content_head === '')
+                    ? $existing_row['content_head']
+                    : $content_head;
 
-                // // PAGE OPTIONS
-                // $breadcrumb = ($breadcrumb === NULL || $breadcrumb === '')
-                //     ? $existing_row['breadcrumb']
-                //     : $breadcrumb;
+                $content_footer = ($content_footer === NULL || $content_footer === '')
+                    ? $existing_row['content_footer']
+                    : $content_footer;
 
-                // // IMAGE (KEEP EXISTING IF NOT UPLOADED)
-                // $fb_image_path = empty($fb_image_path)
-                //     ? $existing_row['facebook_image']
-                //     : $fb_image_path;
+                // // // PAGE OPTIONS
+                $breadcrumb = ($breadcrumb === NULL || $breadcrumb === '')
+                    ? $existing_row['breadcrumb']
+                    : $breadcrumb;
 
-                // // JSON SETTINGS (MERGE SAFELY)
+                // // // IMAGE (KEEP EXISTING IF NOT UPLOADED)
+                $fb_image_path = empty($fb_image_path)
+                    ? $existing_row['facebook_image']
+                    : $fb_image_path;
+
+                // // // JSON SETTINGS (MERGE SAFELY)
                 // $old_settings = json_decode($existing_row['content_settings'], true);
                 // if (!is_array($old_settings)) $old_settings = [];
 
                 // $new_settings = json_decode(stripslashes($content_settings), true);
                 // if (!is_array($new_settings)) $new_settings = [];
 
-                // $content_settings = mysql_real_escape_string(
-                //     json_encode(array_merge($old_settings, $new_settings))
-                // );
+                $content_settings = mysql_real_escape_string(
+                    json_encode(array_merge($old_settings, $new_settings))
+                );
 
 
                 // UPDATE
