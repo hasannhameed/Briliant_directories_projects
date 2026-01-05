@@ -213,58 +213,96 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
     </div>
 
     <div id="tab-posts" class="seo-tab-content active">
-        <div class="table-header">
-            <h2>Post Type Settings</h2>
-        </div>
-        <table class="table-seo">
-            <thead>
-                <tr>
-                    <th width="120">Actions</th>
-                    <th>Post Type Name</th>
-                    <th>Classification</th>
-                    <th>Last Sync</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($data_categories as $row): 
-                    for ($i = 0; $i < 2; $i++):
-                        $context = ($i == 0) ? "search_result_page" : "detail_page";
-                        $suffix = ($i == 0) ? "Search Results" : "Detailed View";
-                        $edit_url = "/admin/go.php?widget=post_seo_manager_form&data_id=" . $row['data_id'] . "&page_context=" . $context;
-                ?>
-                <tr>
-                    <td>
-                        <div class="action-dropdown">
-                            <button type="button" class="action-btn">Manage <i class="fa fa-chevron-down" style="font-size:10px"></i></button>
-                            <div class="dropdown-content">
-                                <a href="<?php echo $edit_url; ?>"><i class="fa fa-sliders"></i> Edit SEO Rules</a>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="page-name"><?php echo htmlspecialchars($row['data_name']); ?></span></td>
-                    <td><span class="badge badge-blue"><i class="fa fa-tag" style="margin-right:4px"></i> <?php echo $suffix; ?></span></td>
-                    <td>
-                        <span style="color:var(--slate-600); font-size: 12px;">
-                            <?php 
-                                $query_str = "SELECT revision_timestamp FROM list_seo WHERE database_id = '" . mysql_real_escape_string($row['data_id']) . "' LIMIT 1";
-                                
-                                $result = mysql_query($query_str);
-                                
-                                if ($result && mysql_num_rows($result) > 0) {
-                                    $seo_row = mysql_fetch_assoc($result);
-                                    $timestamp = $seo_row['revision_timestamp'];
-                                    echo date('M d, Y', strtotime($timestamp)); 
-                                } else {
-                                    echo "Never Updated";
-                                }
-                            ?>
-                        </span>
-                    </td>
-                </tr>
-                <?php endfor; endforeach; ?>
-            </tbody>
-        </table>
+    <div class="table-header">
+        <h2>Post Type Settings</h2>
     </div>
+
+    <table class="table-seo">
+        <thead>
+            <tr>
+                <th width="120">Actions</th>
+                <th>Post Type Name</th>
+                <th>Classification</th>
+                <th>Last Sync</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php foreach ($data_categories as $row): 
+                for ($i = 0; $i < 2; $i++):
+
+                    // Context
+                    $context = ($i == 0) ? "search_result_page" : "detail_page";
+
+                    // Label for Classification column
+                    $suffix  = ($i == 0) ? "Search Results" : "Detailed View";
+
+                    // Widget
+                    $widget = ($context == "search_result_page")
+                        ? "post_seo_manager_form"
+                        : "single_post_seo";
+
+                    // URL
+                    $edit_url = "/admin/go.php?widget=" . $widget .
+                                "&data_id=" . $row['data_id'] .
+                                "&page_context=" . $context;
+            ?>
+
+            <tr>
+                <td>
+                    <div class="action-dropdown">
+                        <button type="button" class="action-btn">
+                            Manage <i class="fa fa-chevron-down" style="font-size:10px"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="<?php echo $edit_url; ?>">
+                                <i class="fa fa-sliders"></i> Edit SEO Rules
+                            </a>
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <span class="page-name">
+                        <?php echo htmlspecialchars($row['data_name']); ?>
+                    </span>
+                </td>
+
+                <td>
+                    <span class="badge badge-blue">
+                        <i class="fa fa-tag" style="margin-right:4px"></i>
+                        <?php echo $suffix; ?>
+                    </span>
+                </td>
+
+                <td>
+                    <span style="color:var(--slate-600); font-size: 12px;">
+                        <?php 
+                            $query_str = "
+                                SELECT revision_timestamp 
+                                FROM list_seo 
+                                WHERE database_id = '" . mysql_real_escape_string($row['data_id']) . "' 
+                                LIMIT 1
+                            ";
+
+                            $result = mysql_query($query_str);
+
+                            if ($result && mysql_num_rows($result) > 0) {
+                                $seo_row = mysql_fetch_assoc($result);
+                                echo date('M d, Y', strtotime($seo_row['revision_timestamp']));
+                            } else {
+                                echo "Never Updated";
+                            }
+                        ?>
+                    </span>
+                </td>
+            </tr>
+
+            <?php endfor; endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
 
     <div id="tab-pages" class="seo-tab-content">
         <div class="table-header">
@@ -280,7 +318,7 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
             </thead>
             <tbody>
                 <?php foreach ($seo_pages as $page): 
-                    $edit_url = "/admin/go.php?widget=page_seo_manager_form&seo_type=content&seo_id=" . $page['seo_id'];
+                    $edit_url = "/admin/go.php?widget=static_pages_seo&seo_type=content&seo_id=" . $page['seo_id'];
                 ?>
                 <tr>
                     <td>

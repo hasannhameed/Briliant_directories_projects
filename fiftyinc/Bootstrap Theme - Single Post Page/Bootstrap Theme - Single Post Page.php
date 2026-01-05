@@ -1,4 +1,4 @@
-[widget=seo_front_end]
+
 <?php
 // Check if the feature can show content
 $showFeatureContent = false;

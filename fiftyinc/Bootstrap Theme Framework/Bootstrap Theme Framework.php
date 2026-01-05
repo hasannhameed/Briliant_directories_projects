@@ -1,5 +1,6 @@
-
+[widget=seo_front_end]
 <?php
+
 echo widget("portfolio_email","",$w[website_id],$w);
 echo widget("Email Verification Status","",$w[website_id],$w);
 global $page;

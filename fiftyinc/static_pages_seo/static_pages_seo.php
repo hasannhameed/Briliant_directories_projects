@@ -5,204 +5,276 @@
   // -------------------------------------------------------
   // $db = brilliantDirectories::getDatabaseConfiguration("database");
 
-  if($_GET['page_context'] == "search_result_page"){
+  if($_GET['seo_type'] == "content"){
     
-    $page_context = 'search_result_page';
+        $page_context = $_GET['seo_type'];
 
-  }else if($_GET['page_context'] == 'detail_page'){
+        //$page_context = isset($_GET['page_context']) ? $_GET['page_context'] : 'search_result_page';
 
-    $page_context = 'Details Page - Post Details';
-
-  }else{
-    
-  }
-
-  //$page_context = isset($_GET['page_context']) ? $_GET['page_context'] : 'search_result_page';
-
-  $data_id = isset($_GET['data_id']) ? intval($_GET['data_id']) : 0;
-
-  // Get Post Type Info
-  $row = mysql_fetch_assoc(mysql_query("SELECT * FROM data_categories WHERE data_id = $data_id"));
-  $posttype_id = $data_id;
-
-  // -------------------------------------------------------
-  //  2. FETCH DATA FROM list_seo (Read Operation)
-  // -------------------------------------------------------
-  // We query the list_seo table using the Post Type ID and Page Context
-  $fetch_query = mysql_query("
-      SELECT * FROM list_seo 
-      WHERE database_id = $posttype_id 
-      AND section = '" . mysql_real_escape_string($page_context) . "' 
-      LIMIT 1
-  ");
-  $db_data = mysql_fetch_assoc($fetch_query);
-
-  // Decode the JSON 'content_settings' column (where we store schema, ad settings, etc.)
-  $extras = array();
-  if (!empty($db_data['content_settings'])) {
-      $extras = json_decode($db_data['content_settings'], true);
-  }
-
-  // -------------------------------------------------------
-  //  3. MAP DATA TO FORM VARIABLES (The Fix)
-  //  We map list_seo columns -> to the names your HTML form expects
-  // -------------------------------------------------------
-
-  $seo_row = array();
-
-  // Basic SEO
-  $seo_row['meta_title']       = isset($db_data['title']) ? $db_data['title'] : '';
-  $seo_row['meta_description'] = isset($db_data['meta_desc']) ? $db_data['meta_desc'] : '';
-  $seo_row['meta_keywords']    = isset($db_data['meta_keywords']) ? $db_data['meta_keywords'] : '';
-
-  // Open Graph
-  $seo_row['og_title']         = isset($db_data['facebook_title']) ? $db_data['facebook_title'] : '';
-  $seo_row['og_description']   = isset($db_data['facebook_desc']) ? $db_data['facebook_desc'] : '';
-  $seo_row['og_image']         = isset($db_data['facebook_image']) ? $db_data['facebook_image'] : '';
-
-  // Advanced Code
-  $seo_row['page_level_css_style']    = isset($db_data['content_css']) ? $db_data['content_css'] : '';
-  $seo_row['page_level_header_style'] = isset($db_data['content_head']) ? $db_data['content_head'] : '';
-  $seo_row['page_level_footer_style'] = isset($db_data['content_footer']) ? $db_data['content_footer'] : '';
-
-  // Page Options (Direct Columns)
-  $seo_row['hide_header']          = isset($db_data['hide_header']) ? $db_data['hide_header'] : 0;
-  $seo_row['hide_footer']          = isset($db_data['hide_footer']) ? $db_data['hide_footer'] : 0;
-  $seo_row['hide_top_header_menu'] = isset($db_data['hide_header_links']) ? $db_data['hide_header_links'] : 0;
-  $seo_row['hide_main_menu']       = isset($db_data['hide_from_menu']) ? $db_data['hide_from_menu'] : 0;
-  $seo_row['bread_crumbs']         = isset($db_data['breadcrumb']) ? $db_data['breadcrumb'] : '';
-
-  // Custom JSON Fields (From content_settings)
-  $seo_row['custom_post_schema'] = isset($extras['custom_post_schema']) ? $extras['custom_post_schema'] : '';
-  $seo_row['hide_banner_ad']     = isset($extras['hide_banner_ad']) ? $extras['hide_banner_ad'] : 0;
-  $seo_row['enlarge_image']      = isset($extras['enlarge_image']) ? $extras['enlarge_image'] : 0;
-  $seo_row['apply_noindex']      = isset($extras['apply_noindex']) ? $extras['apply_noindex'] : 0;
+        $seo_id = isset($_GET['seo_id']) ? intval($_GET['seo_id']) : 0;
 
 
-  // Default image for preview
-  $default_image = 'https://fiftyinc.comimages/default-og-image.png';
-  $display_image = !empty($seo_row['og_image']) ? 'https://fiftyinc.com'.$seo_row['og_image'] : $default_image;
+        // -------------------------------------------------------
+        //  2. FETCH DATA FROM list_seo (Read Operation)
+        // -------------------------------------------------------
+        // We query the list_seo table using the Post Type ID and Page Context
+        $seo_string ="
+            SELECT * FROM list_seo 
+            WHERE seo_id = $seo_id
+            AND seo_type = '" . mysql_real_escape_string($page_context) . "' 
+            LIMIT 1
+        ";
+
+        //echo $seo_string;
+
+        $fetch_query = mysql_query($seo_string);
+
+        $db_data = mysql_fetch_assoc($fetch_query);
+
+        // Decode the JSON 'content_settings' column (where we store schema, ad settings, etc.)
+        $extras = array();
+
+        if (!empty($db_data['content_settings'])) {
+            $extras = json_decode($db_data['content_settings'], true);
+        }
+
+        // -------------------------------------------------------
+        //  3. MAP DATA TO FORM VARIABLES (The Fix)
+        //  We map list_seo columns -> to the names your HTML form expects
+        // -------------------------------------------------------
+
+        $seo_row = array();
+
+        // Basic SEO
+        $seo_row['meta_title']       = isset($db_data['title']) ? $db_data['title'] : '';
+        $seo_row['meta_description'] = isset($db_data['meta_desc']) ? $db_data['meta_desc'] : '';
+        $seo_row['meta_keywords']    = isset($db_data['meta_keywords']) ? $db_data['meta_keywords'] : '';
+
+        // Open Graph
+        $seo_row['og_title']         = isset($db_data['facebook_title']) ? $db_data['facebook_title'] : '';
+        $seo_row['og_description']   = isset($db_data['facebook_desc']) ? $db_data['facebook_desc'] : '';
+        $seo_row['og_image']         = isset($db_data['facebook_image']) ? $db_data['facebook_image'] : '';
+
+        // Advanced Code
+        $seo_row['page_level_css_style']    = isset($db_data['content_css']) ? $db_data['content_css'] : '';
+        $seo_row['page_level_header_style'] = isset($db_data['content_head']) ? $db_data['content_head'] : '';
+        $seo_row['page_level_footer_style'] = isset($db_data['content_footer']) ? $db_data['content_footer'] : '';
+
+        // Page Options (Direct Columns)
+        $seo_row['hide_header']          = isset($db_data['hide_header']) ? $db_data['hide_header'] : 0;
+        $seo_row['hide_footer']          = isset($db_data['hide_footer']) ? $db_data['hide_footer'] : 0;
+        $seo_row['hide_top_header_menu'] = isset($db_data['hide_header_links']) ? $db_data['hide_header_links'] : 0;
+        $seo_row['hide_main_menu']       = isset($db_data['hide_from_menu']) ? $db_data['hide_from_menu'] : 0;
+        $seo_row['bread_crumbs']         = isset($db_data['breadcrumb']) ? $db_data['breadcrumb'] : '';
+
+        // Custom JSON Fields (From content_settings)
+        $seo_row['custom_post_schema'] = isset($extras['custom_post_schema']) ? $extras['custom_post_schema'] : '';
+        $seo_row['hide_banner_ad']     = isset($extras['hide_banner_ad']) ? $extras['hide_banner_ad'] : 0;
+        $seo_row['enlarge_image']      = isset($extras['enlarge_image']) ? $extras['enlarge_image'] : 0;
+        $seo_row['apply_noindex']      = isset($extras['apply_noindex']) ? $extras['apply_noindex'] : 0;
 
 
-  // -------------------------------------------------------
-  //  4. FORM SUBMISSION LOGIC (Write Operation)
-  // -------------------------------------------------------
-  if (isset($_POST['save_schema']) || isset($_POST['save_advanced']) || isset($_POST['save_page_options'])) {
-      
-      // Gather Basic Inputs
-      $title          = addslashes($_POST['meta_title']);
-      $meta_desc      = addslashes($_POST['meta_description']);
-      $meta_keywords  = addslashes($_POST['meta_keywords']);
-      $fb_title       = addslashes($_POST['og_title']);
-      $fb_desc        = addslashes($_POST['og_description']);
-      
-      // Gather Advanced Inputs
-      $content_css    = addslashes($_POST['page_level_css_style']);
-      $content_head   = addslashes($_POST['page_level_header_style']);
-      $content_footer = addslashes($_POST['page_level_footer_style']);
+        // Default image for preview
+        $default_image = 'https://fiftyinc.comimages/default-og-image.png';
+        $display_image = !empty($seo_row['og_image']) ? 'https://fiftyinc.com'.$seo_row['og_image'] : $default_image;
 
-      // Gather Page Options
-      $hide_header       = isset($_POST['hide_header']) ? 1 : 0;
-      $hide_footer       = isset($_POST['hide_footer']) ? 1 : 0;
-      $hide_header_links = isset($_POST['hide_top_header_menu']) ? 1 : 0; 
-      $hide_from_menu    = isset($_POST['hide_main_menu']) ? 1 : 0;       
-      $breadcrumb        = addslashes($_POST['bread_crumbs']);
 
-      // Handle Image Upload
-      $fb_image_path = !empty($seo_row['og_image']) ? $seo_row['og_image'] : '';
-      
-      if (isset($_FILES['og_image']) && is_uploaded_file($_FILES['og_image']['tmp_name'])) {
-          $username = brilliantDirectories::getDatabaseConfiguration('website_user');
-          $password = brilliantDirectories::getDatabaseConfiguration('website_pass');
-          $host     = brilliantDirectories::getDatabaseConfiguration('ftp_server');
+        // -------------------------------------------------------
+        //  4. FORM SUBMISSION LOGIC (Write Operation)
+        // -------------------------------------------------------
 
-          $ftp = ftp_connect($host);
-          if ($ftp && ftp_login($ftp, $username, $password)) {
-              ftp_pasv($ftp, true);
-              $filename = time() . '_og_' . basename($_FILES['og_image']['name']);
-              $remote_path = "/public_html/images/custom_og_images/" . $filename;
+        if ( isset($_POST['save_schema']) || isset($_POST['save_advanced']) || isset($_POST['save_page_options'])) {
 
-              if (ftp_put($ftp, $remote_path, $_FILES['og_image']['tmp_name'], FTP_BINARY)) {
-                  $fb_image_path = "/images/custom_og_images/" . $filename;
-              }
-              ftp_close($ftp);
-          }
-      }
+            
+            // ---------- BASIC SEO ----------
+            $title         = !empty($_POST['meta_title'])        ? mysql_real_escape_string($_POST['meta_title'])        : NULL;
+            $meta_desc     = !empty($_POST['meta_description'])  ? mysql_real_escape_string($_POST['meta_description'])  : NULL;
+            $meta_keywords = !empty($_POST['meta_keywords'])     ? mysql_real_escape_string($_POST['meta_keywords'])     : NULL;
 
-      // Pack Extra Settings
-      $settings_array = array(
-          'custom_post_schema' => $_POST['custom_post_schema'],
-          'hide_banner_ad'     => isset($_POST['hide_banner_ad']) ? 1 : 0,
-          'enlarge_image'      => isset($_POST['enlarge_image']) ? 1 : 0,
-          'apply_noindex'      => isset($_POST['apply_noindex']) ? 1 : 0
-      );
-      $content_settings = addslashes(json_encode($settings_array));
+            $fb_title      = !empty($_POST['og_title'])          ? mysql_real_escape_string($_POST['og_title'])          : NULL;
+            $fb_desc       = !empty($_POST['og_description'])    ? mysql_real_escape_string($_POST['og_description'])    : NULL;
 
-      // Check if Row Exists
-      $exists_query = mysql_query("SELECT seo_id FROM list_seo WHERE database_id = $posttype_id AND section = '$page_context'");
-      $exists = mysql_num_rows($exists_query);
+            // ---------- ADVANCED ----------
+            $content_css    = !empty($_POST['page_level_css_style'])    ? mysql_real_escape_string($_POST['page_level_css_style'])    : NULL;
+            $content_head   = !empty($_POST['page_level_header_style']) ? mysql_real_escape_string($_POST['page_level_header_style']) : NULL;
+            $content_footer = !empty($_POST['page_level_footer_style']) ? mysql_real_escape_string($_POST['page_level_footer_style']) : NULL;
 
-      if ($exists) {
-          // UPDATE
-          $query = "
-            UPDATE list_seo SET
-              title           = '$title',
-              meta_desc       = '$meta_desc',
-              meta_keywords   = '$meta_keywords',
-              facebook_title  = '$fb_title',
-              facebook_desc   = '$fb_desc',
-              facebook_image  = '$fb_image_path',
-              content_css     = '$content_css',
-              content_head    = '$content_head',
-              content_footer  = '$content_footer',
-              hide_header     = '$hide_header',
-              hide_footer     = '$hide_footer',
-              hide_header_links = '$hide_header_links',
-              hide_from_menu  = '$hide_from_menu',
-              breadcrumb      = '$breadcrumb',
-              content_settings = '$content_settings'
-            WHERE database_id = $posttype_id AND section = '$page_context'
-          ";
-          
-      } else {
-          // INSERT
-          $filename_slug = $row['data_filename'];
-          
-          $query = "
-            INSERT INTO list_seo 
-            (
-              database_id, section, seo_type, `database`, filename,
-              title, meta_desc, meta_keywords, 
-              facebook_title, facebook_desc, facebook_image,
-              content_css, content_head, content_footer,
-              hide_header, hide_footer, hide_header_links, hide_from_menu, breadcrumb,
-              content_settings
-            )
-            VALUES 
-            (
-              '$posttype_id', '$page_context', 'custom_manager', 'data_categories', '$filename_slug',
-              '$title', '$meta_desc', '$meta_keywords', 
-              '$fb_title', '$fb_desc', '$fb_image_path',
-              '$content_css', '$content_head', '$content_footer',
-              '$hide_header', '$hide_footer', '$hide_header_links', '$hide_from_menu', '$breadcrumb',
-              '$content_settings'
-            )
-          ";
-      }
+            // ---------- PAGE OPTIONS (INTS ONLY) ----------
+            $hide_header       = isset($_POST['hide_header']) ? 1 : 0;
+            $hide_footer       = isset($_POST['hide_footer']) ? 1 : 0;
+            $hide_header_links = isset($_POST['hide_top_header_menu']) ? 1 : 0;
+            $hide_from_menu    = isset($_POST['hide_main_menu']) ? 1 : 0;
+            $breadcrumb        = isset($_POST['bread_crumbs']) ? mysql_real_escape_string($_POST['bread_crumbs']) : '';
 
-      if (mysql_query($query)) {
-          echo "<script>
-              if (typeof swal === 'function') {
-                  swal({ title: 'Success!', text: 'Saved Successfully!', type: 'success' }, function(){ window.location = window.location.href; });
-              } else {
-                  alert('Saved Successfully!'); window.location = window.location.href;
-              }
-          </script>";
-          //echo $query;
-      } else {
-          echo "<script>alert('Error Saving: " . mysql_error() . "');</script>";
-      }
-  }
+
+            // Handle Image Upload
+            $fb_image_path = !empty($seo_row['og_image']) ? $seo_row['og_image'] : '';
+            
+            if (isset($_FILES['og_image']) && is_uploaded_file($_FILES['og_image']['tmp_name'])) {
+                $username = brilliantDirectories::getDatabaseConfiguration('website_user');
+                $password = brilliantDirectories::getDatabaseConfiguration('website_pass');
+                $host     = brilliantDirectories::getDatabaseConfiguration('ftp_server');
+
+                $ftp = ftp_connect($host);
+                if ($ftp && ftp_login($ftp, $username, $password)) {
+                    ftp_pasv($ftp, true);
+                    $filename = time() . '_og_' . basename($_FILES['og_image']['name']);
+                    $remote_path = "/public_html/images/custom_og_images/" . $filename;
+
+                    if (ftp_put($ftp, $remote_path, $_FILES['og_image']['tmp_name'], FTP_BINARY)) {
+                        $fb_image_path = "/images/custom_og_images/" . $filename;
+                    }
+                    ftp_close($ftp);
+                }
+            }
+
+            // Pack Extra Settings
+            $settings_array = array(
+                'custom_post_schema' => $_POST['custom_post_schema'],
+                'hide_banner_ad'     => isset($_POST['hide_banner_ad']) ? 1 : 0,
+                'enlarge_image'      => isset($_POST['enlarge_image']) ? 1 : 0,
+                'apply_noindex'      => isset($_POST['apply_noindex']) ? 1 : 0
+            );
+
+            $content_settings = addslashes(json_encode($settings_array));
+
+            // Check if Row Exists
+            $exists_query = mysql_query("SELECT seo_id FROM list_seo WHERE seo_id = $seo_id AND seo_type = '$page_context'");
+            $exists = mysql_num_rows($exists_query);
+
+            if ($exists) {
+
+
+                // ----------------------------------------------------
+
+                //let update tomarrow
+
+                // // FETCH EXISTING ROW (FOR EMPTY FIELD FALLBACK)
+                // // ----------------------------------------------------
+                // $existing_row = mysql_fetch_assoc(mysql_query("
+                //     SELECT * FROM list_seo 
+                //     WHERE seo_id = $seo_id 
+                //     LIMIT 1
+                // "));
+
+                // // ----------------------------------------------------
+                // // FALLBACK LOGIC — USE DB VALUE IF EMPTY
+                // // ----------------------------------------------------
+
+                // // BASIC SEO
+                // $title = ($title === NULL || $title === '')
+                //     ? $existing_row['title']
+                //     : $title;
+
+                // $meta_desc = ($meta_desc === NULL || $meta_desc === '')
+                //     ? $existing_row['meta_desc']
+                //     : $meta_desc;
+
+                // $meta_keywords = ($meta_keywords === NULL || $meta_keywords === '')
+                //     ? $existing_row['meta_keywords']
+                //     : $meta_keywords;
+
+                // // OPEN GRAPH
+                // $fb_title = ($fb_title === NULL || $fb_title === '')
+                //     ? $existing_row['facebook_title']
+                //     : $fb_title;
+
+                // $fb_desc = ($fb_desc === NULL || $fb_desc === '')
+                //     ? $existing_row['facebook_desc']
+                //     : $fb_desc;
+
+                // // ADVANCED CONTENT
+                // $content_css = ($content_css === NULL || $content_css === '')
+                //     ? $existing_row['content_css']
+                //     : $content_css;
+
+                // $content_head = ($content_head === NULL || $content_head === '')
+                //     ? $existing_row['content_head']
+                //     : $content_head;
+
+                // $content_footer = ($content_footer === NULL || $content_footer === '')
+                //     ? $existing_row['content_footer']
+                //     : $content_footer;
+
+                // // PAGE OPTIONS
+                // $breadcrumb = ($breadcrumb === NULL || $breadcrumb === '')
+                //     ? $existing_row['breadcrumb']
+                //     : $breadcrumb;
+
+                // // IMAGE (KEEP EXISTING IF NOT UPLOADED)
+                // $fb_image_path = empty($fb_image_path)
+                //     ? $existing_row['facebook_image']
+                //     : $fb_image_path;
+
+                // // JSON SETTINGS (MERGE SAFELY)
+                // $old_settings = json_decode($existing_row['content_settings'], true);
+                // if (!is_array($old_settings)) $old_settings = [];
+
+                // $new_settings = json_decode(stripslashes($content_settings), true);
+                // if (!is_array($new_settings)) $new_settings = [];
+
+                // $content_settings = mysql_real_escape_string(
+                //     json_encode(array_merge($old_settings, $new_settings))
+                // );
+
+
+                // UPDATE
+                $query = "
+                    UPDATE list_seo SET
+                    title           = '$title',
+                    meta_desc       = '$meta_desc',
+                    meta_keywords   = '$meta_keywords',
+                    facebook_title  = '$fb_title',
+                    facebook_desc   = '$fb_desc',
+                    facebook_image  = '$fb_image_path',
+                    content_css     = '$content_css',
+                    content_head    = '$content_head',
+                    content_footer  = '$content_footer',
+                    hide_header     = '$hide_header',
+                    hide_footer     = '$hide_footer',
+                    hide_header_links = '$hide_header_links',
+                    hide_from_menu  = '$hide_from_menu',
+                    breadcrumb      = '$breadcrumb',
+                    content_settings = '$content_settings'
+                    WHERE seo_id     = '$seo_id '
+                ";
+                 echo $query;
+            } 
+
+            // else {
+            //     // INSERT
+            //     $query = "
+            //         INSERT INTO list_seo (
+            //             seo_type, title, meta_desc, meta_keywords,
+            //             facebook_title, facebook_desc, facebook_image,
+            //             content_css, content_head, content_footer,
+            //             hide_header, hide_footer, hide_header_links,
+            //             hide_from_menu, breadcrumb, content_settings
+            //         ) VALUES (
+            //             '$page_context', '$title', '$meta_desc', '$meta_keywords',
+            //             '$fb_title', '$fb_desc', '$fb_image_path',
+            //             '$content_css', '$content_head', '$content_footer',
+            //             '$hide_header', '$hide_footer', '$hide_header_links',
+            //             '$hide_from_menu', '$breadcrumb', '$content_settings'
+            //         )
+            //     ";
+            // }
+
+            if (mysql_query($query)) {
+                echo "<script>
+                    if (typeof swal === 'function') {
+                        swal({ title: 'Success!', text: 'Saved Successfully!', type: 'success' }, function(){ window.location = window.location.href; });
+                    } else {
+                        alert('Saved Successfully!'); window.location = window.location.href;
+                    }
+                </script>";
+               
+            } else {
+                echo "<script>alert('Error Saving: " . mysql_error() . "');</script>";
+            }
+        }
+        
+    }
 ?>
 
 
@@ -497,17 +569,17 @@
         <div class="right-side">
             <?php 
             // 1. Get the Data ID from the URL
-            $post_data_id = intval($_GET['data_id']);
+            $seo_id = intval($_GET['seo_id']);
 
             // 2. Query the DB to get the filename (URL Slug) for this post type
-            $sql_link = mysql_query("SELECT data_filename FROM data_categories WHERE data_id = '$post_data_id' LIMIT 1");
+            $sql_link = mysql_query("SELECT * FROM `list_seo` WHERE seo_id = '$seo_id' LIMIT 1");
             $link_row = mysql_fetch_assoc($sql_link);
             
             // 3. Define your Domain
             $website_domain = "https://fiftyinc.com";
             
             // 4. Build the final URL (e.g., https://site.com/events)
-            $live_url = $website_domain . "/" . $link_row['data_filename'];
+            $live_url = $website_domain . "/" . $link_row['filename'];
             ?>
             <?php  
             if( $_GET['page_context'] != 'detail_page' ) {
@@ -531,12 +603,10 @@
 
 
       <div class="schema-settings">
-      <h3>
-  <i class="fa fa-gear"></i>
-  Manage <?php echo htmlspecialchars($row['data_name']); ?> 
-  <?php echo ($_GET['page_context'] == 'search_result_page') ? 'Search Results Page' : (($_GET['page_context'] == 'detail_page') ? 'Detail Page' : 'Unknown Page'); ?> 
-  SEO Settings
-</h3>
+        <h3>
+            <i class="fa fa-gear"></i>
+            Manage <?php echo htmlspecialchars($link_row['nickname']); ?> SEO Settings
+        </h3>
 
     <!-- Tab Navigation -->
     <div class="tab-navigation">
@@ -559,19 +629,23 @@ if ($row['data_type'] == 20) {
     <div id="seoTab" class="tab-content active">
       <form method="post" enctype="multipart/form-data">
         <table class="regtext"> 
+
           <tr>
             <td colspan="2">
               <div class="section-heading">SEO Meta Tags</div>
             </td>
           </tr>
+
           <tr>
+
             <td>
-               <label class="control-label">Meta Title <span style="color:red;">*</span></label>
-    <div class="meta-title-box">
-      <textarea name="meta_title" id="meta_title" rows="3" maxlength="160" placeholder="<?= $SEOtitleplaceholder ?>"><?php echo htmlspecialchars($seo_row['meta_title']); ?></textarea>
-      <div class="char-count"><span id="metaTitleCount">0</span> characters</div>
-    </div>
+                <label class="control-label">Meta Title <span style="color:red;">*</span></label>
+                <div class="meta-title-box">
+                <textarea name="meta_title" id="meta_title" rows="3" maxlength="160" placeholder="<?= $SEOtitleplaceholder ?>"><?php echo htmlspecialchars($seo_row['meta_title']); ?></textarea>
+                <div class="char-count"><span id="metaTitleCount">0</span> characters</div>
+                </div>
             </td>
+
             <td>
               <label class="control-label">Meta Description</label>
               <div class="meta-title-box">
@@ -579,6 +653,7 @@ if ($row['data_type'] == 20) {
                 <div class="char-count"><span id="metaDescCount">0</span> characters</div>
               </div>
             </td>
+
           </tr>
 			<tr>
   <td colspan="2">
