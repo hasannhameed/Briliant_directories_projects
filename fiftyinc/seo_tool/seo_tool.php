@@ -306,7 +306,7 @@ while ($row = mysql_fetch_assoc($page_query)) { $seo_pages[] = $row; }
 
     <div id="tab-pages" class="seo-tab-content">
         <div class="table-header">
-            <h2>Static Page SEO</h2>
+            <h2>Single Page SEO</h2>
         </div>
         <table class="table-seo">
             <thead>

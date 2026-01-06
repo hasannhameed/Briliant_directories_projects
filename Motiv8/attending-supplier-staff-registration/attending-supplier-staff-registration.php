@@ -569,7 +569,7 @@ if ($supplier_id == $user_id && $_GET['token'] != $staffToken || empty($supplier
                 <div class="form-group">
                   <label for="company_name"><span></span> Company Name </label>
                   <input type="text" class="form-control" id="company_name" value="<?= $supplier_data['company'] ?>"
-                    placeholder="Enter your answer" name="company_name" required readonly>
+                    placeholder="Enter your answer" name="company_name" required>
                   <small class="text-danger company_name"></small>
                 </div>
 				

@@ -218,10 +218,10 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') { ?>
 
         // Insert live event post
         $insertEventQuery = "
-           INSERT INTO live_events_posts (post_id, user_id, supplier_id, staus, video_option,
+           INSERT INTO live_events_posts (post_id, user_id, supplier_id, staus, video_option, event_description,
            start_date, end_date, start_time, end_time)
            VALUES ('$event_id', '$user_id', '$supplier_id', 1, '$video_option',
-           '$post_start_date', '$post_expire_date', '$start_time', '$end_time')";
+           '$brief_summary','$post_start_date', '$post_expire_date', '$start_time', '$end_time')";
 
         if (mysql_query($insertEventQuery)) {
           $Id = mysql_insert_id();
@@ -731,10 +731,10 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') { ?>
                 </div>
 
                 <div class="form-group">
-                  <label for="brief_summary">Summary of what you'll be showing at the Event<span
+                  <label for="brief_summary">Promotional description of what you'll be showing at the event<span
                       class="text-danger">*</span></label>
-                    <p>Please enter a promotional description of what you'll be showing to the manufacturer at this event</p>
-                  <?php if (isset($event_id) && $event_id == 993) { ?>
+                    <p><?php echo $event_id; ?>Please enter a promotional description of what you'll be showing to the manufacturer at this event</p>
+                    <?php if (isset($event_id) && $event_id == 993) { ?>
                     <p>What you enter here is what Audi will use to determine if they would like you to exhibit.</p>
                   <?php } ?>
                   <textarea name="brief_summary" class="form-control" id="brief_summary" cols="30" rows="3" required 

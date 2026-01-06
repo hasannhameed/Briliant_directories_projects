@@ -241,7 +241,7 @@
                     content_settings = '$content_settings'
                     WHERE seo_id     = '$seo_id '
                 ";
-                 echo $query;
+                 //echo $query;
             } 
 
             // else {
@@ -553,7 +553,12 @@
       display: flex;
       justify-content: space-between;
   }
-    
+  .photo-upload-area img{
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+
+  }
 
 </style>
 

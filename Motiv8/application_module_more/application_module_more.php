@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                     <tr>
                                         <td class="left_data">
-                                            Summary of what you'll be showing at the event
+                                             Promotional description of what you'll be showing at the event
                                         </td>
                                         <td>
                                             <?php echo $row['brief_summary']; ?>
