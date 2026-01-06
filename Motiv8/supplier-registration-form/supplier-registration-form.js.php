@@ -432,3 +432,48 @@ $(".supplier_form").on("submit", function (e) {
         });
     });
 </script>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // 1. Handle the "Use It" button click
+    const useItBtn = document.querySelector('.coupon-wrapper button');
+    const promoInput = document.getElementById('promo_code_section');
+    const couponCodeSpan = document.querySelector('.coupon-wrapper span span');
+
+    // if (useItBtn && promoInput && couponCodeSpan) {
+    //     useItBtn.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         // Get the text from the red span and put it in the input
+    //         promoInput.value = couponCodeSpan.innerText.trim();
+    //         // Optional: Trigger the "Apply" button automatically
+    //         document.getElementById('coupon_code').click();
+    //     });
+    // }
+
+    // 2. Browser Alert on Form Submission
+    // Target the main search/payment form
+    const mainForm = document.querySelector('form.website-search') || document.querySelector('#ordersumm').closest('form');
+
+    if (mainForm) {
+        mainForm.addEventListener('submit', function(e) {
+            const hasAvailableCredit = document.querySelector('.coupon-wrapper');
+            const isInputEmpty = promoInput.value.trim() === "";
+
+            // If credit is sitting there but the user didn't type/paste it in
+            if (hasAvailableCredit && isInputEmpty) {
+                const confirmChoice = confirm("You have an available Event Credit Code. Would you like to use it before continuing?");
+                
+                if (confirmChoice) {
+                    // Stop form submission so they can apply the code
+                    e.preventDefault();
+                    promoInput.focus();
+                    promoInput.style.border = "2px solid #bcc631";
+                }
+            }
+        });
+    }
+});
+</script>

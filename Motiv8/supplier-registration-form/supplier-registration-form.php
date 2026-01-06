@@ -42,6 +42,16 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') { ?>
   }
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+
+
+    // if ($_SERVER['REMOTE_ADDR'] == '49.205.169.64') {
+    //     exit('Access Denied');
+    //     echo "working";
+    // }
+
+
+
     if (!empty($_POST['packages_section'])) {
       $form_id = $_POST['form_id'];
       $invoice_email = $_POST['invoice_email'];
@@ -628,7 +638,7 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') { ?>
                       <!-- &nbsp;<span class='badge label-primary loadind hide'>loading...</span> -->
                       <div class="input-group">
                         <input name="promo_code_section" value="" placeholder="Enter code here" autocomplete="off"
-                          class="form-control " data-fv-field="refcode" type="text" id="promo_code_section">
+                          class="form-control promo_code_section" data-fv-field="refcode" type="text" id="promo_code_section">
                         <span class="input-group-btn">
                           <button class="btn btn-success" type="button" id="coupon_code">Apply</button>
                         </span>
@@ -847,7 +857,7 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') { ?>
                   <small class="text-danger agreement_radio_eight"></small>
                 </div>
                 <div class="submit_btn text-right">
-                  <button type="submit" class="btn btn-primary btn-lg btn-block" id="registerButton" data-toggle="modal"
+                  <button type="submit" class="btn btn-primary btn-lg btn-block registerButton_custom" id="registerButton" data-toggle="modal"
                     data-target="#paypalModal">Register Now</button>
                   <noscript>
                     <style>
@@ -1081,7 +1091,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const useButton = document.createElement('button');
     useButton.textContent = 'Use it';
-    useButton.className = 'btn btn-sm btn-primary';
+    useButton.className = 'btn btn-sm btn-primary use_btn';
+    useButton.type = "button";
     useButton.style.padding = '3px 8px';
     useButton.style.fontSize = '12px';
     useButton.addEventListener('click', function () {
@@ -1117,3 +1128,27 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 
+<script>
+  let submit_btn = document.querySelector('.submit_btn');
+  submit_btn.addEventListener("click", function(e) {
+
+    if (!e.target.classList.contains('registerButton_custom')) return;
+
+    let coupon_wrapper = document.querySelector('.coupon-wrapper');
+    let promo_code_section = document.querySelector(".promo_code_section");
+
+    if (coupon_wrapper && promo_code_section && promo_code_section.value.trim() === "") {
+
+        let ask = confirm("You have an unused coupon. Would you like to use it?");
+
+        if (ask) {
+            e.preventDefault();
+            promo_code_section.focus();
+            return;
+        }
+
+        
+    }
+});
+
+</script>
