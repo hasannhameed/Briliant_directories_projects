@@ -510,6 +510,7 @@
         padding: 12px;
         margin-bottom: 10px;
     }
+    
     .label {
       display: inline;
       padding: .2em .6em .3em;
