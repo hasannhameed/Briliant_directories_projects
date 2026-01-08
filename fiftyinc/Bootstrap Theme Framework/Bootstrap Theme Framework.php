@@ -1,4 +1,4 @@
-[widget=seo_front_end]
+
 <?php
 
 echo widget("portfolio_email","",$w[website_id],$w);
@@ -223,4 +223,5 @@ echo widget("Bootstrap Theme - Footer - Scripts", "", $w['website_id'], $w);
 echo $wa['website_footer'];
 ?>
 </body>
+[widget=seo_front_end]
 </html>

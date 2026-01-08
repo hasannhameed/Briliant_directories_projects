@@ -1,4 +1,5 @@
 <?  
+
 /**
 
 * This widget follows BD code standards 
@@ -10,6 +11,7 @@
 * Last Edited By: 
 * -- Oscar Esquivel 11/20/2015
 */
+
 $post = $_ENV['post'];
 $user = getUser($post['user_id'],$w);
 $post = getMetaData("data_posts",$post['post_id'],$post,$w);
@@ -21,21 +23,25 @@ $user['filename'] = $filenameBdString->modifiedValue;
 foreach ($post as $key => $value) {
     $post[$key] = stripslashes($value);
 } 
+
 $post['image'] = showImage($post['post_image'],"data_posts",$w);
 $_ENV['results_loop_image'][] = $post['post_image'];
 
 if ($post['post_content'] == "" && $post['post_article'] != "") { 
     $post['post_content'] = $post['post_article']; 
 }
+
 //$photo = getProfilePhoto($post[user_id],"thumbnail",$w);
 
 if ($post['post_caption'] == "" && $post['post_content'] != "") { 
     $post['post_caption'] = limitWords(strip_tags($post['post_content']),$dc['caption_length']);
 }
+
 if ($post['post_start_date'] != "") { 
     $post['month'] = date("M",strtotime($post['post_start_date']));
     $post['day'] = date("d",strtotime($post['post_start_date']));
 }
+
 if ($post['distance'] > 0) { 
     
     if ($post['distance'] > 1) { 
@@ -46,8 +52,11 @@ if ($post['distance'] > 0) {
     }
     $post['post_distance']="<img src='/images/green-check.png' style='vertical-align:middle;' /> ".$post['post_distance']."<br />";
 }
+
 $tags = array();
+
 /// make sure the count is 0 instead of checking the string
+
 if ($post['post_tags'] != "" && count($tags) == 0) { 
     $post['post_tags'] = explode(",",rtrim($post['post_tags'],", "));
     
@@ -63,9 +72,11 @@ if ($post['post_tags'] != "" && count($tags) == 0) {
         $tags = $post['post_tags']; 
     }
 }
+
 $post['post_video_link'] = $post['post_video'];
 $videoOembed = new oembed_controller($post['post_video_link'],null,$post['post_image']);
 $videoData = $videoOembed->getOembedData();
+
 if (!empty($videoData)) {
     $post['post_video'] = $videoData->html;
     $post['post_video_oembed'] = (array)$videoData;
