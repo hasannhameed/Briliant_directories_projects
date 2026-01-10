@@ -210,3 +210,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 </script>
 
+<script>
+		
+(function () {
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes('??')) {
+        const fixedUrl = currentUrl.replace('??', '?');
+
+        if (fixedUrl !== currentUrl) {
+            window.location.replace(fixedUrl);
+        }
+    }
+})();
+
+</script>

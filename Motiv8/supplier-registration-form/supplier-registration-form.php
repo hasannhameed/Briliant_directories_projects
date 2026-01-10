@@ -743,7 +743,7 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') { ?>
                 <div class="form-group">
                   <label for="brief_summary">Promotional description of what you'll be showing at the event<span
                       class="text-danger">*</span></label>
-                    <p><?php echo $event_id; ?>Please enter a promotional description of what you'll be showing to the manufacturer at this event</p>
+                    <p><?php //echo $event_id; ?>Please enter a promotional description of what you'll be showing to the manufacturer at this event</p>
                     <?php if (isset($event_id) && $event_id == 993) { ?>
                     <p>What you enter here is what Audi will use to determine if they would like you to exhibit.</p>
                   <?php } ?>

@@ -149,6 +149,7 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') {
         '$internet_wifi', '$attendance_numbers', '$event_briefing', '$areas_access', '$manufacturer_attendees',
         '$access_requirement', '$event_hours', '$supplier_id', '$user_id', '$post_id', '$update_time', '$packages_section','$final_file_name','$otherequipment','$customphotoid', '$travel_method', '$travel_details'
     )";
+    
     //echo $insertQuery;
     // if ($_POST['staff_id'] == $user_data['user_id'] || strtolower($_POST['staff_email']) == strtolower($user_data['email'])) {
 
@@ -952,8 +953,17 @@ if ($supplier_id == $user_id && $_GET['token'] != $staffToken || empty($supplier
       <div class="container">
         <div class="row">
           <div class="col-md-12 text-center">
-            <h1>Sorry!</h1>
-            <h4>Event Registration is Closed</h4>
+            <?php
+              $requestUri = $_SERVER['REQUEST_URI'];
+              $hasDoubleQuestion = (strpos($requestUri, '??') !== false);
+            ?>
+             <?php if ($hasDoubleQuestion) { ?>
+                <h1>Please Wait</h1>
+                <h4>Taking you to the registration page…</h4>
+            <?php } else { ?>
+                <h1>Sorry!</h1>
+                <h4>Event Registration is Closed</h4>
+            <?php } ?>
           </div>
         </div>
       </div>

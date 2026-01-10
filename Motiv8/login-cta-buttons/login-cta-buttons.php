@@ -24,7 +24,7 @@
         <?php } else { ?>
             <!-- $_GET['ogin_direct_url'] create the same logic for this -->
             <li class="nav btn-block">
-                <a href="/checkout/33?login_direct_url=/<?= urlencode($_GET['login_direct_url'] ?? '') ?>" id="link269" class="btn btn-primary btn-lg btn-block "> 
+				<a href="/createanaccount<?= urlencode($_GET['login_direct_url'] ?? '') ?>" id="link269" class="btn btn-primary btn-lg btn-block "> 
                     <span class="inline-block">Create an account</span>
                 </a>
             </li>
