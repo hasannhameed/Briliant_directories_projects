@@ -1,0 +1,1 @@
+<?php $_REQUEST["active_block"] = "default"; echo widget("Field - BDBlocks Gallery"); unset($_REQUEST["active_block"]); ?>

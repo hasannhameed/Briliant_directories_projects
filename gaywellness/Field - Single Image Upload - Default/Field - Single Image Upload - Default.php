@@ -1,0 +1,1 @@
+<?php $_REQUEST["active_block"] = "default"; echo widget("Field - Single Image Upload"); unset($_REQUEST["active_block"]); ?>

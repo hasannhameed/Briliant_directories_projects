@@ -1,0 +1,1 @@
+<?php $_REQUEST["active_block"] = "default"; echo widget("Profile - Image Video Slider"); unset($_REQUEST["active_block"]); ?>

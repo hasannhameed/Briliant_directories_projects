@@ -1,0 +1,9 @@
+		<div class="col-xs-6 bpad norpad nolpad" style="text-align: center;"><a class="btn-sm btn btn-block" href="/<?php echo strtolower(str_replace(' ', '-', $profs['city_name'])); ?>/gay-massage" style="background-color:#fef0e4; color:#0D3F4F;"><strong>Massage</strong></a></div>
+		<div class="col-xs-6 bpad norpad" style="text-align: center;"><a class="btn-sm btn btn-block" href="/<?php echo strtolower(str_replace(' ', '-', $profs['city_name'])); ?>/fitness-yoga" style="background-color:#fef0e4; color:#0D3F4F;"><strong>Fitness & Yoga</strong></a></div>
+		<div class="col-xs-6 bpad norpad nolpad" style="text-align: center;"><a class="btn-sm btn btn-block" href="/<?php echo strtolower(str_replace(' ', '-', $profs['city_name'])); ?>/hair-skincare" style="background-color:#fef0e4; color:#0D3F4F;"><strong>Hair & Skincare</strong></a></div>
+		<div class="col-xs-6 bpad norpad" style="text-align: center;"><a class="btn-sm btn btn-block" href="/gay-therapy-and-coaching" style="background-color:#fef0e4; color:#0D3F4F;"><strong>Therapy/Coach</strong></a></div>
+		<div class="col-xs-6 bpad norpad nolpad" style="text-align: center;"><a class="btn-sm btn btn-block" href="/<?php echo strtolower(str_replace(' ', '-', $profs['city_name'])); ?>/holistic-wellness" style="background-color:#fef0e4; color:#0D3F4F;"><strong>Holistic Wellness</strong></a></div>
+        <div class="col-xs-6 bpad norpad " style="text-align: center;"><a class="btn-sm btn btn-block" href="/<?php echo strtolower(str_replace(' ', '-', $profs['city_name'])); ?>/resorts-and-spas" style="background-color:#fef0e4; color:#0D3F4F;"><strong>Resorts & Spas</strong></a></div>
+<div class="clearfix "></div> 
+
+		

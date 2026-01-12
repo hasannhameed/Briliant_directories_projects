@@ -1,0 +1,3 @@
+<div class="module h5">
+	<strong>Disclaimer: </strong>I acknowledge my services are strictly professional, therapeutic, and intended for health and wellness purposes only. I adhere to all applicable laws and ethical standards governing my services. Any requests for inappropriate, illicit, or non-professional services will not be tolerated and may result in immediate termination of the session.
+</div>

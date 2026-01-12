@@ -1,0 +1,1 @@
+<img src="https://gaywellness.com/images/FITNESS-YOGA-BANNER-1.png" class="fr-fic fr-dii" width="197">

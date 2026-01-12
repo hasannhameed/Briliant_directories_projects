@@ -1,0 +1,1 @@
+Gay Friends, Dating & Community in <?php echo $profs['city_name'] ?>

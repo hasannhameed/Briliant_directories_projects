@@ -1,0 +1,1 @@
+<?php $_REQUEST["active_block"] = "client-mobile"; echo widget("Block - Listings Map"); unset($_REQUEST["active_block"]); ?>

@@ -1,0 +1,1 @@
+<?php $_REQUEST["active_block"] = "default"; echo widget("Bootstrap Theme - Travel Scheduler"); unset($_REQUEST["active_block"]); ?>

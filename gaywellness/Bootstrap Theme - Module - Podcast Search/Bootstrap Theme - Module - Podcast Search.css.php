@@ -1,0 +1,3 @@
+.categoryVideos {
+width: 100%;
+}

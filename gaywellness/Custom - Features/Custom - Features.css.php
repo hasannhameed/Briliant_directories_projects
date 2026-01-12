@@ -1,0 +1,4 @@
+.col-xs-6 {
+padding-right: 0px!important;
+ padding-left: 0px!important;
+}

@@ -1,0 +1,1 @@
+<div id="currentMonth"></div>

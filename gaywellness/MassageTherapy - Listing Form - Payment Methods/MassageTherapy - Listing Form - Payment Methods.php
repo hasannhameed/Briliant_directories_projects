@@ -1,0 +1,33 @@
+<div class="form-group">
+	<div class="col-sm-12">
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-0" type="checkbox" name="payment_methods[]"  autocomplete="off" value="americanexpress" data-fv-field="payment_methods[]"> American Express</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-1" type="checkbox" name="payment_methods[]" autocomplete="off" value="applepay" data-fv-field="payment_methods[]"> Apple Pay</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-2" type="checkbox" name="payment_methods[]" autocomplete="off" value="barter" data-fv-field="payment_methods[]"> Barter</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-3" type="checkbox" name="payment_methods[]" autocomplete="off" value="bitcoin" data-fv-field="payment_methods[]"> Bitcoin</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-4" type="checkbox" name="payment_methods[]" autocomplete="off" value="cash" data-fv-field="payment_methods[]"> Cash</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-5" type="checkbox" name="payment_methods[]" autocomplete="off" value="check" data-fv-field="payment_methods[]"> Check</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-6" type="checkbox" name="payment_methods[]" autocomplete="off" value="dash" data-fv-field="payment_methods[]"> Dash</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-7" type="checkbox" name="payment_methods[]" autocomplete="off" value="discover" data-fv-field="payment_methods[]"> Discover</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-8" type="checkbox" name="payment_methods[]" autocomplete="off" value="ether" data-fv-field="payment_methods[]"> Ether</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-9" type="checkbox" name="payment_methods[]" autocomplete="off" value="googlewallet" data-fv-field="payment_methods[]"> Google Wallet</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-10" type="checkbox" name="payment_methods[]" autocomplete="off" value="interacdebit" data-fv-field="payment_methods[]"> Interac Debit</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-11" type="checkbox" name="payment_methods[]" autocomplete="off" value="mastercard" data-fv-field="payment_methods[]"> Mastercard</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-12" type="checkbox" name="payment_methods[]" autocomplete="off" value="paypal" data-fv-field="payment_methods[]"> PayPal</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-13" type="checkbox" name="payment_methods[]" autocomplete="off" value="quickpay" data-fv-field="payment_methods[]"> Quick Pay</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-14" type="checkbox" name="payment_methods[]" autocomplete="off" value="ripple" data-fv-field="payment_methods[]"> Ripple</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-15" type="checkbox" name="payment_methods[]" autocomplete="off" value="samsungpay" data-fv-field="payment_methods[]"> Samsung Pay</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-16" type="checkbox" name="payment_methods[]" autocomplete="off" value="square_cash" data-fv-field="payment_methods[]"> Square Cash</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-17" type="checkbox" name="payment_methods[]" autocomplete="off" value="venmo" data-fv-field="payment_methods[]"> Venmo</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-18" type="checkbox" name="payment_methods[]" autocomplete="off" value="visa" data-fv-field="payment_methods[]"> Visa</label></div>
+	<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-19" type="checkbox" name="payment_methods[]" autocomplete="off" value="Tikkie" data-fv-field="payment_methods[]"> Tikkie</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-20" type="checkbox" name="payment_methods[]" autocomplete="off" value="Revolut" data-fv-field="payment_methods[]"> Revolut</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-21" type="checkbox" name="payment_methods[]" autocomplete="off" value="Stripe" data-fv-field="payment_methods[]"> Stripe</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-22" type="checkbox" name="payment_methods[]" autocomplete="off" value="Paylib" data-fv-field="payment_methods[]"> Paylib</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-23" type="checkbox" name="payment_methods[]" autocomplete="off" value="myOptions" data-fv-field="payment_methods[]"> myOptions</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-24" type="checkbox" name="payment_methods[]" autocomplete="off" value="Cookies" data-fv-field="payment_methods[]"> Cookies</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-25" type="checkbox" name="payment_methods[]" autocomplete="off" value="N26" data-fv-field="payment_methods[]"> N26</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-26" type="checkbox" name="payment_methods[]" autocomplete="off" value="Satispay" data-fv-field="payment_methods[]"> Satispay</label></div>
+		<div class="checkbox d-inline-flex pr-2"><label><input id="massagetherapy-payment-methods-27" type="checkbox" name="payment_methods[]" autocomplete="off" value="Biz" data-fv-field="payment_methods[]"> Biz</label></div>
+		
+		<span class="help-block form-field-help-block">(Select as few or as many payment methods you accept from your customers.)</span></div>
+</div>

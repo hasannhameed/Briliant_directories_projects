@@ -1,0 +1,1 @@
+<h1><div class="btn-city-mobile col-sm-12 hidden-sm hidden-md hidden-lg hidden-xl"><?php echo $profs['city_name'] ?> Gay Massage & Wellness Providers</div></h1> 

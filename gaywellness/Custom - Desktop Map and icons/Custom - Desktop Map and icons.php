@@ -1,0 +1,3 @@
+[widget=Block - Listings Map - client-desktop]
+		<a href="/connect-events?category%5B%5D=<?php echo $profs['city_name']; ?>" class="gc-connect-icon-link"><img src="https://gaywellness.com/images/icons/connect-events.png" alt="Events" class="gc-connect-icon fr-fic fr-dii" width="170" height="170"></a>
+		<a href="/discussions?category%5B%5D=<?php echo $profs['city_name']; ?>" class="gc-connect-icon-link"><img src="https://gaywellness.com/images/icons/connect-discussions.png" alt="Discussions" class="gc-connect-icon fr-fic fr-dii" width="170" height="170"></a>

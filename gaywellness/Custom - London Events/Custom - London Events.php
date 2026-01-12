@@ -1,0 +1,1 @@
+<div class="btn-blue"><a href="/events?location_value=London%2C+UK&city=London&county_sn=Greater+London&stateSearchLN=England&country_sn=GB&location_type=locality&stateSearch=England&swlat=51.38494009999999&nelat=51.6723432&swlng=-0.3514683&nelng=0.148271&lat=51.5072178&lng=-0.1275862&faddress=London%2C+UK&place_id=ChIJdd4hrwug2EcRmSrV3Vo6llI">Events</a></div>
