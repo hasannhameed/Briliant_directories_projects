@@ -32,16 +32,18 @@ if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id'], $_GET['id']))
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['new_owner'], $_GET['user_id'])) {
-    $new_owner = (int)$_GET['new_owner'];
-    $user_id   = (int)$_GET['user_id'];
+
+    $new_owner = (int) $_GET['new_owner'];
+    $user_id   = (int) $_GET['user_id'];
 
     $update_sql = "UPDATE users_data SET owners = $new_owner WHERE user_id = $user_id";
     $query_check = mysql_query($update_sql);
 
-    if ($query_check) {
+    // Check affected rows
+    if ($query_check && mysql_affected_rows() === 1) {
         ?>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function () {
                 swal("Success!", "Owner updated successfully!", "success");
             });
         </script>
@@ -49,15 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['new_owner'], $_GET['use
     } else {
         ?>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                swal("Error!", "Failed to update owner. Please try again.", "error");
+            document.addEventListener("DOMContentLoaded", function () {
+                swal("Error!", "No changes were made or update failed.", "error");
             });
         </script>
         <?php
     }
-
-  
 }
+
 ?>
 
 
@@ -286,7 +287,6 @@ $past_waitlist_string = "SELECT
                                 </tr>
                             </thead>
                             <tbody>
-                                
                                 <?php 
                                 if(mysql_num_rows($res2)>0){
                                 while ($rowss = mysql_fetch_assoc($res2)) { ?>
@@ -390,7 +390,7 @@ $past_waitlist_string = "SELECT
                                                             $owners_q = mysql_query("SELECT user_id, first_name, last_name FROM users_data WHERE subscription_id = 4");
                                                           ?>
                                                           <form method="get" id="ownerForm<?= $user_id; ?>">
-                                                              <select name="new_owner" onchange="this.form.submit();">
+                                                              <select name="new_owner" onchange="this.form.submit();" >
                                                                   <option value="0">Select an owner</option>
                                                                   <?php while ($owner = mysql_fetch_assoc($owners_q)) : ?>
                                                                       <option value="<?= (int)$owner['user_id']; ?>" 
@@ -728,7 +728,7 @@ $past_waitlist_string = "SELECT
                                     </tr>
                                 <?php }
                                 }else{ ?>
-                                 <div class="alert col-sm-12 alert_info alert_custom" style="font-size: large;">No Events Avalable</div>
+                                    <div class="alert col-sm-12 alert_info alert_custom" style="font-size: large;">No Events Avalable</div>
                                <?php  } ?>
                             </tbody>
                         </table>

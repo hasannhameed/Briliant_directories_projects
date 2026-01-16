@@ -37,7 +37,7 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') {
 
 
     $full_name = $_POST['full_name'];
-	 $customphotoid =$_POST['customphotoid'];
+	  $customphotoid =$_POST['customphotoid'];
     $is_event_coordinator = $_POST['is_event_coordinator'];
     $large_items = $_POST['large_items'];
     $job_title = $_POST['job_title'];
@@ -180,7 +180,7 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') {
                   Swal.fire({
                     title: 'Registration Received!',
                     text: 'Please look out for your confirmation email with important event information
-(Check Junk/Spam)',
+                   (Check Junk/Spam)',
                     icon: 'success',
                     showCancelButton: false,
                     allowOutsideClick: false,
@@ -310,7 +310,8 @@ if ($supplier_id == $user_id && $_GET['token'] != $staffToken || empty($supplier
 
   ?>
   <style>
-    .swal2-icon .swal2-icon-content {
+    
+.swal2-icon .swal2-icon-content {
     display: flex;
     align-items: center;
     font-size: 1.75em;

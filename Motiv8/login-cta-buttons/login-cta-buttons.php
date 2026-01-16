@@ -7,6 +7,7 @@
         $checkoutUrl = '';
 
         if (!empty($redirectUrl)) {
+            
             if (strpos($redirectUrl, 'attending-supplier-staff-registration') !== false) {
                 $checkoutUrl = '/checkout/36';
             } elseif (strpos($redirectUrl, 'supplier-registration') !== false) {

@@ -4,6 +4,31 @@
     // Decrypt post_id from URL param
     // ===============================
 
+    //echo 'working';
+    //echo $_SERVER["REQUEST_URI"];
+
+
+    session_start();
+
+    if (!isset($_COOKIE['userid']) || $_COOKIE['userid'] === '') {
+
+        $redirect_url = !empty($_SERVER['REQUEST_URI'])
+            ? $_SERVER['REQUEST_URI']
+            : '/home';
+
+        $_SESSION['redirect_url'] = $redirect_url;
+
+        header(
+            "Location: https://www.motiv8search.com/login?redirect=" .
+            urlencode($_SESSION['redirect_url'])
+        );
+        exit();
+    }
+
+
+
+
+
     $postId = 0; // default
     $event_name = '';
     $post_title = '';
@@ -150,11 +175,20 @@
         </div>
     <?php } else { ?>
         <section class="col-md-10 col-md-offset-1 main_form">
-            <div class="container" bis_skin_checked="1">
-                <div class="row" bis_skin_checked="1">
-                    <div class="col-md-12 text-center" bis_skin_checked="1">
-                        <h2> No event selected for waitlist registration.!</h1>
-
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <?php
+                        $requestUri = $_SERVER['REQUEST_URI'];
+                        $hasDoubleQuestion = (strpos($requestUri, '??') !== false);
+                        ?>
+                        <?php if ($hasDoubleQuestion) { ?>
+                            <h1>Please Wait</h1>
+                            <h4>Taking you to the registration page…</h4>
+                        <?php } else { ?>
+                            <h1>Sorry!</h1>
+                            <h4>No event selected for waitlist registration.!</h4>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -213,4 +247,14 @@
                 });
             }
         });
+    </script>
+    <script>
+        (function () {
+            var url = window.location.href;
+
+            if (url.indexOf('??') !== -1) {
+                var cleanUrl = url.replace('??', '?');
+                window.location.replace(cleanUrl);
+            }
+        })();
     </script>

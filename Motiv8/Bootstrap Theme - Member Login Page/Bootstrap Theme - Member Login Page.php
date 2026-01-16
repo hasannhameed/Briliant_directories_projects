@@ -286,16 +286,19 @@ if(!isset($_COOKIE['userid']) || $_COOKIE['userid'] <= 0){
         .col-md-3 .bd-chat-well-container,.col-md-4 .bd-chat-well-container {
             padding: 15px 10px;
         }
+        
         .col-md-3 .bd-chat-center-text,.col-md-4 .bd-chat-center-text {
             margin: 0;
             font-size: 20px;
             padding: 0 15px;
         }
+
         .col-md-3 .member-login-page-container .login-register-tabs *, .col-md-4 .member-login-page-container .login-register-tabs * {
             font-size: 12px;
             line-height: 1.2em;
             vertical-align: bottom;
         }
+
         .col-md-3 .member-login-page-container .login-register-tabs a, .col-md-4 .member-login-page-container .login-register-tabs a {
             padding: 5px !important;
             height: 50px;
@@ -303,45 +306,55 @@ if(!isset($_COOKIE['userid']) || $_COOKIE['userid'] <= 0){
             display: table-cell !important;
             width: 1%;
         }
+
         .col-md-3 .member-login-page-container .login-register-content, .col-md-4  .member-login-page-container .login-register-content {
             padding: 0;
         }
+
         .col-md-3 .member-login-container, .col-md-4 .member-login-container {
             padding: 15px !important;
             font-size: 13px;
         }
+
         .col-md-3 .member-login-page-container .input-lg, .col-md-4 .member-login-page-container .input-lg {
             height: 34px;
             padding: 6px 12px;
             font-size: 14px;
         }
+
         .col-md-3 .member-login-page-container .security_question_label, .col-md-4 .member-login-page-container .security_question_label {
             transform: scale(.85);
             margin: -1.15em -1.15em 0;
         }
+
         .col-md-3 #containerFBLogin, .col-md-4 #containerFBLogin, .col-md-3 #containerGoogleLogin, .col-md-4 #containerGoogleLogin, .col-md-3 .login-cta-buttons li, .col-md-4 .login-cta-buttons li {
             width: 100%;
             display: block;
             margin-top:5px;
         }
+
         .col-md-3 .login-cta-buttons li, .col-md-4 .login-cta-buttons li {
             padding:0
         }
+
         .col-md-3 .login-cta-buttons ul.nav, .col-md-4 .login-cta-buttons ul.nav {
             margin-top: -10px;
         }
+
         .col-md-3 #googleAction, .col-md-3 #facebookAction, .col-md-4 #googleAction, .col-md-4 #facebookAction {
             padding: 0;
             min-height: 0;
             font-size: 14px;
             margin: 0;
         }
+
         .col-md-3 #googleAction img, .col-md-3 #facebookAction img, .col-md-4 #googleAction img, .col-md-4 #facebookAction img {
             height: 36px !important;
             margin-right: 5px;
             position: relative!important;
             display: inline-block;
         }
+
         @media only screen and (max-width: 767px) {
             .col-md-3 .member-login-page-container .login-register-tabs a, .col-md-4 .member-login-page-container .login-register-tabs a {
                 display: block !important;
