@@ -140,7 +140,7 @@ if ($pars[1] == 'edit-supplier-card' && $pars[2] != '' && $_GET['id'] != '') {
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h2 style="font-size: 20px;font-weight: 600; margin: 25px 0px;">Your Suppplier Card Preview is what the Manufacturer's Staff see for the event.</h2>
+            <h2 style="font-size: 20px;font-weight: 600; margin: 25px 0px;">Your Supplier Card Preview is what the Manufacturer's Staff see for the event.</h2>
         </div>
     </div>
     <div class="row">
@@ -408,18 +408,17 @@ $file = $user_photo['file'] ? $user_photo['file'] : 'default-image.jpg'; // Defa
                             </span>
                         </p>
                         <?php
+
                         if ($single_row['video_option'] == 'other') {
                             echo '<h4 class="company_desc event_name-preview" style="text-align: center;">'.$single_row['event_name'].'</h4>';
                             echo '<p class="event_name-preview" style="text-align: center;">'.$single_row['event_description'].'</p>';
                         }
 
-
-
                         if ($single_row['video_option'] == 'link') { ?>
                             <h4 class="company_desc event_name-preview" style="text-align: center;">Presentation Title</h4>
                         <?php } 
                          if ($single_row['video_option'] == 'none' || $single_row['video_option'] == 'superbooth') { ?>
-                            <h4 class="company_desc event_description-preview" style="text-align: center;">Promotional description of what you'll be showing at the event</h4>
+                            <h4 class="company_desc event_description-preview" id='event_description-preview' style="text-align: center;">Promotional description of what you'll be showing at the event</h4>
                         <? } ?> 
                     </div>
                 </div>
@@ -585,6 +584,7 @@ $file = $user_photo['file'] ? $user_photo['file'] : 'default-image.jpg'; // Defa
                 e.preventDefault(); // Prevent form submission
             }
         });
+
         //End of character limit of 350 for the "Company Description" textarea
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -1030,14 +1030,9 @@ $file = $user_photo['file'] ? $user_photo['file'] : 'default-image.jpg'; // Defa
     
 </script>
 <script>
-    // const img = document.querySelector('.company_logo');
-    // img.onload = function () {
-    //     console.log('Image loaded successfully.');
-    // };
-
-    // img.onerror = function () {
-    //     console.log('Company logo not found or failed to load.');
-    //     //img.src = 'https://example.com/default-logo.png';
-    // };
-
+        let presentation_description  = document.querySelector('#presentation-description');
+        let event_description_preview = document.querySelector('#event_description-preview');
+        if(event_description_preview.textContent == `Promotional description of what you'll be showing at the event`){
+            event_description_preview.textContent = presentation_description.textContent;
+        }
 </script>

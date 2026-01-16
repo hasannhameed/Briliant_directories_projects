@@ -686,8 +686,8 @@ if (isset($_COOKIE['userid']) && $_COOKIE['userid'] !== '') { ?>
 
                 <div class="form-group">
                   <label for="company_name">Company Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="company_name" value="" placeholder="Company Name"
-                    name="company_name" <?= $user_data['company'] ?> required>
+                  <input type="text" class="form-control" id="company_name" value="<?= $user_data['company'] ?>" placeholder="Company Name"
+                    name="company_name"  required>
                   <small class="text-danger company_name"></small>
                 </div>
 
